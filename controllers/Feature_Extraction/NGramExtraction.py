@@ -1,13 +1,12 @@
-import csv
 from afinn import Afinn
 import nltk
 from nltk.corpus import sentiwordnet as swn
 from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
 import math
-from sklearn.feature_extraction.text import TfidfVectorizer
 import re
-import pandas as pd
+import csv
+import copy
 
 def get_n_grams(tweet_list):
     afinn = Afinn()
@@ -161,19 +160,9 @@ def get_n_grams(tweet_list):
                 gramDict['unigram'] = unigram
                 gramDict['bigram'] = bigram
                 gramDict['trigram'] = trigram
-                final_list.append(gramDict)
+                final_list.append(copy.deepcopy(gramDict))
                 gramDict.clear()
                 
     
     print("done.")
     return final_list
-
-"""
-df = []
-with open('CleanedTweets_origin.csv', 'r', encoding='utf-8') as input_file:
-    csvreader = csv.reader(input_file)
-    for row in csvreader:
-        if (len(row) > 0):
-            df.append(row[0])
-get_n_grams(df)
-"""
