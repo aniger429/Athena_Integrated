@@ -54,6 +54,7 @@ def clean_file(filename):
     print(end - start)
     return render_template("datacleaning.html", dataFileList=get_all_file())
 
+
 @app.route('/chart-view')
 def chart_view():
     return render_template("chart-view.html")

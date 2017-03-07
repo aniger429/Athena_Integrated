@@ -13,6 +13,11 @@ class Tweet(MongoModel):
     idUsername = fields.CharField()
     tweet = fields.CharField()
     date_created = fields.DateTimeField()
+    hashtags = fields.ListField()
+    location = fields.CharField()
+    favorite = fields.IntegerField()
+    retweet = fields.IntegerField()
+    # n-grams
 
     class Meta:
         write_concern = WriteConcern(j=True)
