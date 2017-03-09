@@ -17,7 +17,11 @@ class Tweet(MongoModel):
     location = fields.CharField()
     favorite = fields.IntegerField()
     retweet = fields.IntegerField()
-    # n-grams
+
+    unigram = fields.ListField()
+    bigram = fields.ListField()
+    trigram = fields.ListField()
+
 
     class Meta:
         write_concern = WriteConcern(j=True)
@@ -31,6 +35,11 @@ def insert_new_tweet(data_to_add):
 
 
 def get_all_tweets():
-    # for t in db.Tweet.find():
-    #     print(t['tweet'])
     return db.Tweet.find()
+
+
+def get_tweets_only():
+    result = []
+    [result.append(x['tweet']) for x in db.Tweet.find({}, {'_id': 0, 'tweet': 1})]
+    return result
+

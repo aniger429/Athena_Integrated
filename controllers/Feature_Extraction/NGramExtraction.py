@@ -5,8 +5,20 @@ from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
 import math
 import re
-import csv
 import copy
+import pandas as pd
+import os
+from DBModels.Tweet import *
+import openpyxl
+
+script_path = os.path.dirname(os.path.dirname(__file__))
+file_path = os.path.join(script_path, "Lexicon_Files")
+nltk.data.path.append(script_path+"/Lexicon_Files")
+
+
+def read_xlsx(filename):
+    return pd.read_excel(filename, encoding='utf-8', keep_default_na=False)
+
 
 def get_n_grams(tweet_list):
     afinn = Afinn()
@@ -18,23 +30,28 @@ def get_n_grams(tweet_list):
     final_list = []
     gramDict = dict()    
     wordList = dict()
-    posiFile = open("C:/Python27/positive.txt", 'r');
-    posiCount = len(posiFile.readlines())
-    posiFile.close();
-    negaFile = open("C:/Python27/negative.txt", 'r');
-    negaCount = len(negaFile.readlines())
-    negaFile.close();
-    filDictFile = open("C:/Python27/src/final.txt", 'r', encoding="utf-8");
+
+    posiFile = pd.read_csv(file_path + "/positive.txt", header=None)
+    posi_rowcount, posi_columncount = posiFile.shape
+    posi_list = posiFile[0].tolist()
+
+    nega_file = pd.read_csv(file_path + "/negative.txt", header=None)
+    nega_rowcount, nega_columncount = posiFile.shape
+    nega_list = posiFile[0].tolist()
+
+    filDictFile = open(file_path + "/final.txt", 'r', encoding="utf-8");
     filDictCount = len(filDictFile.readlines())
     filDictFile.close();
-    filDictFile = open("C:/Python27/src/final.txt", 'r', encoding="utf-8");
+
+    filDictFile = open(file_path + "/final.txt", 'r', encoding="utf-8");
     for i in range(0, filDictCount):
         filDict.append(filDictFile.readline())
-        
-    filStopFile = open("C:/Python27/src/fil-words.txt", 'r');
+
+    filStopFile = open(file_path + "/fil-words.txt", 'r');
     filStopCount = len(filStopFile.readlines())
     filStopFile.close();
-    filStopFile = open("C:/Python27/src/fil-words.txt", 'r');
+
+    filStopFile = open(file_path + "/fil-words.txt", 'r');
     filsw = dict()
     filscorelist = []
     for i in range(0, filStopCount):
@@ -95,7 +112,6 @@ def get_n_grams(tweet_list):
             rown += 1
             if (tweet != None):
                 print('Processing Tweet ' + str(rown))
-                original = tweet.lower()
                 if '@' in original:
                     original = original.replace('@', '')
                 splitList = original.split()
@@ -125,19 +141,27 @@ def get_n_grams(tweet_list):
                     afinnScore += afinn.score(aa)
                     if (afinnScore == 0.0):
                         deleteChecker += 1
-                    posiFile = open("C:/Python27/positive.txt", 'r');
-                    for j in range(0, posiCount):
+
+                    # if aa in posi_list:
+                    #     bingScore += 1
+
+                    posiFile = open(file_path + "/positive.txt", 'r');
+                    for j in range(0, posi_rowcount):
                         idRead = posiFile.readline()
                         idSplice = idRead.split()
                         if aa == idSplice[0]:
                             bingScore += 1
                     posiFile.close()
-                    negaFile = open("C:/Python27/negative.txt", 'r');
-                    for j in range(0, negaCount):
+                    negaFile = open(file_path + "/negative.txt", 'r');
+                    for j in range(0, nega_rowcount):
                         idRead2 = negaFile.readline()
                         idSplice2 = idRead2.split()
                         if aa == idSplice2[0]:
                             bingScore -= 1
+
+                    # if aa in nega_list:
+                    #     bingScore -= 1
+
                     if (bingScore == 0.0):
                         deleteChecker += 1
                     sip = swn.senti_synsets(aa)
@@ -167,3 +191,34 @@ def get_n_grams(tweet_list):
     print("done.")
     return final_list
 
+# import xml.etree.ElementTree as ET
+# from lxml import etree
+# import pandas as pd
+#
+# xml_data = file_path + "/final - Copy.xml"
+#
+# def xml2df(xml_data):
+#     tree = ET.parse(xml_data)
+#     root = tree.getroot()
+#     all_records = []
+#     headers = []
+#     for i, child in enumerate(root):
+#         record = []
+#         for subchild in child:
+#             record.append(subchild.text)
+#             if subchild.tag not in headers:
+#                 headers.append(subchild.tag)
+#         all_records.append(record)
+#     return pd.DataFrame(all_records, columns=headers)
+#
+#
+# xml_file = xml2df(xml_data)
+#
+# for x in xml_file[:10]:
+#     print (x)
+
+
+dum_data = get_tweets_only()
+output = get_n_grams(dum_data)
+df_output = pd.DataFrame.from_dict(output)
+df_output.to_excel("feprocessed.xlsx", index=False, header=['Bigram', 'Trigram', 'Unigram'])
