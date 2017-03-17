@@ -11,35 +11,54 @@
 
         }
     </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+{#    <script src="{{ url_for('static', filename="js/analysis/buttonControls.js") }}" ></script>#}
 
-{#     <script src="{{ url_for('static', filename="js/analysis/buttonControls.js") }}" ></script>#}
+    <script>
+     $(document).ready(function() {
+{#             for (i = 0; i < second_level_status.length; i++) {#}
+{#                if (second_level_status[i] == 1){#}
+{#                    $(second_level_names[i]).attr('disabled', false);#}
+{#                    $(third_level_names[i]).attr('disabled', false);#}
+{#                    $(second_level_names[i]).removeClass('disabled');#}
+{#                    $(third_level_names[i]).removeClass('disabled');#}
+{#                }#}
+{#            }#}
+     var first_level;
+     var second_level;
+     var third_level;
 
-{#     <script>#}
-{#     $(document).ready(function() {#}
-{#          $('#first-level-c').on('toggle', function () {#}
-{#              $("#second-level-c").attr('disabled', true);#}
-{#              $('#second-level-c').radio("refresh");#}
-{#          });#}
-{#          $('#first-level-t').on('toggle', function () {#}
-{#              // $("#third-level-t").attr('disabled', true);#}
-{#              // $("#second-level-t").attr('disabled', true);#}
-{#              // $('#third-level-t').radio("refresh");#}
-{#              // $('#second-level-t').radio("refresh");#}
-{#              $("#second-level-c").attr('disabled', false);#}
-{#              $('#second-level-c').removeAttr("disabled");#}
-{#              $('#second-level-c').radio("refresh");#}
-{##}
-{#          });#}
-{#          $('#first-level-s').on('toggle', function () {#}
-{#              $("#third-level-s").attr('disabled', true);#}
-{#              $("#second-level-s").attr('disabled', true);#}
-{#              $('#third-level-s').radio("refresh");#}
-{#              $('#second-level-s').radio("refresh");#}
-{#          });#}
-{#     });#}
-{##}
-{##}
-{#     </script>#}
+      $('.first-level').on('toggle', function () {
+          $(".second-level").attr('disabled', false);
+          $(".third-level").attr('disabled', false);
+          $('.second-label-label').removeClass('disabled');
+          $('.third-label-label').removeClass('disabled');
+
+          if($("#first-level-c").is(':checked')) {
+            $("#second-level-c").attr('disabled', true);
+            $("#third-level-c").attr('disabled', true);
+            $('.second-label-c').removeClass('enabled');
+            $('.third-label-c').removeClass('enabled');
+          }
+          else if($("#first-level-t").is(':checked')) {
+            $("#second-level-t").attr('disabled', true);
+            $("#third-level-t").attr('disabled', true);
+            $('.second-label-t').removeClass('enabled');
+            $('.third-label-t').removeClass('enabled');
+          }
+          else if($("#first-level-s").is(':checked')) {
+            $("#second-level-s").attr('disabled', true);
+            $("#third-level-s").attr('disabled', true);
+            $('.second-label-s').removeClass('enabled');
+            $('.third-label-s').removeClass('enabled');
+          }
+
+          $('.second-level').radio("refresh");
+          $('.third-level').radio("refresh");
+      });
+
+    });
+ </script>
 {% endblock %}
 
 {%block name%}
@@ -49,8 +68,9 @@ Analyze Data
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-         <form action="upload" method="post" enctype="multipart/form-data">
+         <form action="new_workspace" method="post" enctype="multipart/form-data">
         <div class="panel panel-default" >
+            <div class="panel-heading">Initial Analysis Settings</div>
               <div class="panel-body">
                 <div class="panel panel-default col-md-4" >
                   <div class="panel-heading">First Level</div>
@@ -73,14 +93,14 @@ Analyze Data
                  <div class="panel panel-default col-md-4" >
                   <div class="panel-heading">Second Level</div>
                   <div class="panel-body">
-                    <label class="radio">
-                        <input type="radio" name="second-level" data-toggle="radio" id="second-level-c" value="second-c">Candidate</input>
+                    <label class="radio second-label-c">
+                        <input type="radio" class="second-level" name="second-level" data-toggle="radio" id="second-level-c" value="second-c">Candidate</input>
                     </label>
-                    <label class="radio">
-                        <input type="radio" name="second-level" data-toggle="radio" id="second-level-t" value="second-t">Topic</input>
+                    <label class="radio second-label-t">
+                        <input type="radio" class="second-level" name="second-level" data-toggle="radio" id="second-level-t" value="second-t">Topic</input>
                     </label>
-                    <label class="radio">
-                        <input type="radio" name="second-level" data-toggle="radio" id="second-level-s" value="second-s">Sentiment</input>
+                    <label class="radio second-label-s">
+                        <input type="radio" class="second-level" name="second-level" data-toggle="radio" id="second-level-s" value="second-s">Sentiment</input>
                     </label>
 
                   </div>
@@ -88,34 +108,38 @@ Analyze Data
                  <div class="panel panel-default col-md-4" >
                   <div class="panel-heading">Third Level</div>
                   <div class="panel-body">
-                    <label class="radio">
+                    <label class="radio third-label-c">
                         <input type="radio" name="third-level" class="third-level" data-toggle="radio" id="third-level-c" value="third-c">
                         <i></i>Candidate
                     </label>
-                    <label class="radio">
+                    <label class="radio third-label-t">
                         <input type="radio" name="third-level" class="third-level" data-toggle="radio" id="third-level-t" value="third-t">
                         <i></i>Topic
                     </label>
-                    <label class="radio">
+                    <label class="radio third-label-s">
                         <input type="radio" name="third-level" class="third-level" data-toggle="radio" id="third-level-s" value="third-s">
                         <i></i>Sentiment
                     </label>
 
                   </div>
                 </div>
+                  <div class="row">
+                      <div class="col-md-12">
+                        <label for="inputdefault" class="col-md-3">Workspace Name</label>
+                        <input class="form-control col-md-9" name="workspace_name" id="workspace_name" type="textbox" placeholder="Input workspace name here">
+                      </div>
+                  </div>
+              </br>
                  <div class="col-md-12 col-md-push-10">
                      <input type="submit" class="btn btn-info" Value="Analyze Data">
                  </div>
               </div>
             </div>
          </form>
-
-        <input type="radio" onclick="check(this.value)" value="BANANA HELP!">WAAAAH!</input>
     </div>
 </div>
 
 {% endblock %}
 
 {% block customJS %}
-
 {% endblock %}
