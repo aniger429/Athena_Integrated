@@ -1,5 +1,7 @@
 from flask import Flask, render_template, send_from_directory, flash, session
+from flask import Flask, request, render_template, send_from_directory
 from controllers import uploadFile
+from controllers.analysis_controller import new_analysis
 import os
 from DBModels.Data import *
 from DBModels.Tweet import *
@@ -76,17 +78,26 @@ def clean_file(filename):
 def chart_view():
     return render_template("chart-view.html")
 
+@app.route('/test')
+def test():
+    return render_template("test.html")
+
 
 # Route that will process the file upload
 @app.route('/upload', methods=['POST'])
 def upload():
-
     if check_if_file_exists == False:
         script_path = os.path.dirname(__file__)
         directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'])
         return uploadFile.upload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
     else:
         return uploadFile.duplicate_file()
+
+
+@app.route('/new_workspace', methods=['POST'])
+def new_workspace():
+    return new_analysis.new_analysis()
+
 
 if __name__ == '__main__':
 
