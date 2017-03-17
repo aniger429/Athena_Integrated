@@ -1,11 +1,13 @@
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, flash, session
 from controllers import uploadFile
 import os
 from DBModels.Data import *
 from DBModels.Tweet import *
+from DBModels.Username import *
 from controllers.DataCleaning import cleaning
 from pymodm import connect
 import time
+
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -17,10 +19,13 @@ connect("mongodb://localhost:27017/Athena", alias="athenaDB")
 app.config['UPLOAD_FOLDER'] = 'Data/'
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['csv', 'xls', 'xlsx'])
+app.secret_key = "super secret key"
+
 
 @app.route('/')
 def home():
-    return render_template("base.html")
+    return render_template("dashboard.html", username_count=count_total_usernames(),
+                           tweet_count=count_total_tweet(), data_count=count_total_data())
 
 @app.route('/tweets')
 def view_tweets():
@@ -34,6 +39,18 @@ def analysis():
 @app.route('/analysis/candidate')
 def candidate_analysis():
     return render_template("/analysis/candidate.html")
+
+
+@app.route('/data_cleaning')
+def dup_data_cleaning():
+    file_name = "noError"
+    try:
+        file_name = session['file_name']
+        session.clear()
+    except:
+        print("OOPS!, something wrong.")
+
+    return render_template("datacleaning.html", dataFileList=get_all_file(), filename = file_name)
 
 
 @app.route('/data_cleaning')
@@ -63,12 +80,16 @@ def chart_view():
 # Route that will process the file upload
 @app.route('/upload', methods=['POST'])
 def upload():
-    script_path = os.path.dirname(__file__)
-    directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'])
-    return uploadFile.upload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
 
+    if check_if_file_exists == False:
+        script_path = os.path.dirname(__file__)
+        directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'])
+        return uploadFile.upload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
+    else:
+        return uploadFile.duplicate_file()
 
 if __name__ == '__main__':
+
     app.run(
         debug=True
     )

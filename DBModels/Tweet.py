@@ -33,4 +33,8 @@ def insert_new_tweet(data_to_add):
 def get_all_tweets():
     # for t in db.Tweet.find():
     #     print(t['tweet'])
-    return db.Tweet.find()
+    return db.Tweet.find({},{'_id':1,'tweet':1})
+
+
+def count_total_tweet():
+    return db.Tweet.count()

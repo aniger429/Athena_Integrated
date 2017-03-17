@@ -8,21 +8,16 @@
 {% endblock %}
 
 {%block name%}
-All Tweets
+Tweets
 {%endblock%}
 
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        some numbers about the tweets
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
         <div class="card">
             <div class="header">
-                <h4 class="title">Tweets in the Database</h4>
-                <p class="category">Here are all the tweets from *date start* to *date end*</p>
+                <h4 class="title">Cleaned Tweets in the Database</h4>
+                <p class="category">Here are all the tweets</p>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
@@ -32,12 +27,15 @@ All Tweets
                         <th class="col-md-4">Tweet</th>
                     </thead>
                     <tbody>
-                        {% for dataFile in tweetFileList %}
-                            {% set loop_index_3 = loop.index + 1 %}
-                        <tr>
-                            <td>{{ dataFile['tweet'] }}</td>
+                        {% for tweet_row in tweetFileList | batch(3, '&nbsp;') %}
+                            <tr>
+                                {% for tweet in tweet_row %}
 
-                        </tr>
+                                    <td>{{ tweet['_id'] }}
+                                        </br>
+                                        {{ tweet['tweet'] }}</td>
+                                {% endfor %}
+                            </tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -50,4 +48,5 @@ All Tweets
 {% endblock %}
 
 {% block customJS %}
+
 {% endblock %}

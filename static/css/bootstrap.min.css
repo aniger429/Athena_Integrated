@@ -5443,7 +5443,7 @@ a.thumbnail.active, a.thumbnail:focus, a.thumbnail:hover {
 .alert-dismissable .close, .alert-dismissible .close {
     position: relative;
     top: -2px;
-    right: -21px;
+    right: -10px;
     color: inherit
 }
 

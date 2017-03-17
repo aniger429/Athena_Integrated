@@ -4,7 +4,7 @@ import os
 # will be used to redirect the user once the upload is done
 # and send_from_directory will help us to send/show on the
 # browser the file that the user just uploaded
-from flask import request, redirect, url_for
+from flask import request, redirect, url_for, session
 from werkzeug.utils import secure_filename
 from DBModels.Data import *
 
@@ -28,6 +28,12 @@ def upload(directoryPath, ALLOWED_EXTENSIONS):
         file.save(os.path.join(directoryPath, filename))
         insert_new_data(filename)
         return redirect(url_for('data_cleaning'))
+
+
+def duplicate_file():
+    file = request.files['file']
+    session['file_name'] = file.filename
+    return redirect(url_for('dup_data_cleaning'))
 
 
 

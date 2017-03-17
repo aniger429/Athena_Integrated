@@ -3,7 +3,6 @@
     <!--  Paper Dashboard core CSS    -->
     <link href="{{ url_for('static', filename="css/customized.css") }}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename="css/fileinput.min.css") }}" rel="stylesheet" type="text/css" />
-
 {%  endblock %}
 
 {%block name%}
@@ -12,6 +11,14 @@ Data
 
 {% block content %}
 <div class="row">
+    {% if filename != 'noError'%}
+        <div class="alert alert-danger alert-dismissible show" role="alert">
+          <button type="button" class="close moveRight" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Oops!</strong> You uploaded a duplicate file: {{ filename }}
+        </div>
+    {% endif %}
     <div class="panel panel-default" >
       <div class="panel-heading">Upload Data</div>
       <div class="panel-body">

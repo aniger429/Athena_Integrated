@@ -56,6 +56,12 @@ class Data(MongoModel):
         connection_alias = 'athenaDB'
 
 
+def check_if_file_exists(filename):
+    if db.username.find({'filname': filename}).count() > 1:
+        return True
+    else:
+        return False
+
 def insert_new_data(file_name):
     time_uploaded = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     Data(filename=file_name, dateUploaded=time_uploaded).save()
@@ -75,3 +81,7 @@ def get_all_file():
     # for user in db.data.find():
     #     print(user['filename'])
     return db.data.find()
+
+
+def count_total_data():
+    return db.data.count()

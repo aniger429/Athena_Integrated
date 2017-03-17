@@ -74,10 +74,18 @@ def insert_new_username(username_dict):
     # row_list = [{'username': key, 'numTweets': value['numTweets'], 'numMentions': value['numMentions']} for key, value
     #             in username_dict.items()]
 
-    row_list = [Username(username=key, numTweets= value['numTweets'], numMentions= value['numMentions']) for key, value
-                in username_dict.items()]
+    row_list = [Username(username=key, numTweets= value['numTweets'], numMentions= value['numMentions']) for key, value in username_dict.items()]
 
     Username.objects.bulk_create(row_list)
+
+
+def bulk_update(username_dict):
+    bulk = db.username.initialize_ordered_bulk_op()
+    [bulk.find({'username': key}).upsert().update(
+        {'$set': {'numTweets': value['numTweets'],'numMentions': value['numMentions']}})
+     for key, value in username_dict.items()]
+    result = bulk.execute()
+    print (result)
 
 
 def get_all_username():
@@ -95,3 +103,7 @@ def get_all_username_dict():
     for user in db.username.find({}, {'username': 1}):
         username_dict[user['username']] = '@' + str(user['_id'])
     return username_dict
+
+
+def count_total_usernames():
+    return db.username.count()
