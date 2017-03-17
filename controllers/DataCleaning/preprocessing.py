@@ -56,22 +56,30 @@ def process_usernames(data_source):
 
     addToDB(u_dict)
     print("Done processing the username")
+    return 0
 
 
 def read_xlsx(filename):
     return pd.read_excel(filename, encoding='utf-8')
 
 
+# from pymodm import connect
+# # Connect to MongoDB and call the connection "athenaDB.
+# connect("mongodb://localhost:27017/Athena", alias="athenaDB")
+#
+#
 # start = time.time()
-# file_name = "/home/dudegrim/Google Drive/Thesis/Election Data/Election-18.xlsx"
-# # processUsernames(read_xlsx(file_name))
+# file_name = "C:\\Users\\Regina\\Google Drive\\Thesis\\Dummy Data\\test1.xlsx"
+# process_usernames(read_xlsx(file_name))
 #
 # ulist = get_all_username()
 #
-# for u in ulist[:10]:
-#     print(u['_id'])
+# ctr = 1
+# for u in ulist:
+#     print(str(ctr) + " : " + str(u['_id']) + " : " + u['username'])
+#     ctr = ctr + 1
 #
 # end = time.time()
 # print("Time to clean file:" + str(end - start))
-
+#
 

@@ -20,6 +20,24 @@ def read_xlsx(filename):
     return pd.read_excel(filename, encoding='utf-8', keep_default_na=False)
 
 
+# this function will return the sentiment of a given word
+def compute_sentiment(word):
+
+    return 0
+
+
+def get_unigrams(tweet):
+    return []
+
+
+def get_bigrams(tweet):
+    return []
+
+
+def get_trigrams(tweet):
+    return []
+
+
 def get_n_grams(tweet_list):
     afinn = Afinn()
     rown = 2
@@ -39,19 +57,19 @@ def get_n_grams(tweet_list):
     nega_rowcount, nega_columncount = posiFile.shape
     nega_list = posiFile[0].tolist()
 
-    filDictFile = open(file_path + "/final.txt", 'r', encoding="utf-8");
+    filDictFile = open(file_path + "/final.txt", 'r', encoding="utf-8")
     filDictCount = len(filDictFile.readlines())
-    filDictFile.close();
+    filDictFile.close()
 
-    filDictFile = open(file_path + "/final.txt", 'r', encoding="utf-8");
+    filDictFile = open(file_path + "/final.txt", 'r', encoding="utf-8")
     for i in range(0, filDictCount):
         filDict.append(filDictFile.readline())
 
-    filStopFile = open(file_path + "/fil-words.txt", 'r');
+    filStopFile = open(file_path + "/fil-words.txt", 'r')
     filStopCount = len(filStopFile.readlines())
-    filStopFile.close();
+    filStopFile.close()
 
-    filStopFile = open(file_path + "/fil-words.txt", 'r');
+    filStopFile = open(file_path + "/fil-words.txt", 'r')
     filsw = dict()
     filscorelist = []
     for i in range(0, filStopCount):
@@ -73,7 +91,7 @@ def get_n_grams(tweet_list):
                     wordList.update({filword : filscorelist})
             filword = ""
             filscorelist = []
-            line = filDict[i+1];
+            line = filDict[i+1]
             while "<translation>" in line:
                 i = i + 1
                 line = filDict[i]
@@ -82,24 +100,24 @@ def get_n_grams(tweet_list):
     for i in range(0, filDictCount):
         line = filDict[i]
         if "<positivity>" in line:
-            line = line[(line.index(">") + 1) : len(line)]
-            filscorelist.append(float(line[0 : line.index("<")]))
+            line = line[(line.index(">") + 1): len(line)]
+            filscorelist.append(float(line[0: line.index("<")]))
         if "<negativity>" in line:
-            line = line[(line.index(">") + 1) : len(line)]
-            filscorelist.append(float(line[0 : line.index("<")]))
+            line = line[(line.index(">") + 1): len(line)]
+            filscorelist.append(float(line[0: line.index("<")]))
         if "<translation>" in line:
             for j in range(0, 2):
-                i = i + 1;
+                i = i + 1
                 line = filDict[i]
                 if "<translation>" in line:
-                    line = line[(line.index(">") + 1) : len(line)]
-                    filword = line[0 : line.index("<")]
+                    line = line[(line.index(">") + 1): len(line)]
+                    filword = line[0: line.index("<")]
                     if not filword in wordList:
                         if len(filscorelist) > 0:            
-                            wordList.update({filword : filscorelist})
+                            wordList.update({filword: filscorelist})
                 else:
-                    break;       
-            line = filDict[i+1];
+                    break       
+            line = filDict[i+1]
             while "<translation>" in line:
                 i = i + 1
                 line = filDict[i]
@@ -112,17 +130,24 @@ def get_n_grams(tweet_list):
             rown += 1
             if (tweet != None):
                 print('Processing Tweet ' + str(rown))
+                # remove username mentions in tweet body
                 if '@' in original:
                     original = original.replace('@', '')
                 splitList = original.split()
-                aa = ""
+
+                # filipino word sentiment
                 filScore = 0.0
+
+                # each word in tweet
                 for i in range(0, len(splitList)):
+                    # word in tweet
                     aa = splitList[i]
+
                     if '[' in aa:
                         aa = aa.replace('[', '')
                         if ']' in aa:
                             aa = aa.replace(']', '')
+
                     deleteChecker = 0
                     filipinoChecker = 0
                     pos = 0
@@ -145,14 +170,14 @@ def get_n_grams(tweet_list):
                     # if aa in posi_list:
                     #     bingScore += 1
 
-                    posiFile = open(file_path + "/positive.txt", 'r');
+                    posiFile = open(file_path + "/positive.txt", 'r')
                     for j in range(0, posi_rowcount):
                         idRead = posiFile.readline()
                         idSplice = idRead.split()
                         if aa == idSplice[0]:
                             bingScore += 1
                     posiFile.close()
-                    negaFile = open(file_path + "/negative.txt", 'r');
+                    negaFile = open(file_path + "/negative.txt", 'r')
                     for j in range(0, nega_rowcount):
                         idRead2 = negaFile.readline()
                         idSplice2 = idRead2.split()
@@ -181,6 +206,7 @@ def get_n_grams(tweet_list):
                 bigram = [' '.join(words) for words in bi]
                 tri = ngrams(original.split(),3)
                 trigram = [' '.join(words) for words in tri]
+
                 gramDict['unigram'] = unigram
                 gramDict['bigram'] = bigram
                 gramDict['trigram'] = trigram

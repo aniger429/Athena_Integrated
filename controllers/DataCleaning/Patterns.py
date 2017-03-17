@@ -1,4 +1,5 @@
 import re
+import emoji
 
 URL_PATTERN=re.compile(r'(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019]))')
 HASHTAG_PATTERN = re.compile(r'#\w*')
@@ -17,13 +18,19 @@ NUMBERS_PATTERN = re.compile(r"(^|\s)(\-?\d+(?:\.\d)*|\d+)")
 
 
 def remove_from_tweet(tweet):
+    # tweet = emoji.demojize(tweet)
     tweet = URL_PATTERN.sub('', tweet)
     tweet = HASHTAG_PATTERN.sub('', tweet)
     tweet = RESERVED_WORDS_PATTERN.sub('', tweet)
-    tweet = EMOJIS_PATTERN.sub('', tweet)
-    tweet = SMILEYS_PATTERN.sub('', tweet)
+    # tweet = EMOJIS_PATTERN.sub('', tweet)
+    # tweet = SMILEYS_PATTERN.sub('', tweet)
     tweet = NUMBERS_PATTERN.sub('', tweet)
 
 
     return tweet
 
+
+def remove_usernames(tweet):
+    tweet = MENTION_PATTERN.sub('', tweet)
+
+    return tweet

@@ -8,6 +8,7 @@ from controllers.DataCleaning import cleaning
 from pymodm import connect
 import time
 
+
 # Initialize the Flask application
 app = Flask(__name__)
 
