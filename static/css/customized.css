@@ -18,7 +18,3 @@
     cursor: inherit;
     display: block;
 }
-
-.close.moveRight {
-    right: -10px;
-}

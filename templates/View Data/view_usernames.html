@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block customCSS %}
+    <style>
+        .table th, .table td{
+           text-align: center;
+        }
+        .username{
+            color: #7A9E9F;
+            font-size: 15px;
+        }
+        .category.custom{
+            word-spacing: 10px;
+            text-transform:uppercase;
+        }
+    </style>
+{% endblock %}
+
+{%block name%}
+Usernames
+{%endblock%}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Usernames in the Database</h4>
+                <p class="category">Here are all the Usernames</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="col-md-4">Username</th>
+                        <th class="col-md-4">Username</th>
+                        <th class="col-md-4">Username</th>
+                    </thead>
+                    <tbody>
+                        {% for username_row in usernameList | batch(3, '&nbsp;') %}
+                            <tr>
+                                {% for uname in username_row %}
+                                    <td>
+                                        {% if uname != '&nbsp;' %}
+                                            <strong class="username">{{ uname['username'] }}</strong>
+                                            </br>
+                                            <a href="{{ url_for('view_specific_user', user_id=uname['_id'])}}"> View User</a>
+                                            </br>
+                                            Tweets: {{ uname['numTweets'] }}
+                                            </br>
+                                            Mentions: {{ uname['numMentions'] }}
+                                        {% endif %}
+
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block customJS %}
+
+{% endblock %}

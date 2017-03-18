@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block customCSS %}
+    <style>
+        .table th, .table td, .title.custom, .category.custom{
+           text-align: center;
+        }
+        .title.custom{
+            color: #7A9E9F;
+            font-size: 25px;
+        }
+        .category.custom{
+            word-spacing: 10px;
+            text-transform:uppercase;
+        }
+        .username_id{
+            font-size: 12px;
+        }
+    </style>
+{% endblock %}
+
+{%block name%}
+User
+{%endblock%}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ userData['numMentions'] }}</h4>
+                    <p class="category custom">Mentions</p>
+                </div>
+                </br>
+            </div>
+        </div>
+         <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ userData['username'] }}
+                    </h4>
+                    <p class="category custom">{{ userData['_id'] }}</p>
+                </div>
+                </br>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ userData['numTweets'] }}</h4>
+                    <p class="category custom">Tweets</p>
+                </div>
+            </br>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">Tweets</h4>
+{#                <p class="category custom">Tweet</p>#}
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="col-md-6">Tweet</th>
+                        <th class="col-md-6">Tweet</th>
+                    </thead>
+                        {% for tweet_row in tweetDataList | batch(2, '&nbsp;') %}
+                            <tr>
+                                {% for tweet in tweet_row %}
+
+                                    <td>{% if tweet != '&nbsp;' %}
+                                        <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
+                                        {% endif %}
+                                        </br>
+                                        {{ tweet['tweet'] }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block customJS %}
+
+{% endblock %}

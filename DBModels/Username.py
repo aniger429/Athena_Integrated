@@ -54,6 +54,8 @@
 from pymongo.write_concern import WriteConcern
 from pymodm import MongoModel, fields
 from pymongo import MongoClient
+import pymongo
+from bson.objectid import ObjectId
 
 client = MongoClient('mongodb://localhost:27017/Athena')
 db = client.Athena
@@ -107,3 +109,12 @@ def get_all_username_dict():
 
 def count_total_usernames():
     return db.username.count()
+
+
+def get_all_usernames():
+    return db.username.find({}).sort([("numTweets",pymongo.ASCENDING), ("numMentions",pymongo.ASCENDING)])
+
+
+def get_user_data(user_id):
+    data = (list(db.username.find({'_id': ObjectId(user_id)}).limit(1)))
+    return data[0]

@@ -29,9 +29,27 @@ def home():
     return render_template("dashboard.html", username_count=count_total_usernames(),
                            tweet_count=count_total_tweet(), data_count=count_total_data())
 
+@app.route('/usernames')
+def view_all_usernames():
+    return render_template("View Data/view_usernames.html", usernameList=get_all_usernames())
+
+@app.route('/user')
+def view_specific_user():
+    user_id = request.args.get('user_id')
+    print(user_id)
+    return render_template("View Data/view_user.html", userData=get_user_data(user_id), tweetDataList=get_user_tweet_data(user_id))
+
+
 @app.route('/tweets')
-def view_tweets():
-    return render_template("tweets.html", tweetFileList=get_all_tweets())
+def view_all_tweets():
+    return render_template("View Data/view_tweets.html", tweetFileList=get_all_tweets())
+
+@app.route('/tweet')
+def view_specific_tweet():
+    tweet_id = request.args.get('tweet_id')
+    print(tweet_id)
+    return render_template("View Data/view_tweet.html", tweetData=get_tweet_data(tweet_id))
+
 
 
 @app.route('/analysis')
