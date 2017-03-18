@@ -57,10 +57,11 @@ class Data(MongoModel):
 
 
 def check_if_file_exists(filename):
-    if db.username.find({'filname': filename}).count() > 1:
-        return True
-    else:
+    fileCount = db.data.find({"filename":filename}).count()
+    if fileCount == 0:
         return False
+    else:
+        return True
 
 def insert_new_data(file_name):
     time_uploaded = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")

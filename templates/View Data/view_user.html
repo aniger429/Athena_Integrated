@@ -15,6 +15,9 @@
         .username_id{
             font-size: 12px;
         }
+        .username_link{
+            color: palevioletred;
+        }
     </style>
 {% endblock %}
 
@@ -56,32 +59,72 @@ User
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="card">
             <div class="header">
-                <h4 class="title custom">Tweets</h4>
-{#                <p class="category custom">Tweet</p>#}
+                <h4 class="title custom">User Mentioned</h4>
+                <p class="category custom">Tweets</p>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
                     <thead>
-                        <th class="col-md-6">Tweet</th>
-                        <th class="col-md-6">Tweet</th>
+                        <th class="col-md-12"></th>
                     </thead>
-                        {% for tweet_row in tweetDataList | batch(2, '&nbsp;') %}
-                            <tr>
-                                {% for tweet in tweet_row %}
-
-                                    <td>{% if tweet != '&nbsp;' %}
+                        {% if user_mentioned_tweet_list == [] %}
+                            <tr><td>No Tweets</td></tr>
+                        {% else %}
+                            {% for tweet in user_mentioned_tweet_list %}
+                                <tr>
+                                    <td>
                                         <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
-                                        {% endif %}
                                         </br>
-                                        {{ tweet['tweet'] }}</td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
+    {#                                    {{ tweet['tweet'] }}#}
+                                        {% for word in tweet['tweet'] %}
+                                            {% if word[:1] != '@' %}
+                                                {{ word }}
+                                            {% else %}
+                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                 </table>
-
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">User Posted</h4>
+                <p class="category custom">Tweets</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="col-md-12"></th>
+                    </thead>
+                        {% if tweetDataList == [] %}
+                            <tr><td>No Tweets</td></tr>
+                        {% else %}
+                            {% for tweet in tweetDataList %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
+                                        </br>
+                                        {% for word in tweet['tweet'] %}
+                                            {% if word[:1] != '@' %}
+                                                {{ word }}
+                                            {% else %}
+                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                </table>
             </div>
         </div>
     </div>

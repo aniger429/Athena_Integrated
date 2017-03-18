@@ -33,6 +33,17 @@ def expand_contractions(text, c_re=c_re):
         return dictionary[match.group(0)]
     return c_re.sub(replace, text)
 
+def get_usernames(tweet_list):
+    pattern = re.compile("@[a-zA-Z0-9]+")
+    found_username_list = []
+
+    for l in tweet_list:
+        temp = []
+        for m in [pattern.findall(l)]:
+            temp.extend(m)
+        found_username_list.append(temp)
+
+    return found_username_list
 
 def data_cleaning (tweet, nameTuple):
     # print ("Before:"+ tweet)
@@ -94,17 +105,20 @@ def cleaning_file(fname):
 
     unigrams, bigrams, trigrams = ngram_extractor.get_ngrams(cleaned_tweets)
 
-    d = {'idTweet': data_source['Id'], 'idUsername': anonymize_poster_username(data_source['Username']),'tweet': cleaned_tweets, 'date_created': data_source['Date Created'], 'location':data_source['Location'], 'hashtags': process_hashtags(data_source['Hashtags']), 'favorite':data_source['Favorites'], 'retweet':data_source['Retweets'], 'unigram':unigrams, 'bigram':bigrams, 'trigram':trigrams}
+    d = {'idTweet': data_source['Id'], 'idUsername': anonymize_poster_username(data_source['Username']),'tweet': cleaned_tweets, 'date_created': data_source['Date Created'], 'location':data_source['Location'], 'hashtags': process_hashtags(data_source['Hashtags']), 'favorite':data_source['Favorites'], 'retweet':data_source['Retweets'], 'users_mentioned':get_usernames(cleaned_tweets), 'unigram':unigrams, 'bigram':bigrams, 'trigram':trigrams}
 
     df = pd.DataFrame(data=d, index=None)
     # df.to_excel("CleanedTweets.xlsx", index=False)
-
+    print("done cleaning")
     insert_new_tweet(df.to_dict(orient='records'))
 
 
-#
 # file_name = "C:\\Users\\Regina\\Google Drive\\Thesis\\Dummy Data\\test1.xlsx"
-#
+# data_source = read_xlsx(file_name)
+# raw_tweets = data_source['Tweet']
+# print(get_usernames(raw_tweets))
+
+
 # start = time.time()
 # cleaning_file(file_name)
 # end = time.time()

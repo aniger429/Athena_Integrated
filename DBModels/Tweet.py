@@ -19,6 +19,7 @@ class Tweet(MongoModel):
     location = fields.CharField()
     favorite = fields.IntegerField()
     retweet = fields.IntegerField()
+    users_mentioned = fields.ListField()
 
     unigram = fields.ListField()
     bigram = fields.ListField()
@@ -31,17 +32,13 @@ class Tweet(MongoModel):
 
 
 def insert_new_tweet(data_to_add):
-    for t in data_to_add:
-        print(t['tweet'])
     db.Tweet.insert_many(data_to_add)
 
 
 def get_all_tweets():
     data = list(db.Tweet.find({},{'_id':1,'tweet':1}))
-
     for d in data:
         d['tweet'] = d['tweet'].split()
-
     return data
 
 
@@ -60,6 +57,16 @@ def get_tweets_only():
     [result.append(x['tweet']) for x in db.Tweet.find({}, {'_id': 0, 'tweet': 1})]
     return result
 
+# returns all the tweets posted by the user_id
 def get_user_tweet_data(user_id):
-    data = db.Tweet.find({'idUsername': "@"+user_id},{'_id':1,'tweet':1})
+    data = list(db.Tweet.find({'idUsername': "@"+user_id},{'_id':1,'tweet':1}))
+    for d in data:
+        d['tweet'] = d['tweet'].split()
+    return data
+
+# returns all the tweets a user_id was mentioned
+def get_user_mentioned_tweets(user_id):
+    data = list(db.Tweet.find({"users_mentioned": {"$in": ["@"+user_id]}},{'_id':1,'tweet':1}))
+    for d in data:
+        d['tweet'] = d['tweet'].split()
     return data

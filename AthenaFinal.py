@@ -26,23 +26,27 @@ app.secret_key = "super secret key"
 
 @app.route('/')
 def home():
+    session.clear()
     return render_template("dashboard.html", username_count=count_total_usernames(),
                            tweet_count=count_total_tweet(), data_count=count_total_data())
+
 
 @app.route('/usernames')
 def view_all_usernames():
     return render_template("View Data/view_usernames.html", usernameList=get_all_usernames())
 
+
 @app.route('/user')
 def view_specific_user():
     user_id = request.args.get('user_id')
     print(user_id)
-    return render_template("View Data/view_user.html", userData=get_user_data(user_id), tweetDataList=get_user_tweet_data(user_id))
+    return render_template("View Data/view_user.html", userData=get_user_data(user_id), user_mentioned_tweet_list=get_user_mentioned_tweets(user_id), tweetDataList=get_user_tweet_data(user_id))
 
 
 @app.route('/tweets')
 def view_all_tweets():
     return render_template("View Data/view_tweets.html", tweetFileList=get_all_tweets())
+
 
 @app.route('/tweet')
 def view_specific_tweet():
@@ -51,10 +55,10 @@ def view_specific_tweet():
     return render_template("View Data/view_tweet.html", tweetData=get_tweet_data(tweet_id))
 
 
-
 @app.route('/analysis')
 def analysis():
     return render_template("analysis.html")
+
 
 @app.route('/analysis/candidate')
 def candidate_analysis():
@@ -62,20 +66,8 @@ def candidate_analysis():
 
 
 @app.route('/data_cleaning')
-def dup_data_cleaning():
-    file_name = "noError"
-    try:
-        file_name = session['file_name']
-        session.clear()
-    except:
-        print("OOPS!, something wrong.")
-
-    return render_template("datacleaning.html", dataFileList=get_all_file(), filename = file_name)
-
-
-@app.route('/data_cleaning')
 def data_cleaning():
-    return render_template("datacleaning.html", dataFileList=get_all_file())
+    return render_template("datacleaning.html", dataFileList=get_all_file(), duplicate = False)
 
 
 @app.route('/data_cleaning/<filename>')
@@ -104,12 +96,14 @@ def test():
 # Route that will process the file upload
 @app.route('/upload', methods=['POST'])
 def upload():
-    if check_if_file_exists == False:
+    file = request.files['file']
+    file_name = file.filename
+    if check_if_file_exists(file_name) is False:
         script_path = os.path.dirname(__file__)
         directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'])
         return uploadFile.upload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
     else:
-        return uploadFile.duplicate_file()
+        return render_template("datacleaning.html", dataFileList=get_all_file(), filename = file_name, duplicate = True)
 
 
 @app.route('/new_workspace', methods=['POST'])

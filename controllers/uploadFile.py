@@ -30,10 +30,3 @@ def upload(directoryPath, ALLOWED_EXTENSIONS):
         return redirect(url_for('data_cleaning'))
 
 
-def duplicate_file():
-    file = request.files['file']
-    session['file_name'] = file.filename
-    return redirect(url_for('dup_data_cleaning'))
-
-
-

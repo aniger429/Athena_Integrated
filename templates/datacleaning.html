@@ -16,7 +16,7 @@ Data
 
 {% block content %}
 <div class="row">
-    {% if filename != 'noError'%}
+    {% if duplicate == True%}
         <div class="alert alert-danger alert-dismissible show" role="alert">
           <button type="button" class="close moveRight" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -24,6 +24,7 @@ Data
           <strong>Oops!</strong> You uploaded a duplicate file: {{ filename }}
         </div>
     {% endif %}
+
     <div class="panel panel-default" >
       <div class="panel-heading">Upload Data</div>
       <div class="panel-body">
