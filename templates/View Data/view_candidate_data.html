@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block customCSS %}
+
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <style>
+        .title.custom{
+            font-size: 30px;
+        }
+    </style>
+{% endblock %}
+
+{%block name%}
+Tweet
+{%endblock%}
+
+{% block content %}
+{#<div class="row">#}
+{#    <div class="col-md-12">#}
+{#        <div class="col-md-4">#}
+{#            <div class="card">#}
+{#                <div class="header">#}
+{#                    <h4 class="title custom">{{ tweetData['favorite'] }}</h4>#}
+{#                    <p class="category custom">Favorite</p>#}
+{#                </div>#}
+{#                </br>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="col-md-4">#}
+{#            <div class="card">#}
+{#                <div class="header">#}
+{#                    <h4 class="title custom">{{ tweetData['location'] }}</h4>#}
+{#                    <p class="category custom">Location</p>#}
+{#                </div>#}
+{#                </br>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="col-md-4">#}
+{#            <div class="card">#}
+{#                <div class="header">#}
+{#                    <h4 class="title custom">{{ tweetData['retweet'] }}</h4>#}
+{#                    <p class="category custom">Retweet</p>#}
+{#                </div>#}
+{#            </br>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">{{ candidate_data['candidate_name'] | capitalize }}</h4>
+                <p class="category custom">Here are all the names</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="col-md-4">Name</th>
+                        <th class="col-md-4">Name</th>
+                        <th class="col-md-4">Name</th>
+                    </thead>
+                    <tbody>
+                        {% for cname_row in candidate_data['kb_names'] | batch(3, '&nbsp;') %}
+                            <tr>
+                                {% for cname in cname_row %}
+                                    <td>{% if cname != '&nbsp;' %}{{ cname }}{% endif %}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block customJS %}
+
+{% endblock %}

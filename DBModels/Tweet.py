@@ -70,3 +70,9 @@ def get_user_mentioned_tweets(user_id):
     for d in data:
         d['tweet'] = d['tweet'].split()
     return data
+
+
+def get_all_unigrams():
+    final = []
+    [final.extend(uni['unigram']) for uni in list(db.Tweet.find({},{"unigram":1,"_id":0}))]
+    return final

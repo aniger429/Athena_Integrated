@@ -1,30 +1,15 @@
-import collections
+from DBModels.KB_Names import *
+from DBModels.Tweet import *
 
 
-# No Automated cleaning of output yet.
+def find_more_names():
+    unigram_list = get_all_unigrams()
+    candidate_names = get_all_kb_names()
+    results = {}
+    print(unigram_list)
 
-# Automated cleaning and JSON format output to follow
+    for candidate in candidate_names:
+        results[candidate['candidate_name']] = list(set([str for str in unigram_list if any(name in str for name in candidate['kb_names'])]))
 
-# This function creates and outputs the knowledge base into a text file.  This function just needs the list of ngrams
-
-def createKnowledgeBase(ngramsList):
-    known_names = ["Rodrigo", "Digong", "Du30", "Duterte", "Grace", "Poe", "Miriam", "Defensor", "Santiago", "Mar",
-                   "Roxas", "Jejomar", "Binay"]
-
-    found_names = collections.defaultdict(list)
-
-    for name in known_names:
-
-        for ngrams in ngramsList:
-
-            if name.lower() in ngrams.lower():
-                found_names[name].append(ngrams)
-
-    # Write to text file - *Not yet in JSON Format*
-
-    kb = open("KnowledgeBase.txt", "w")
-
-    for key, value in found_names.items():
-        kb.write('%s:%s\n' % (key, value))
-
-    kb.close()
+    print(results)
+    kb_names_update(results)

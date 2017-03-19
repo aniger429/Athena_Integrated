@@ -1,15 +1,11 @@
 import os
-# We'll render HTML templates and access data sent by POST
-# using the request object from flask. Redirect and url_for
-# will be used to redirect the user once the upload is done
-# and send_from_directory will help us to send/show on the
-# browser the file that the user just uploaded
 from flask import request, redirect, url_for, session
 from werkzeug.utils import secure_filename
 from DBModels.Data import *
 from DBModels.KBFile import *
-from DBModels.KB_Names import *
+from controllers.KnowledgeBaseCreation import *
 import pandas as pd
+
 
 
 def read_xlsx(filename):
@@ -57,7 +53,7 @@ def kbupload(directoryPath, ALLOWED_EXTENSIONS):
 
         data = {}
         for name in cnames:
-            data[name] = list(filter(None, data_source[name].tolist()))
+            data[name] = [x.lower() for x in list(filter(None, data_source[name].tolist()))]
 
         insert_new_kb_names(data)
         return redirect(url_for('knowledge_base'))

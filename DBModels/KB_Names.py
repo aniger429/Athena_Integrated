@@ -1,7 +1,5 @@
-
 from pymongo.write_concern import WriteConcern
 from pymodm import MongoModel, fields
-import datetime
 from pymongo import MongoClient
 
 client = MongoClient('mongodb://localhost:27017/Athena')
@@ -24,6 +22,16 @@ def insert_new_kb_names(kb_names_dict):
     KB_Names.objects.bulk_create(row_list)
 
 
+def kb_names_update(kb_names_dict):
+    bulk = db.kb__names.initialize_ordered_bulk_op()
+
+    [bulk.find({'candidate_name': key}).update_one(
+        {'$addToSet': { 'kb_names': {'$each': value }}})
+     for key, value in kb_names_dict.items()]
+
+    result = bulk.execute()
+
+
 def get_all_kb_names():
     data = list(db.kb__names.find({},{"_id":0, "_cls":0}))
     return data
@@ -32,3 +40,6 @@ def get_all_kb_names():
 def count_total_candidate():
     return db.kb__names.find({}).count()
 
+def get_specific_candidate_names(cname):
+    data = list(db.kb__names.find({'candidate_name':cname}, {"_id": 0, "_cls": 0}))
+    return data[0]

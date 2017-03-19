@@ -9,6 +9,7 @@ from DBModels.Data import *
 from DBModels.Tweet import *
 from DBModels.Username import *
 from controllers.DataCleaning import cleaning
+from controllers.KnowledgeBaseCreation import *
 from pymodm import connect
 import time
 
@@ -54,6 +55,13 @@ def view_specific_tweet():
     tweet_id = request.args.get('tweet_id')
     print(tweet_id)
     return render_template("View Data/view_tweet.html", tweetData=get_tweet_data(tweet_id))
+
+
+@app.route('/candidate')
+def view_candidate_data():
+    cname = request.args.get('candidate_name')
+    print(cname)
+    return render_template("View Data/view_candidate_data.html", candidate_data=get_specific_candidate_names(cname))
 
 
 @app.route('/analysis')
@@ -124,6 +132,12 @@ def kbupload():
         return uploadFile.kbupload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
     else:
         return render_template("knowledgebase.html", kbFileList=get_all_kbfile(), filename = file_name, duplicate = True)
+
+
+@app.route('/kbupdate')
+def find_more_kb_names():
+    find_more_names()
+    return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(), kbFileList=get_all_kbfile(), duplicate=False)
 
 
 @app.route('/new_workspace', methods=['POST'])

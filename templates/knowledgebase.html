@@ -34,7 +34,6 @@ active
           <strong>Oops!</strong> You uploaded a duplicate file: {{ filename }}
         </div>
     {% endif %}
-
     <div class="panel panel-default" >
       <div class="panel-heading">Upload Candidate Names to Knowledge Base</div>
       <div class="panel-body">
@@ -49,8 +48,9 @@ active
      <div class="col-md-12">
         <div class="card">
             <div class="header">
-                <h4 class="title">KB Files</h4>
+                <h4 class="title custom">KB Files</h4>
                 <p class="category">Here are all the files uploaded to the Knowledge Base</p>
+                <a href="{{ url_for("find_more_kb_names") }}"> Find More KB Names</a>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
@@ -83,29 +83,57 @@ active
             </div>
         </div>
     </div>
+
     <div class="col-md-12">
-        {% for cname in kb_name_list %}
-        <div class="card col-md-15">
-            <div class="header">
-                <h4 class="title custom">{{ cname['candidate_name'] | capitalize }}</h4>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">Candidates</h4>
+                    <p class="category">Total Number of Names in the Knowledge Base</p>
+                </div>
+                </br>
             </div>
-            <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
-                    <thead>
-                        <th class="category custom">Names</th>
-                    </thead>
-                    <tbody>
-                        {% for kb_name in cname['kb_names'] %}
-                        <tr>
-                            <td>{{ kb_name }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        </div>
+         {% for cname in kb_name_list %}
+        <div class="col-md-15">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom"> {{ cname['kb_names'] | length }}</h4>
+                    <p class="category custom">{{ cname['candidate_name'] | capitalize }}</p>
+                    <hr/>
+                    <a class="username_link" href="{{ url_for('view_candidate_data', candidate_name=cname['candidate_name'])}}">
+                        <p style="text-align: center"><i>View Names</i></p>
+                    </a>
+                </div>
+                </br>
             </div>
         </div>
         {% endfor %}
     </div>
+
+{#    <div class="col-md-12">#}
+{#        {% for cname in kb_name_list %}#}
+{#        <div class="card col-md-15">#}
+{#            <div class="header">#}
+{#                <h4 class="title custom">{{ cname['candidate_name'] | capitalize }}</h4>#}
+{#            </div>#}
+{#            <div class="content table-responsive table-full-width">#}
+{#                <table class="table table-striped">#}
+{#                    <thead>#}
+{#                        <th class="category custom">Names</th>#}
+{#                    </thead>#}
+{#                    <tbody>#}
+{#                        {% for kb_name in cname['kb_names'] %}#}
+{#                        <tr>#}
+{#                            <td>{{ kb_name }}</td>#}
+{#                        </tr>#}
+{#                        {% endfor %}#}
+{#                    </tbody>#}
+{#                </table>#}
+{#            </div>#}
+{#        </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
 </div>
 {% endblock %}
 
