@@ -97,7 +97,7 @@ def chart_view():
 
 @app.route('/test')
 def test():
-    return render_template("test.html")
+    return render_template("base.html")
 
 
 # Route that will process the file upload

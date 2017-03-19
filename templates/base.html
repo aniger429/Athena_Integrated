@@ -15,6 +15,9 @@
     <!-- Bootstrap core CSS     -->
     <link href="{{ url_for('static', filename="css/bootstrap.min.css") }}" rel="stylesheet" />
 
+    <!-- Layout -->
+    <link href="{{ url_for('static', filename="css/layout/bootstrap-layout.css") }}" rel="stylesheet"/>
+
     <!--  Paper Dashboard core CSS    -->
     <link href="{{ url_for('static', filename="css/paper-dashboard.css") }}" rel="stylesheet"/>
 
@@ -26,8 +29,26 @@
     <!--  Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ url_for('static', filename="css/themify-icons.css") }}" rel="stylesheet">
     <link href="{{ url_for('static', filename="css/font-awesome.css") }}" rel="stylesheet" >
+
+    <style>
+        .sidebar .nav i{
+            font-size: 24px;
+        }
+        .sidebar .nav p{
+            font-size: 14px;
+        }
+        .sidebar .nav i.custom-submenu{
+
+            font-size: 9px;
+        }
+        .sidebar .nav p.custom-submenu{
+
+            font-size: 9px;
+        }
+    </style>
 
 </head>
 <body>
@@ -46,46 +67,54 @@
                     Athena
                 </a>
             </div>
-
-            <ul class="nav">
-                <li class="active">
+            <ul class="nav sidebar-menu">
+                <li class="{%block dashboard_active%}{%endblock%}">
                     <a href="{{url_for('home')}}">
                         <i class="fa fa-home fa-lg fa-fw"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="active">
-                    <a href="{{url_for('data_cleaning')}}">
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button" data-toggle="sidebar-collapse" href="#">
                         <i class="fa fa-folder fa-lg fa-fw"></i>
-                        <p>Data</p>
+                        <p>Upload Data</p>
                     </a>
+
+                    <ul class="nav sidebar-submenu">
+                        <li class="{%block twitter_data_active%}{%endblock%}sidebar-menu-item">
+                            <a href="{{url_for('data_cleaning')}}">
+{#                                <i class="fa fa-folder fa-lg fa-fw  custom-submenu"></i>#}
+                                Twitter Data
+                            </a>
+                        </li>
+                        <li class="{%block kb_active%}{%endblock%}sidebar-menu-item custom-submenu">
+                            <a href="{{url_for('knowledge_base')}}">
+{#                                <i class="fa fa-database fa-lg fa-fw custom-submenu"></i>#}
+{#                                <p class="custom-submenu">Knowledge Base</p>#}
+                                Knowledge Base
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 </li>
-                <li class="active">
-                    <a href="{{url_for('knowledge_base')}}">
-                        <i class="fa fa-database fa-lg fa-fw"></i>
-                        <p>Knowledge Base</p>
-                    </a>
-                </li>
-                <li class="active">
+                <li class="{%block vat_active%}{%endblock%}">
                     <a href="{{url_for('view_all_tweets')}}">
                         <i class="fa fa-twitter fa-lg fa-fw"></i>
                         <p>View All Tweets</p>
                     </a>
                 </li>
-                <li class="active">
+                <li class="{%block vau_active%}{%endblock%}">
                     <a href="{{url_for('view_all_usernames')}}">
                         <i class="fa fa-users fa-lg fa-fw"></i>
                         <p>View All Usernames</p>
                     </a>
                 </li>
-                <li class="active">
+                <li class="{%block analysis_active%}{%endblock%}">
                     <a href="{{url_for('analysis')}}">
                         <i class="fa fa-line-chart fa-lg fa-fw"></i>
                         <p>Analysis</p>
                     </a>
                 </li>
-
             </ul>
     	</div>
     </div>
@@ -150,6 +179,9 @@
 
     <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
 	<script src="{{ url_for('static', filename="js/paper-dashboard.js") }}" ></script>
+
+    <!-- Layout -->
+    <script src="{{ url_for('static', filename="js/layout/bootstrap-layout.js") }}" ></script>
 
     {%block customJS%}
     {%endblock%}
