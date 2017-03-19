@@ -2,19 +2,7 @@
 {% block customCSS %}
     <!--  Paper Dashboard core CSS    -->
     <link href="{{ url_for('static', filename="css/customized.css") }}" rel="stylesheet"/>
-    <style>
-        .title, .category{
-            text-align:center;
-        }
-        .title.custom{
-            color: #7A9E9F;
-            font-size: 50px;
-        }
-        .category.custom{
-            word-spacing: 10px;
-            text-transform:uppercase;
-        }
-    </style>
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
 {%  endblock %}
 
 {%block name%}
@@ -24,33 +12,17 @@ Dashboard
 {% block content %}
 <div class="row">
     <div class="col-md-12">
+         {% for c in range(0, counter_names | length) %}
         <div class="col-md-4">
             <div class="card">
                 <div class="header">
-                    <h4 class="title custom">{{ username_count }}</h4>
-                    <p class="category custom">Usernames</p>
+                    <h4 class="title custom"> {{ counter_data[c] }}</h4>
+                    <p class="category custom">{{ counter_names[c] + 's' | capitalize }}</p>
                 </div>
                 </br>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ tweet_count }}</h4>
-                    <p class="category custom">Tweets</p>
-                </div>
-                </br>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ data_count }}</h4>
-                    <p class="category custom">Files</p>
-                </div>
-            </br>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

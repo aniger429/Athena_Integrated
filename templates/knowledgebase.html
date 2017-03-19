@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block customCSS %}
+    <!--  Paper Dashboard core CSS    -->
+    <link href="{{ url_for('static', filename="css/customized.css") }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename="css/fileinput.min.css") }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename="css/bootstrap_custom.css") }}" rel="stylesheet"/>
+    <style>
+        .close.moveRight {
+            right: -10px;
+        }
+        .title.custom {
+            color: #7A9E9F;
+            font-size: 25px;
+        }
+
+    </style>
+{%  endblock %}
+
+{%block name%}
+Knowledge Base
+{%endblock%}
+
+{% block content %}
+<div class="row">
+    {% if duplicate == True%}
+        <div class="alert alert-danger alert-dismissible show" role="alert">
+          <button type="button" class="close moveRight" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Oops!</strong> You uploaded a duplicate file: {{ filename }}
+        </div>
+    {% endif %}
+
+    <div class="panel panel-default" >
+      <div class="panel-heading">Upload Candidate Names to Knowledge Base</div>
+      <div class="panel-body">
+          <form action="kbupload" method="post" enctype="multipart/form-data">
+            <input id="file-0" type="file" class="file" name="file"
+                   data-min-file-count="1" data-overwrite-initial="true"><br /><br />
+            <input type="submit" class="btn btn-info" Value="Upload">
+            <button type="reset" class="btn btn-default">Reset</button>
+          </form>
+      </div>
+    </div>
+     <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">KB Files</h4>
+                <p class="category">Here are all the files uploaded to the Knowledge Base</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="col-md-5">Filename</th>
+                        <th class="col-md-5">Date Uploaded</th>
+                        <th class="col-md-1">Download</th>
+                        <th class="col-md-1">Delete</th>
+                    </thead>
+                    <tbody>
+                        {% for kbFile in kbFileList %}
+                        <tr>
+                            <td>{{ kbFile.filename }}</td>
+                            <td>{{ kbFile.dateUploaded }}</td>
+                            <td>
+                                <a class="btn btn-info" href="#" disabled="true">
+                                  <i class="fa fa-file-text-o fa-lg fa-fw"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" href="#" disabled="true">
+                                  <i class="fa fa-trash-o fa-lg fa-fw"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        {% for cname in kb_name_list %}
+        <div class="card col-md-15">
+            <div class="header">
+                <h4 class="title custom">{{ cname['candidate_name'] | capitalize }}</h4>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="category custom">Names</th>
+                    </thead>
+                    <tbody>
+                        {% for kb_name in cname['kb_names'] %}
+                        <tr>
+                            <td>{{ kb_name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+    <script src="{{ url_for('static',filename='js/sortable.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static',filename='js/fileinput.min.js') }}"></script>
+    <script>
+        $("#file-0").fileinput({
+            'allowedFileExtensions': ['csv', 'xls', 'xlsx']
+        });
+    </script>
+{% endblock %}

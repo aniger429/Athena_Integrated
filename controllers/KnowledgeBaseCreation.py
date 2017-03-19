@@ -1,4 +1,4 @@
-from collections import defaultdict
+import collections
 
 
 # No Automated cleaning of output yet.
@@ -11,7 +11,7 @@ def createKnowledgeBase(ngramsList):
     known_names = ["Rodrigo", "Digong", "Du30", "Duterte", "Grace", "Poe", "Miriam", "Defensor", "Santiago", "Mar",
                    "Roxas", "Jejomar", "Binay"]
 
-    found_names = defaultdict(list)
+    found_names = collections.defaultdict(list)
 
     for name in known_names:
 

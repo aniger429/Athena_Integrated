@@ -3,6 +3,8 @@ from flask import Flask, request, render_template, send_from_directory
 from controllers import uploadFile
 from controllers.analysis_controller import new_analysis
 import os
+from DBModels.KBFile import *
+from DBModels.KB_Names import *
 from DBModels.Data import *
 from DBModels.Tweet import *
 from DBModels.Username import *
@@ -27,11 +29,10 @@ app.secret_key = "super secret key"
 @app.route('/')
 def home():
     session.clear()
-    return render_template("dashboard.html", username_count=count_total_usernames(),
-                           tweet_count=count_total_tweet(), data_count=count_total_data())
+    return render_template("dashboard.html", counter_data=[count_total_usernames(),count_total_tweet(),count_total_data(),count_total_candidate()], counter_names = ["username","tweet","file","candidate"])
 
 
-@app.route('/usernames')
+@app.route('/view_usernames')
 def view_all_usernames():
     return render_template("View Data/view_usernames.html", usernameList=get_all_usernames())
 
@@ -43,7 +44,7 @@ def view_specific_user():
     return render_template("View Data/view_user.html", userData=get_user_data(user_id), user_mentioned_tweet_list=get_user_mentioned_tweets(user_id), tweetDataList=get_user_tweet_data(user_id))
 
 
-@app.route('/tweets')
+@app.route('/view_tweets')
 def view_all_tweets():
     return render_template("View Data/view_tweets.html", tweetFileList=get_all_tweets())
 
@@ -84,9 +85,15 @@ def clean_file(filename):
     return render_template("datacleaning.html", dataFileList=get_all_file())
 
 
+@app.route('/knowledgebase')
+def knowledge_base():
+    return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(), kbFileList=get_all_kbfile(), duplicate=False)
+
+
 @app.route('/chart-view')
 def chart_view():
     return render_template("chart-view.html")
+
 
 @app.route('/test')
 def test():
@@ -104,6 +111,19 @@ def upload():
         return uploadFile.upload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
     else:
         return render_template("datacleaning.html", dataFileList=get_all_file(), filename = file_name, duplicate = True)
+
+
+# Route that will process the file upload
+@app.route('/kbupload', methods=['POST'])
+def kbupload():
+    file = request.files['file']
+    file_name = file.filename
+    if check_if_kbfile_exists(file_name) is False:
+        script_path = os.path.dirname(__file__)
+        directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'], "KBFiles")
+        return uploadFile.kbupload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
+    else:
+        return render_template("knowledgebase.html", kbFileList=get_all_kbfile(), filename = file_name, duplicate = True)
 
 
 @app.route('/new_workspace', methods=['POST'])

@@ -1,18 +1,6 @@
 {% extends "base.html" %}
 {% block customCSS %}
-    <style>
-        .table th, .table td{
-           text-align: center;
-        }
-        .username{
-            color: #7A9E9F;
-            font-size: 15px;
-        }
-        .category.custom{
-            word-spacing: 10px;
-            text-transform:uppercase;
-        }
-    </style>
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
 {% endblock %}
 
 {%block name%}

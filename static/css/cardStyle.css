@@ -1,0 +1,28 @@
+.title, .category {
+    text-align: center;
+}
+
+.title.custom {
+    color: #7A9E9F;
+    font-size: 50px;
+}
+
+.category.custom {
+    word-spacing: 10px;
+    text-transform: uppercase;
+}
+
+.table th, .table td, .title.custom, .category.custom{
+   text-align: center;
+}
+.username_link{
+    color: palevioletred;
+}
+
+.username_id{
+    font-size: 12px;
+}
+.username{
+    color: #7A9E9F;
+    font-size: 15px;
+}
