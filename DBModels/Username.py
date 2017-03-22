@@ -21,7 +21,6 @@ class Username(MongoModel):
 
 def insert_new_username(username_dict):
     row_list = [Username(username=key, numTweets= value['numTweets'], numMentions= value['numMentions']) for key, value in username_dict.items()]
-
     Username.objects.bulk_create(row_list)
 
 

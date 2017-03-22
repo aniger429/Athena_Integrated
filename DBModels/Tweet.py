@@ -1,6 +1,5 @@
 from pymongo.write_concern import WriteConcern
 from pymodm import MongoModel, fields
-import pandas as pd
 from bson.objectid import ObjectId
 
 
@@ -26,6 +25,9 @@ class Tweet(MongoModel):
     trigram = fields.ListField()
 
 
+    cand_ana = fields.ListField()
+
+
     class Meta:
         write_concern = WriteConcern(j=True)
         connection_alias = 'athenaDB'
@@ -36,6 +38,9 @@ def insert_new_tweet(data_to_add):
 
 
 def get_all_tweets():
+    client = MongoClient('mongodb://localhost:27017/Athena')
+    db = client.Athena
+
     data = list(db.Tweet.find({},{'_id':1,'tweet':1}))
     for d in data:
         d['tweet'] = d['tweet'].split()
@@ -76,3 +81,16 @@ def get_all_unigrams():
     final = []
     [final.extend(uni['unigram']) for uni in list(db.Tweet.find({},{"unigram":1,"_id":0}))]
     return final
+
+
+def into_new_db(candidate_presence, tweet_list):
+    row_list = [Tweet(idPrimary=key, tweet=tweet_list[key], cand_ana=value) for key, value in candidate_presence]
+    Tweet.objects.insert_many(row_list)
+
+def into_new_db(candidate_presence):
+    bulk = db.Tweet.initialize_ordered_bulk_op()
+    [bulk.find({'_id': key}).upsert().update(
+        {'$set': {'cand_ana': value}})
+     for key, value in candidate_presence.items()]
+    bulk.execute()
+

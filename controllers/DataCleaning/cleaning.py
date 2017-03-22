@@ -8,6 +8,7 @@ import time
 from DBModels.Tweet import *
 from controllers.DataCleaning import Patterns as pat
 from controllers.Feature_Extraction import ngram_extractor
+import pandas as pd
 
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "stop_words")

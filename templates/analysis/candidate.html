@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block customCSS %}
+
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
-        .table th, .table td{
-           text-align: center;
+        .title.custom{
+            font-size: 30px;
         }
     </style>
 {% endblock %}
@@ -14,41 +16,90 @@ Candidate Analysis
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-    <div class="panel panel-default" >
-      <div class="panel-heading">Filter Data</div>
-      <div class="panel-body">
-          <form action="upload" method="post" enctype="multipart/form-data">
-            date picker should be here
-
-            <input type="submit" class="btn btn-info" Value="Upload">
-            <button type="reset" class="btn btn-default">Reset</button>
-          </form>
-      </div>
-    </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ tweetData['favorite'] }}</h4>
+                    <p class="category custom">Favorite</p>
+                </div>
+                </br>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ tweetData['location'] }}</h4>
+                    <p class="category custom">Location</p>
+                </div>
+                </br>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ tweetData['retweet'] }}</h4>
+                    <p class="category custom">Retweet</p>
+                </div>
+            </br>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="header">
-                <h4 class="title">Visualizing for: *candidate name*</h4>
-                <p class="category">Here are all the tweets from *date start* to *date end*</p>
+                <h4 class="title custom">"
+                    {% for word in tweetData['tweet'] %}
+                        {% if word[:1] != '@' %}
+                            {{ word }}
+                        {% else %}
+                           <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                        {% endif %}
+                    {% endfor %}
+"
+                </h4>
+                <p class="category custom">Tweet</p>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
                     <thead>
-                        <th class="col-md-5">Tweet</th>
-                        <th class="col-md-2">Candidate Name</th>
-                        <th class="col-md-5">Tweet</th>
+                        <th class="col-md-3"></th>
+                        <th class="col-md-9"></th>
                     </thead>
                     <tbody>
-{#                        {% for dataFile in dataFileList %}#}
-                        <tr>
-                            <td>*tweet before candidate name*</td>
-                            <td>candidate name</td>
-                            <td>*tweet after candidate name*</td>
-                        </tr>
-{#                        {% endfor %}#}
+                       <tr>
+                           <td>Tweet</td>
+                           <td>{{ tweetData['_id'] }}</td>
+                       </tr>
+                       <tr>
+                           <td>Poster Username ID</td>
+                           <td>
+                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=tweetData['idUsername'][1:])}}">
+                                   <i>{{ tweetData['idUsername'] }}</i>
+                               </a>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td>Date Posted</td>
+                           <td>{{ tweetData['date_created'] }}</td>
+                       </tr>
+                       <tr>
+                           <td>hashtags</td>
+                           <td>{{ tweetData['hashtags'] }}</td>
+                       </tr>
+                       <tr>
+                           <td>unigram</td>
+                           <td>{{ tweetData['unigram'] }}</td>
+                       </tr>
+                       <tr>
+                           <td>bigram</td>
+                           <td>{{ tweetData['bigram'] }}</td>
+                       </tr>
+                       <tr>
+                           <td>trigram</td>
+                           <td>{{ tweetData['trigram'] }}</td>
+                       </tr>
                     </tbody>
                 </table>
 
@@ -60,15 +111,5 @@ Candidate Analysis
 {% endblock %}
 
 {% block customJS %}
-    <script>
 
-     $('.datepicker').datepicker({
-
-             weekStart:1,
-
-             color: '{color}'
-
-    });
-
-    </script>
 {% endblock %}
