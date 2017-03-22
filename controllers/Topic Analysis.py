@@ -68,7 +68,7 @@ def tfidf_vectorizer(tweets,start_range, end_range):
     z = tfidfvec.fit_transform(tweets)
     idf = tfidfvec.idf_
     ngramlist = tfidfvec.get_feature_names()
-    finallist = dict(zip(tfidfvec.get_feature_names(), z.data))
+    finallist = dict(zip(tfidfvec.get_feature_names(), np.asarray(z.sum(axis=0)).ravel())))
 
     return finallist
 
