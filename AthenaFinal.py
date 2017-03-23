@@ -61,7 +61,12 @@ def view_specific_tweet():
 def view_candidate_data():
     cname = request.args.get('candidate_name')
     print(cname)
-    return render_template("View Data/view_candidate_data.html", candidate_data=get_specific_candidate_names(cname))
+    return render_template("View Data/view_candidate_data.html", candidate_data=get_specific_candidate_names(cname), candidate_tweets=get_candidate_tweets(cname))
+
+
+@app.route('/topic')
+def view_topic_analysis():
+    return render_template("analysis/view_topic_analysis.html", tf_idf={}, lda={})
 
 
 @app.route('/analysis')

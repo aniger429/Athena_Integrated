@@ -87,10 +87,19 @@ def into_new_db(candidate_presence, tweet_list):
     row_list = [Tweet(idPrimary=key, tweet=tweet_list[key], cand_ana=value) for key, value in candidate_presence]
     Tweet.objects.insert_many(row_list)
 
+
 def into_new_db(candidate_presence):
     bulk = db.Tweet.initialize_ordered_bulk_op()
     [bulk.find({'_id': key}).upsert().update(
         {'$set': {'cand_ana': value}})
      for key, value in candidate_presence.items()]
     bulk.execute()
+
+
+def get_candidate_tweets(candidate_name):
+    data = list(db.Tweet.find({"cand_ana."+candidate_name: {'$ne': -1}},{'tweet':1, 'cand_ana':1}))
+    print (data)
+    return data
+
+
 

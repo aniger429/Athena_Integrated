@@ -1,6 +1,7 @@
 from DBModels.KB_Names import *
 from DBModels.Tweet import *
 
+
 def identify_candidate(tweet_list):
     # gets all the known candidate names in the database
     candidate_names = get_all_kb_names()

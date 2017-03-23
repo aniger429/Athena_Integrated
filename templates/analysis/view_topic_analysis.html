@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block customCSS %}
+
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <style>
+        .title.custom{
+            font-size: 30px;
+        }
+    </style>
+{% endblock %}
+
+{%block name%}
+Tweet
+{%endblock%}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ "Topic # 1" }}</h4>
+                    <p class="category custom">0.99 - topic score</p>
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                            <th class="col-md-7">Word</th>
+                            <th class="col-md-6">Score</th>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td>Banana</td>
+                                    <td>0.99</td>
+                                </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ "Topic # 2" }}</h4>
+                    <p class="category custom">0.99 - topic score</p>
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                            <th class="col-md-7">Word</th>
+                            <th class="col-md-6">Score</th>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td>Mango</td>
+                                    <td>0.99</td>
+                                </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ "Top 100 Unigrams" }}</h4>
+{#                    <p class="category custom">0.99 - topic score</p>#}
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                            <th class="col-md-7">Word</th>
+                            <th class="col-md-6">Score</th>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td>Banana</td>
+                                    <td>0.99</td>
+                                </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+
+{% endblock %}
