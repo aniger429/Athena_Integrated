@@ -18,11 +18,12 @@ Tweet
     <div class="col-md-8">
 
     <div class="row">
+        {% for key, value in topics_dict.items() %}
         <div class="col-md-6">
             <div class="card">
                 <div class="header">
-                    <h4 class="title custom">{{ "Topic # 1" }}</h4>
-                    <p class="category custom">0.99 - topic score</p>
+                    <h4 class="title custom">{{ "Topic # " + (key) }}</h4>
+{#                    <p class="category custom">0.99 - topic score</p>#}
                 </div>
                 <div class="content table-responsive table-full-width">
                     <table class="table table-striped">
@@ -31,39 +32,19 @@ Tweet
                             <th class="col-md-6">Score</th>
                         </thead>
                         <tbody>
+                                {% for key, value in value.items() %}
                                 <tr>
-                                    <td>Banana</td>
-                                    <td>0.99</td>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value }}</td>
                                 </tr>
+                                {% endfor %}
                         </tbody>
                     </table>
 
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ "Topic # 2" }}</h4>
-                    <p class="category custom">0.99 - topic score</p>
-                </div>
-                <div class="content table-responsive table-full-width">
-                    <table class="table table-striped">
-                        <thead>
-                            <th class="col-md-7">Word</th>
-                            <th class="col-md-6">Score</th>
-                        </thead>
-                        <tbody>
-                                <tr>
-                                    <td>Mango</td>
-                                    <td>0.99</td>
-                                </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 
     </div>
@@ -81,10 +62,12 @@ Tweet
                             <th class="col-md-6">Score</th>
                         </thead>
                         <tbody>
+                                {% for key, value in tf_idf.items() %}
                                 <tr>
-                                    <td>Banana</td>
-                                    <td>0.99</td>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value }}</td>
                                 </tr>
+                                {% endfor %}
                         </tbody>
                     </table>
 

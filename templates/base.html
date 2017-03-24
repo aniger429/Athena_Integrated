@@ -112,12 +112,39 @@
                         <p>View All Usernames</p>
                     </a>
                 </li>
+                <li class="{%block vaw_active%}{%endblock%}">
+                    <a href="{{url_for('view_all_workspaces')}}">
+                        <i class="fa fa-briefcase fa-lg fa-fw"></i>
+                        <p>View Workspaces</p>
+                    </a>
+                </li>
                 <li class="{%block analysis_active%}{%endblock%}">
                     <a href="{{url_for('analysis')}}">
                         <i class="fa fa-line-chart fa-lg fa-fw"></i>
                         <p>Analysis</p>
                     </a>
                 </li>
+{#                <li class="{%block default_active%}{%endblock%} sidebar-menu-item">#}
+{#                    <a class="sidebar-menu-button" data-toggle="sidebar-collapse" href="{{url_for('analysis')}}">#}
+{#                        <i class="fa fa-bar-chartt fa-lg fa-fw"></i>#}
+{#                        <p>View All Data</p>#}
+{#                    </a>#}
+{#                    <ul class="nav sidebar-submenu">#}
+{#                        <li class="{%block vta_active%}{%endblock%}sidebar-menu-item">#}
+{#                            <a href="{{url_for('view_topic_analysis')}}">#}
+{#                                <i class="fa fa-folder fa-lg fa-fw  custom-submenu"></i>#}
+{#                                View Topic Analysis#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="{%block vca_active%}{%endblock%}sidebar-menu-item custom-submenu">#}
+{#                            <a href="{{url_for('candidate_analysis')}}">#}
+{#                                <i class="fa fa-database fa-lg fa-fw custom-submenu"></i>#}
+{#                                <p class="custom-submenu">Knowledge Base</p>#}
+{#                                View Candidate Identification#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </li>#}
             </ul>
     	</div>
     </div>

@@ -1,39 +1,3 @@
-# import peewee
-# from peewee import *
-# import datetime
-#
-# db = MySQLDatabase('Athena', user='root', passwd='')
-#
-# class BaseModel(Model):
-#     class Meta:
-#         database = db
-#
-# class Data(BaseModel):
-#     idData = peewee.PrimaryKeyField()
-#     filename = peewee.CharField(max_length=255, null=False)
-#     isClean = peewee.BooleanField(default=False, null=False)
-#     dateCreated = peewee.DateTimeField(default=datetime.datetime.now, null=False)
-#     tweetStartID = peewee.IntegerField(default=0, null=True)
-#     tweetEndID = peewee.IntegerField(default=0, null=True)
-#
-#     class Meta:
-#         db_table = "Data"
-#         database = db
-#
-# def insertNewData(filename):
-#     db.connect()
-#     Data.insert(filename=filename).execute()
-#     db.close()
-#
-# def tweet_cleaned(filename):
-#     db.connect()
-#     Data.update(isClean=1).where(filename == filename).execute()
-#     db.close()
-#
-#
-# def getAllData():
-#     return Data.select()
-
 from pymongo.write_concern import WriteConcern
 from pymodm import MongoModel, fields
 import datetime
@@ -57,19 +21,21 @@ class Data(MongoModel):
 
 
 def check_if_file_exists(filename):
-    fileCount = db.data.find({"filename":filename}).count()
+    fileCount = db.Data.find({"filename":filename}).count()
     if fileCount == 0:
         return False
     else:
         return True
 
+
 def insert_new_data(file_name):
     time_uploaded = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-    Data(filename=file_name, dateUploaded=time_uploaded).save()
+    NewFileData = {"filename":file_name, "isClean":"false", "dateUploaded":time_uploaded}
+    db.Data.insert_one(NewFileData)
 
 
 def tweet_cleaned(filename):
-    db.data.update(
+    db.Data.update(
         {'filename': filename},
         {'$set':
             {
@@ -81,8 +47,8 @@ def tweet_cleaned(filename):
 def get_all_file():
     # for user in db.data.find():
     #     print(user['filename'])
-    return db.data.find()
+    return db.Data.find()
 
 
 def count_total_data():
-    return db.data.count()
+    return db.Data.count()

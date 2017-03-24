@@ -8,7 +8,7 @@ client = MongoClient('mongodb://localhost:27017/Athena')
 db = client.Athena
 
 
-class KBFile(MongoModel):
+class KB_File(MongoModel):
     idKBFile = fields.IntegerField(primary_key=True)
     filename = fields.CharField(max_length=255)
     dateUploaded = fields.DateTimeField()
@@ -19,7 +19,7 @@ class KBFile(MongoModel):
 
 
 def check_if_kbfile_exists(filename):
-    fileCount = db.kbfile.find({"filename":filename}).count()
+    fileCount = db.KB_File.find({"filename":filename}).count()
     if fileCount == 0:
         return False
     else:
@@ -27,13 +27,14 @@ def check_if_kbfile_exists(filename):
 
 def insert_new_kbfile(file_name):
     time_uploaded = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-    KBFile(filename=file_name, dateUploaded=time_uploaded).save()
+    NewFileData = {"filename": file_name, "dateUploaded": time_uploaded}
+    db.KB_File.insert_one(NewFileData)
 
 
 def get_all_kbfile():
-    data = list(db.kb_file.find())
+    data = list(db.KB_File.find())
     return data
 
 
 def count_total_kbfile():
-    return db.kbfile.count()
+    return db.KB_File.count()

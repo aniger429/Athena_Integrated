@@ -61,7 +61,7 @@ active
                             <td>{{ dataFile.filename }}</td>
                             <td>{{ dataFile.dateUploaded }}</td>
                             <td>
-                                {% if dataFile.isClean == False %}
+                                {% if dataFile.isClean == "false" %}
                                     <a class="btn btn-info" href="{{ url_for('clean_file', filename= dataFile.filename) }}">
                                             Clean Now!
                                     </a>

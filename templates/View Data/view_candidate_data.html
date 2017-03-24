@@ -27,11 +27,11 @@ Tweet
                 <table class="table table-striped">
                     <thead>
                         <th class="col-md-4">Name</th>
-                        <th class="col-md-1">Count</th>
+{#                        <th class="col-md-1">Count</th>#}
                         <th class="col-md-4">Name</th>
-                        <th class="col-md-1">Count</th>
+{#                        <th class="col-md-1">Count</th>#}
                         <th class="col-md-4">Name</th>
-                        <th class="col-md-1">Count</th>
+{#                        <th class="col-md-1">Count</th>#}
                     </thead>
                     <tbody>
                         {% for cname_row in candidate_data['kb_names'] | batch(3, '&nbsp;') %}
@@ -48,7 +48,6 @@ Tweet
         </div>
     </div>
     </div>
-    {% set name_used = {} %}
 <div class="row">
     <div class="col-md-12">
          <div class="card">
@@ -69,9 +68,6 @@ Tweet
                         {% else %}
                             {% for tweet in candidate_tweets %}
                                 {% set t = tweet['tweet'].split() %}
-
-                                {% set display_name = t[tweet['cand_ana'][candidate_name]] %}
-                                {% name_used[display_name]++ %}
                                 <tr>
 
                                     <td> {% for word in t[0:tweet['cand_ana'][candidate_name]] %}

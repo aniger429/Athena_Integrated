@@ -1,11 +1,9 @@
 import re
 from collections import Counter
-from Model.UsernameModel import *
+# from Model.UsernameModel import *
 from DBModels.Username import *
 import pandas as pd
 import time
-
-
 
 def findUsername(tweet):
     pattern = '@'

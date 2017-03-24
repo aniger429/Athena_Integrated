@@ -17,13 +17,13 @@ class KB_Names(MongoModel):
 
 
 def insert_new_kb_names(kb_names_dict):
-    row_list = [KB_Names(candidate_name=key, kb_names=value) for
-                key, value in kb_names_dict.items()]
-    KB_Names.objects.bulk_create(row_list)
+    db.KB_Names.insert_many(
+        [{'candidate_name': key, "kb_names": value} for key, value in
+         kb_names_dict.items()])
 
 
 def kb_names_update(kb_names_dict):
-    bulk = db.kb__names.initialize_ordered_bulk_op()
+    bulk = db.KB_Names.initialize_ordered_bulk_op()
 
     [bulk.find({'candidate_name': key}).update_one(
         {'$addToSet': { 'kb_names': {'$each': value }}})
@@ -33,13 +33,18 @@ def kb_names_update(kb_names_dict):
 
 
 def get_all_kb_names():
-    data = list(db.kb__names.find({},{"_id":0, "_cls":0}))
+    data = list(db.KB_Names.find({},{"_id":0, "_cls":0}))
     return data
 
 
 def count_total_candidate():
-    return db.kb__names.find({}).count()
+    return db.KB_Names.find({}).count()
+
 
 def get_specific_candidate_names(cname):
-    data = list(db.kb__names.find({'candidate_name':cname}, {"_id": 0, "_cls": 0}))
+    data = list(db.KB_Names.find({'candidate_name':cname}, {"_id": 0, "_cls": 0}))
     return data[0]
+
+# returns all the names of the candidates in the db
+def get_all_candidate_names():
+    return list(db.KB_Names.distinct("candidate_name"))

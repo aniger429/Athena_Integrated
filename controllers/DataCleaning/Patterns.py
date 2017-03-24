@@ -32,5 +32,4 @@ def remove_from_tweet(tweet):
 
 def remove_usernames(tweet):
     tweet = MENTION_PATTERN.sub('', tweet)
-
     return tweet
