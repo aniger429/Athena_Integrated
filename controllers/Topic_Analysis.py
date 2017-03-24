@@ -9,7 +9,8 @@ import numpy as np
 from nltk.text import TextCollection
 from DBModels.Tweet import *
 from controllers.DataCleaning.Patterns import *
-
+import collections
+from operator import itemgetter
 
 tweetlist = []
 
@@ -71,8 +72,9 @@ def tfidf_vectorizer(tweets,start_range, end_range):
     z = tfidfvec.fit_transform(tweets)
     idf = tfidfvec.idf_
     ngramlist = tfidfvec.get_feature_names()
-    finallist = dict(zip(tfidfvec.get_feature_names(), np.asarray(z.sum(axis=0)).ravel()))
-
+    ngramscore = np.asarray(z.sum(axis=0)).ravel()
+    tf_idf_dict = dict(zip(ngramlist,ngramscore))
+    finallist = collections.OrderedDict(sorted(tf_idf_dict.items(), key=itemgetter(1), reverse=True)[:100])
     return finallist
 
 
@@ -92,8 +94,19 @@ def topic_lda_tfidf(tweets, start_range,end_range, num_topics, num_iter):
     # tweets.reshape(1, -1)
     lda.fit_transform(z)
     score = lda.score(z)
-    display_topics(lda, tfidfvec.get_feature_names(), 20)
 
+    no_top_words = 15
+    feature_names = tfidfvec.get_feature_names()
+    topics_dict= collections.OrderedDict()
+
+    for topic_idx, topic in enumerate(lda.components_):
+        words_dict = collections.OrderedDict()
+        for i in topic.argsort()[:-no_top_words - 1:-1]:
+            words_dict[feature_names[i]] = topic[i]
+
+        topics_dict[str(topic_idx+1)] = words_dict
+
+    return topics_dict
 
 
 """
@@ -107,7 +120,7 @@ def topic_lda(tweets, start_range,end_range, num_topics, num_iter):
     topic = vectorizer.fit_transform(tweets)
 
     lda = LatentDirichletAllocation(n_topics=num_topics, max_iter=num_iter, learning_method='batch')
-    tweets.reshape(1, -1)
+    # tweets.reshape(1, -1)
     lda.fit_transform(topic)
     score = lda.score(topic)
 
@@ -132,12 +145,12 @@ def write_to_csv(fileName, tweet_list):
 #Converting the list of tweets into an array since this is what scikit requires
 # tweets = np.asarray(tweetlist)
 
-tweets = get_tweets_only()
-tweets = [remove_usernames(t) for t in tweets]
-final_list = tfidf_vectorizer(tweets,1,3)
+# tweets = get_tweets_only()
+# tweets = [remove_usernames(t) for t in tweets]
+# final_list = tfidf_vectorizer(tweets,1,3)
 
 
-print("NGRAMS TFIDF")
+# print("NGRAMS TFIDF")
 
 #This is how you instantiate the TextCollection class. You pass to it the List of documents
 # nltk = TextCollection(tweets)
@@ -147,12 +160,12 @@ print("NGRAMS TFIDF")
 
 
 # #Printing the ngram and tfidf score
-for keys,values in final_list.items():
-    print(keys,values)
+# for keys,values in final_list.items():
+#     print(keys,values)
 
 #SCIKIT Functions, just pass the necessary parameters required by each function
-print("SCIKIT")
-write_to_csv('TextlistContents.csv',final_list)
-print("Done!")
+# print("SCIKIT")
+# write_to_csv('TextlistContents.csv',final_list)
+# print("Done!")
 
 # topic_lda_tfidf(tweets, 1, 1, 10, 100)

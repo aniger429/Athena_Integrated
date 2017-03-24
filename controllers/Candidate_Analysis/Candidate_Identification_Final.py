@@ -17,7 +17,7 @@ def identify_candidate(tweet_list):
               # tweet_cp[candidate['candidate_name']] = ([tweet['tweet'].index(word) for word in tweet['tweet'] if any(name in word for name in candidate['kb_names'])])
 
         candidate_presence[tweet['_id']] = tweet_cp
-        into_new_db(candidate_presence)
+        # into_new_db(candidate_presence)
 
     return candidate_presence
 
