@@ -22,11 +22,11 @@ def compute_sentiment(tweet):
     posiFile = pd.read_csv(file_path + "/positive.txt", header=None)
     posi_rowcount, posi_columncount = posiFile.shape
     posi_list = posiFile[0].tolist()
-
+    print(posi_rowcount)
     nega_file = pd.read_csv(file_path + "/negative.txt", header=None)
-    nega_rowcount, nega_columncount = posiFile.shape
-    nega_list = posiFile[0].tolist()
-
+    nega_rowcount, nega_columncount = nega_file.shape
+    nega_list = nega_file[0].tolist()
+    print(nega_rowcount)
     filDictFile = open(file_path + "/final.txt", 'r', encoding="utf-8")
     filDictCount = len(filDictFile.readlines())
     filDictFile.close()
@@ -133,20 +133,20 @@ def compute_sentiment(tweet):
                 idSplice2 = idRead2.split()
                 if aa == idSplice2[0]:
                     bingScore -= 1
-
+            """
             sip = swn.senti_synsets(aa)
             sipList = list(sip)
             if len(sipList) > 0:
                 for i in range(0, len(sipList)):
                     pos += sipList[i].pos_score()
                     neg += sipList[i].neg_score()
-                       
-            final_score = final_score + (pos - neg) + bingScore + filScore + afinnScore
+            """
+            
+            final_score = final_score + bingScore + filScore + afinnScore
             print(aa)
             print('filScore : ' + str(filScore))
             print('Bing : ' + str(bingScore))
             print('Afinn : ' + str(afinnScore))
-            print('sentisyn : ' + str((pos - neg)))
         
     if (final_score > 0.0):
         final_sentiment = 'POSITIVE'
@@ -157,4 +157,3 @@ def compute_sentiment(tweet):
     print("The final sentiment of the tweet is " + final_sentiment)
     print(str(final_score))
     return final_sentiment
-
