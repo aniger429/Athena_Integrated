@@ -62,9 +62,9 @@ def get_everything():
 
 
 def get_tweets_only():
-    result = []
-    [result.append(x['tweet']) for x in db.Tweet.find({}, {'_id': 0, 'tweet': 1})]
-    return result
+    data = list(db.Tweet.find({}, {'_id': 0, 'tweet': 1}))
+    return data
+
 
 # returns all the tweets posted by the user_id
 def get_user_tweet_data(user_id):
@@ -87,7 +87,7 @@ def get_all_unigrams():
     return final
 
 
-def populate_new_workspace(tweets_dict, db=client.Athena):
+def populate_new_workspace(tweets_dict):
     # db.Tweet.insert_many(
     #     [{'idPrimary': t['_id'], "idTweet": t['idTweet'], "idUsername": t['idUsername'],"tweet": t['tweet'],
     #       "date_created": t['date_created'],"hashtags": t['hashtags'],"location": t['location'],
@@ -99,8 +99,7 @@ def populate_new_workspace(tweets_dict, db=client.Athena):
     db.cloneCollection('localhost:27017', 'Athena.Tweet',
                        {'active': 'true'})
 
-def into_new_db(tweets, candidate_presence, db=client.Athena):
-    print("inserting to db")
+def into_new_db(candidate_presence):
     bulk = db.Tweet.initialize_ordered_bulk_op()
     [bulk.find({'_id': key}).upsert().update(
         {'$set': {'cand_ana': value}})
@@ -110,8 +109,16 @@ def into_new_db(tweets, candidate_presence, db=client.Athena):
 
 def get_candidate_tweets(candidate_name):
     data = list(db.Tweet.find({"cand_ana."+candidate_name: {'$ne': -1}},{'tweet':1, 'cand_ana':1}))
-    print (data)
     return data
+
+
+# get tweets only for a specific candidate
+def get_candidate_tweets_topic(candidate_name):
+    data = list(db.Tweet.find({"cand_ana." + candidate_name: {'$ne': -1}}, {'_id': 0, 'tweet': 1}))
+    print("get_candidate_tweets_topic")
+    print(data)
+    return data
+
 
 
 

@@ -10,6 +10,7 @@ from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
 from controllers.Topic_Analysis import *
 from DBModels.MongoDB_Manager import *
+from controllers.Candidate_Analysis.Candidate_Identification_Final import *
 import time
 
 
@@ -72,6 +73,11 @@ def view_specific_tweet():
 def view_candidate_data():
     cname = request.args.get('candidate_name')
     print(cname)
+
+    tweets = get_all_tweets()
+    candidate_presence = identify_candidate(tweets)
+    # print(candidate_presence)
+
     return render_template("View Data/view_candidate_data.html", candidate_data=get_specific_candidate_names(cname), candidate_tweets=get_candidate_tweets(cname))
 
 

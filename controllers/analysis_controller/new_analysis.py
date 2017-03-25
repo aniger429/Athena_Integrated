@@ -1,53 +1,62 @@
-from flask import request, redirect, url_for
+from flask import request, redirect, url_for, render_template
 from controllers.Candidate_Analysis.Candidate_Identification_Final import *
 from DBModels.Tweet import *
 from DBModels.MongoDB_Manager import *
+from controllers.DataCleaning.Patterns import *
+from controllers.Topic_Analysis import *
+
+
+def candidate_analysis(tweets, candidate_name):
+    identify_candidate(tweets)
+    return
+
+
+def topic_analysis(tweets):
+    tweets = [remove_usernames(t['tweet']) for t in tweets]
+    final_list = tfidf_vectorizer(tweets,1,3)
+    lda = topic_lda_tfidf(tweets, 1, 1, 10, 100)
+    return final_list, lda
+
+def sentiment_analysis(tweets):
+    return
+
 
 def new_analysis():
     flevel = request.form['first-level']
     slevel = request.form['second-level']
     tlevel = request.form['third-level']
     candidate_name = request.form['candidate-name']
-    use_workspace = request.form['use-workspace-name']
-    new_workspace = request.form['new-workspace-name']
-
-
-    if use_workspace == "create":
-        create_new_workspace(new_workspace)
-        use_workspace = new_workspace
-
-    db = get_db_instance(use_workspace)
 
     # first level
     if flevel == "candidate":
         print("flevel: candidate")
-        tweets = get_everything()
-        populate_new_workspace(tweets)
-        # print (tweets)
-        candidate_presence = identify_candidate(tweets)
-        into_new_db(tweets, candidate_presence,db)
+        tweets = get_all_tweets()
+        candidate_analysis(tweets, candidate_name)
 
-        if slevel == "none":
-            print("slevel: none")
-        elif slevel == "topic":
+        if slevel == "topic":
             print("slevel: topic")
+            topic_tweets = get_candidate_tweets_topic(candidate_name)
+            final_list, lda = topic_analysis(topic_tweets)
 
-            if tlevel == "none":
-                print("tlevel: none")
-            elif tlevel == "sentiment":
+            if tlevel == "sentiment":
                 print("tlevel: sentiment")
+
+            return render_template("analysis/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda, topic_analysis_for=candidate_name)
         else:
             print("slevel: sentiment")
-            if tlevel == "none":
-                print("tlevel: none")
-            elif tlevel == "topic":
+
+            if tlevel == "topic":
                 print("tlevel: topic")
 
-        return redirect(url_for('view_candidate_data', candidate_name=candidate_name))
 
+        return render_template("View Data/view_candidate_data.html",
+                                       candidate_data=get_specific_candidate_names(candidate_name),
+                                       candidate_tweets=get_candidate_tweets(candidate_name))
     # first level
     elif (flevel == "topic"):
         print("flvel: topic")
+        topic_tweets = list(get_tweets_only())
+        final_list, lda = topic_analysis(topic_tweets)
 
         if slevel == "none":
             print("slevel: none")
@@ -65,6 +74,7 @@ def new_analysis():
             elif tlevel == "candidate":
                 print("tlevel: candidate")
 
+        return render_template("analysis/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda, topic_analysis_for="ALL")
     # first level
     else:
         print("flevel: sentiment")

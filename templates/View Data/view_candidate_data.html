@@ -80,6 +80,8 @@ Tweet
                                     </td>
                                     <td>
                                         {{ t[tweet['cand_ana'][candidate_name]] }}
+                                        </br>
+                                        <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
                                     </td>
                                     <td>
                                         {% for word in t[tweet['cand_ana'][candidate_name]+1:]  %}

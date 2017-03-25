@@ -52,3 +52,7 @@ def get_all_file():
 
 def count_total_data():
     return db.Data.count()
+
+
+def insert_test():
+    return db.Tweet.count()
