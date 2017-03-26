@@ -191,14 +191,13 @@ def new_workspace():
 
     # return redirect(url_for('view_candidate_data'))
 
-
-def split_space(string):
-    return string.strip().split()
+#
+# @app.template_filter('split_space')
+# def split_space_filter(s):
+#     return s.strip().split()
 
 
 if __name__ == '__main__':
-
-    app.jinja_env.filters['split_space'] = split_space
     app.run(
         debug=True
     )
