@@ -154,6 +154,13 @@ def compute_sentiment(tweet):
         final_sentiment = 'NEGATIVE'
     elif (final_score == 0.0):
         final_sentiment = 'NEUTRAL'
+
+
     print("The final sentiment of the tweet is " + final_sentiment)
     print(str(final_score))
     return final_sentiment
+<<<<<<< Updated upstream
+=======
+
+print (compute_sentiment("love banana"))
+>>>>>>> Stashed changes
