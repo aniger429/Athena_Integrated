@@ -112,7 +112,8 @@ def compute_sentiment(tweet):
             pos = 0
             neg = 0
             WordnetScore = 0
-                
+            found = 0
+            
             filScore = 0.0
             if (wordList.get(aa)):
                 sentl = wordList.get(aa)
@@ -144,23 +145,33 @@ def compute_sentiment(tweet):
                 idSplice = idRead.split()
                 if (aa == idSplice[0]) and (bingScore < 0): # N + P
                     bingScore = -2
+                    found = 1
+                    break
                 elif(aa == idSplice[0]): # P + P
                     bingScore = 1
-                else:
-                    bingScore = 0
+                    found = 1
+                    break
             posiFile.close()
             negaFile = open(file_path + "/negative.txt", 'r')
-            for j in range(0, nega_rowcount):
-                idRead2 = negaFile.readline()
-                idSplice2 = idRead2.split()
-                if (aa == idSplice2[0]) and (bingScore > 0): # P + N
-                    bingScore = -2
-                elif (aa == idSplice2[0]) and (bingScore < 0): # N + N
-                    bingScore = 1
-                elif (aa == idSplice2[0]):
-                    bingScore = -1
-                else:
-                    bingScore = 0
+            if (found == 0):
+                for j in range(0, nega_rowcount):
+                    idRead2 = negaFile.readline()
+                    idSplice2 = idRead2.split()
+                    if (aa == idSplice2[0]) and (bingScore > 0): # P + N
+                        bingScore = -2
+                        found = 1
+                        break
+                    elif (aa == idSplice2[0]) and (bingScore < 0): # N + N
+                        bingScore = 1
+                        found = 1
+                        break
+                    elif (aa == idSplice2[0]):
+                        bingScore = -1
+                        found = 1
+                        break
+            if (found == 0):
+                bingScore = 0
+
             """
             sip = swn.senti_synsets(aa)
             sipList = list(sip)
