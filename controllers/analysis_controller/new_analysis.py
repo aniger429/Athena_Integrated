@@ -3,7 +3,8 @@ from controllers.Candidate_Analysis.Candidate_Identification_Final import *
 from DBModels.Tweet import *
 from DBModels.MongoDB_Manager import *
 from controllers.DataCleaning.Patterns import *
-from controllers.Topic_Analysis import *
+from controllers.Topic_Analysis.Topic_Analysis import *
+from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
 
 def candidate_analysis(tweets, candidate_name):
@@ -17,8 +18,10 @@ def topic_analysis(tweets):
     lda = topic_lda_tfidf(tweets, 1, 1, 10, 100)
     return final_list, lda
 
+
 def sentiment_analysis(tweets):
-    return
+    compute_tweets_sentiment(tweets)
+    return compute_tweets_sentiment(tweets)
 
 
 def new_analysis():
@@ -42,12 +45,16 @@ def new_analysis():
                 print("tlevel: sentiment")
 
             return render_template("analysis/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda, topic_analysis_for=candidate_name)
-        else:
+        elif slevel == "sentiment":
             print("slevel: sentiment")
+            positive_tweets, neutral_tweets, negative_tweets = sentiment_analysis(tweets)
 
             if tlevel == "topic":
                 print("tlevel: topic")
 
+            return render_template("analysis/view_tweets_sentiment.html",
+                                   tweet_list=[negative_tweets, positive_tweets, neutral_tweets],
+                                   sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for="All")
 
         return render_template("View Data/view_candidate_data.html",
                                        candidate_data=get_specific_candidate_names(candidate_name),

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block customCSS %}
+
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <style>
+        .title.custom{
+            font-size: 30px;
+        }
+    </style>
+{% endblock %}
+
+{%block name%}
+Sentiment
+{%endblock%}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">Sentiment Analysis</h4>
+                <p class="category custom">Tweets: {{ sentiment_analysis_for }}</p>
+            </br>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    {% for c in range(0, sentiment_labels | length) %}
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ sentiment_labels[c] | capitalize }} Tweets</h4>
+{#                    <p class="category custom">0.99 - topic score</p>#}
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                            <th class="col-md-12">Tweet</th>
+                        </thead>
+                        <tbody>
+                        {% for tweet in tweet_list[c]%}
+                             <tr>
+                                <td>
+                            {% for word in tweet['tweet']%}
+                                {% if word[:1] != '@' %}
+                                    {{ word }}
+                                {% else %}
+                                   <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                {% endif %}
+                            {% endfor %}
+                            </br>
+                            <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block customJS %}
+
+{% endblock %}

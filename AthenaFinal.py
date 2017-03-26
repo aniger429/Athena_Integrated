@@ -8,9 +8,10 @@ from DBModels.Data import *
 from DBModels.Username import *
 from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
-from controllers.Topic_Analysis import *
+from controllers.Topic_Analysis.Topic_Analysis import *
 from DBModels.MongoDB_Manager import *
 from controllers.Candidate_Analysis.Candidate_Identification_Final import *
+from controllers.Sentiment_Analysis.Sentiment_Identification import *
 import time
 
 
@@ -88,6 +89,14 @@ def view_topic_analysis():
     final_list = tfidf_vectorizer(tweets,1,3)
     lda = topic_lda_tfidf(tweets, 1, 1, 10, 100)
     return render_template("analysis/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda)
+
+
+@app.route('/sentiment')
+def view_sentiment_analysis():
+    tweets = get_all_tweets()
+    positive_tweets, neutral_tweets, negative_tweets = compute_tweets_sentiment(tweets)
+
+    return render_template("analysis/view_tweets_sentiment.html", tweet_list=[negative_tweets, positive_tweets,neutral_tweets], sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for="All")
 
 
 @app.route('/analysis')
