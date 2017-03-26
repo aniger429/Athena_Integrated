@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block customCSS %}
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+{% endblock %}
+
+{%block name%}
+Tweets
+{%endblock%}
+{%block vat_active%}
+active
+{%endblock%}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Topic # {{ key }}</h4>
+                <p class="category">Words</p>
+            </div>
+             <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="col-md-3">Word</th>
+                        <th class="col-md-1">Score</th>
+                        <th class="col-md-3">Word</th>
+                        <th class="col-md-1">Score</th>
+                        <th class="col-md-3">Word</th>
+                        <th class="col-md-1">Score</th>
+                    </thead>
+                    <tbody>
+                        {% for topic_row in topic['words'] | batch(3, '&nbsp;')  %}
+                            <tr>
+                                {% for tup in topic_row %}
+                                    <td>{{ tup['word'] }}</td>
+                                    <td>{{ tup['score'] }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Topic # {{ key }}</h4>
+                <p class="category">Tweets</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <th class="col-md-4">Tweet</th>
+                        <th class="col-md-4">Tweet</th>
+                        <th class="col-md-4">Tweet</th>
+                    </thead>
+                    <tbody>
+                        {% for tweet_row in topic['topic_tweets'] | batch(3, '&nbsp;') %}
+                            <tr>
+                                {% for tweet in tweet_row %}
+
+                                    <td>{% if tweet != '&nbsp;' %}
+                                        <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
+                                        {% endif %}
+                                        </br>
+                                        {% for word in tweet['tweet'] | split_space%}
+                                            {% if word[:1] != '@' %}
+                                                {{ word }}
+                                            {% else %}
+                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block customJS %}
+
+{% endblock %}

@@ -45,6 +45,7 @@ def new_analysis():
                 print("tlevel: sentiment")
 
             return render_template("analysis/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda, topic_analysis_for=candidate_name)
+
         elif slevel == "sentiment":
             print("slevel: sentiment")
             positive_tweets, neutral_tweets, negative_tweets = sentiment_analysis(tweets)
@@ -54,7 +55,7 @@ def new_analysis():
 
             return render_template("analysis/view_tweets_sentiment.html",
                                    tweet_list=[negative_tweets, positive_tweets, neutral_tweets],
-                                   sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for="All")
+                                   sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=candidate_name)
 
         return render_template("View Data/view_candidate_data.html",
                                        candidate_data=get_specific_candidate_names(candidate_name),

@@ -34,7 +34,11 @@ Tweet
             <div class="card">
                 <div class="header">
                     <h4 class="title custom">{{ "Topic # " + (key) }}</h4>
-{#                    <p class="category custom">0.99 - topic score</p>#}
+                    <p class="category custom">
+                        {% set words =  value.keys()| list %}
+
+                        <a href="{{ url_for('view_tweets_for_topic', key=key) }}"> View Tweet</a>
+                    </p>
                 </div>
                 <div class="content table-responsive table-full-width">
                     <table class="table table-striped">
@@ -43,10 +47,10 @@ Tweet
                             <th class="col-md-6">Score</th>
                         </thead>
                         <tbody>
-                                {% for key, value in value.items() %}
+                                {% for v in value['words']%}
                                 <tr>
-                                    <td>{{ key }}</td>
-                                    <td>{{ value }}</td>
+                                    <td>{{ v['word'] }}</td>
+                                    <td>{{ v['score'] }}</td>
                                 </tr>
                                 {% endfor %}
                         </tbody>

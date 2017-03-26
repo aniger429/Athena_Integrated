@@ -2,13 +2,14 @@ from flask import Flask, render_template, send_from_directory, flash, session
 from flask import Flask, request, render_template, send_from_directory
 from controllers import uploadFile
 from controllers.analysis_controller import new_analysis
-import os
 from DBModels.KBFile import *
 from DBModels.Data import *
 from DBModels.Username import *
 from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
 from controllers.Topic_Analysis.Topic_Analysis import *
+from controllers.Topic_Analysis.Find_Topic_Tweets import *
+from controllers.Topic_Analysis.Pickle_Saver import *
 from DBModels.MongoDB_Manager import *
 from controllers.Candidate_Analysis.Candidate_Identification_Final import *
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
@@ -84,12 +85,14 @@ def view_candidate_data():
 
 @app.route('/topic')
 def view_topic_analysis():
-    tweets = get_tweets_only()
-    tweets = [remove_usernames(t) for t in tweets]
-    final_list = tfidf_vectorizer(tweets,1,3)
+    topic_tweets = get_tweets_with_id()
+    tweets = [remove_usernames(t['tweet']) for t in topic_tweets]
+    final_list = tfidf_vectorizer(tweets, 1, 3)
     lda = topic_lda_tfidf(tweets, 1, 1, 10, 100)
-    return render_template("analysis/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda)
+    find_topic_tweets(lda,topic_tweets)
 
+    return render_template("analysis/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
+                           topic_analysis_for="ALL")
 
 @app.route('/sentiment')
 def view_sentiment_analysis():
@@ -170,7 +173,18 @@ def find_more_kb_names():
     return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(), kbFileList=get_all_kbfile(), duplicate=False)
 
 
-@app.route('/new_workspace', methods=['POST'])
+# Route that will process the file upload
+@app.route('/topic_tweets')
+def view_tweets_for_topic():
+    topic = request.args.to_dict('topic')
+    key = request.args.get('key')
+    print("start")
+    data = load_obj("Topics")
+    print(data[key]['topic_tweets'])
+    return render_template("View Data/view_topic_tweets.html", key=key, topic=data[key])
+
+
+@app.route('/new_analysis', methods=['POST'])
 def new_workspace():
     print("here")
     return new_analysis.new_analysis()
@@ -178,8 +192,13 @@ def new_workspace():
     # return redirect(url_for('view_candidate_data'))
 
 
+def split_space(string):
+    return string.strip().split()
+
+
 if __name__ == '__main__':
 
+    app.jinja_env.filters['split_space'] = split_space
     app.run(
         debug=True
     )

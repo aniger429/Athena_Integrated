@@ -66,12 +66,17 @@ def get_tweets_only():
     return data
 
 
+def get_tweets_with_id():
+    data = list(db.Tweet.find({}, {'_id': 1, 'tweet': 1}))
+    return data
+
 # returns all the tweets posted by the user_id
 def get_user_tweet_data(user_id):
     data = list(db.Tweet.find({'idUsername': "@"+user_id},{'_id':1,'tweet':1}))
     for d in data:
         d['tweet'] = d['tweet'].split()
     return data
+
 
 # returns all the tweets a user_id was mentioned
 def get_user_mentioned_tweets(user_id):
@@ -118,6 +123,8 @@ def get_candidate_tweets_topic(candidate_name):
     print("get_candidate_tweets_topic")
     print(data)
     return data
+
+
 
 
 

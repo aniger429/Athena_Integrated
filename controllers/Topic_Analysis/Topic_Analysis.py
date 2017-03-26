@@ -100,11 +100,11 @@ def topic_lda_tfidf(tweets, start_range,end_range, num_topics, num_iter):
     topics_dict= collections.OrderedDict()
 
     for topic_idx, topic in enumerate(lda.components_):
-        words_dict = collections.OrderedDict()
+        words_list = list()
         for i in topic.argsort()[:-no_top_words - 1:-1]:
-            words_dict[feature_names[i]] = topic[i]
+            words_list.append({'word':feature_names[i],'score':topic[i]})
 
-        topics_dict[str(topic_idx+1)] = words_dict
+        topics_dict[str(topic_idx+1)] = words_list
 
     return topics_dict
 

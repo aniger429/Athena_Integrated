@@ -32,15 +32,67 @@ def compute_afinn_score(tweet):
     # print("afinn")
     # score = [afinn.score(w) for w in tweet.split()]
     # print(score)
-    return sum([afinn.score(w) for w in tweet])
+    # return sum([afinn.score(w) for w in tweet])
+    afinnScore = 0
+    afinnSum = 0
+    for aa in tweet:
+        if (afinn.score(aa) > 0) and (afinnScore < 0):  # N + P
+            afinnScore = 0
+            afinnScore -= afinn.score(aa)
 
+        elif (afinn.score(aa) < 0) and (afinnScore < 0):  # N + N
+            afinnScore = 0
+            afinnScore += (afinn.score(aa) * -1)
+
+        elif (afinn.score(aa) < 0) and (afinnScore > 0):  # P + N
+            afinnScoreAdd = afinnScore
+            afinnScore = 0
+            afinnScore += (-(afinnScoreAdd) + afinn.score(aa))
+        else:  # P + P or else
+            afinnScore = 0
+            afinnScore += afinn.score(aa)
+
+        afinnSum += afinnScore
+
+    return afinnSum
 
 def compute_bing_score(tweet):
     # print("bing")
     # score = [1 if w in posi_list else -1 if w in nega_list else 0 for w in tweet.split()]
     # print(score)
-    return sum([1 if w in posi_list else -1 if w in nega_list else 0 for w in tweet])
+    # return sum([1 if w in posi_list else -1 if w in nega_list else 0 for w in tweet])
+    bingScore = 0
+    bingSum = 0
+    for aa in tweet:
+        found = 0
+        if (aa in posi_list) and (bingScore < 0):  # N + P
+            bingScore = -2
+            found = 1
+            break
+        elif (aa in posi_list):  # P + P
+            bingScore = 1
+            found = 1
+            break
 
+        if (found == 0):
+            if (aa in nega_list) and (bingScore > 0):  # P + N
+                bingScore = -2
+                found = 1
+                break
+            elif (aa in nega_list) and (bingScore < 0):  # N + N (double negative)
+                bingScore = 1
+                found = 1
+                break
+            elif (aa in nega_list):
+                bingScore = -1
+                found = 1
+                break
+
+        if (found == 0):
+            bingScore = 0
+        bingSum += bingScore
+
+    return bingSum
 
 def compute_sentiment(tweet):
     # print('Processing Sentiment Analysis for the word..')

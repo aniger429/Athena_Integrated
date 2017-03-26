@@ -116,5 +116,5 @@ def compute_sentiment(tweet):
 def compute_tweets_sentiment(tweet_list):
     return [compute_sentiment(tweet) for tweet in tweet_list]
 
-print (compute_sentiment("i love banana"))
+print (compute_sentiment("i super hate banana"))
 
