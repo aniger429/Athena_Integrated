@@ -14,8 +14,14 @@ Tweet
 {%endblock%}
 
 {% block content %}
-
 {% set candidate_name = candidate_data['candidate_name'] %}
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-info btn-md"><a href={{ url_for('view_topic_analysis', datasource="candidate", candidate_name=candidate_name) }}>Determine Topics</a></button>
+        <button class="btn btn-info btn-md"><a href={{ url_for('view_sentiment_analysis', datasource="Candidate", candidate_name=candidate_name) }}>View Sentiment</a></button>
+    </div>
+    </br>
+</div>
     <div class="row">
     <div class="col-md-12">
         <div class="card">

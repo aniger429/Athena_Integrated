@@ -19,7 +19,7 @@ Sentiment
         <div class="card">
             <div class="header">
                 <h4 class="title custom">Sentiment Analysis</h4>
-                <p class="category custom">Tweets: {{ sentiment_analysis_for }}</p>
+                <p class="category custom">{{ sentiment_analysis_for }}</p>
             </br>
             </div>
         </div>
@@ -34,7 +34,7 @@ Sentiment
                     <h4 class="title custom">{{ sentiment_labels[c] | capitalize }} Tweets</h4>
                     <p class="category custom">{{ tweet_list[c]['tweets'] | length  }} Tweets</p>
                     </br>
-                    <button class="col-md-12 btn btn-info btn-md"><a href={{ url_for('view_topic_for_sentiment', senti=sentiment_labels[c]) }}>Determine Topics</a></button>
+                    <button class="col-md-12 btn btn-info btn-md"><a href={{ url_for('view_topic_analysis', senti=sentiment_labels[c]) }}>Determine Topics</a></button>
                     </br>
                     <div class="row justify-content-center">
                         Candidates Mentioned:

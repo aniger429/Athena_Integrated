@@ -19,7 +19,7 @@ Tweet
         <div class="card">
             <div class="header">
                 <h4 class="title custom"> Topic Analysis</h4>
-                <p class="category custom">Tweets: {{ topic_analysis_for }}</p>
+                <p class="category custom">{{ topic_analysis_for }}</p>
             </br>
             </div>
         </div>
@@ -35,6 +35,8 @@ Tweet
                 <div class="header">
                     <h4 class="title custom">{{ "Topic # " + (key) }}</h4>
                     <p class="category custom">
+                        {{ value['topic_tweets'] | length }} Tweets
+                        </br>
                         <a href="{{ url_for('view_tweets_for_topic', key=key) }}">View Tweet</a>
                     </p>
                 </div>

@@ -21,17 +21,15 @@
     <!--  Paper Dashboard core CSS    -->
     <link href="{{ url_for('static', filename="css/paper-dashboard.css") }}" rel="stylesheet"/>
 
-{#    <link href="{{ url_for('static', filename="css/ct-paper.css") }}" rel="stylesheet" >#}
-
     {%block customCSS%}
     {%endblock%}
 
     <!--  Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename="css/font-awesome.css") }}" rel="stylesheet" >
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ url_for('static', filename="css/themify-icons.css") }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename="css/font-awesome.css") }}" rel="stylesheet" >
+
 
     <style>
         .sidebar .nav i{
@@ -73,13 +71,13 @@
             <ul class="nav sidebar-menu">
                 <li class="{%block dashboard_active%}{%endblock%}">
                     <a href="{{url_for('home')}}">
-                        <i class="fa fa-home fa-lg fa-fw"></i>
+                        <i class="ti-home"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
                     <a class="sidebar-menu-button" data-toggle="sidebar-collapse" href="#">
-                        <i class="fa fa-folder fa-lg fa-fw"></i>
+                        <i class="ti-folder"></i>
                         <p>Upload Data</p>
                     </a>
 
@@ -99,28 +97,27 @@
                         </li>
                     </ul>
                 </li>
-                </li>
                 <li class="{%block vat_active%}{%endblock%}">
                     <a href="{{url_for('view_all_tweets')}}">
-                        <i class="fa fa-twitter fa-lg fa-fw"></i>
+                        <i class="ti-twitter"></i>
                         <p>View All Tweets</p>
                     </a>
                 </li>
                 <li class="{%block vau_active%}{%endblock%}">
                     <a href="{{url_for('view_all_usernames')}}">
-                        <i class="fa fa-users fa-lg fa-fw"></i>
+                        <i class="ti-user"></i>
                         <p>View All Usernames</p>
                     </a>
                 </li>
                 <li class="{%block vaw_active%}{%endblock%}">
                     <a href="{{url_for('view_all_workspaces')}}">
-                        <i class="fa fa-briefcase fa-lg fa-fw"></i>
+                        <i class="ti-briefcase"></i>
                         <p>View Workspaces</p>
                     </a>
                 </li>
                 <li class="{%block analysis_active%}{%endblock%}">
                     <a href="{{url_for('analysis')}}">
-                        <i class="fa fa-line-chart fa-lg fa-fw"></i>
+                        <i class="ti-pie-chart"></i>
                         <p>Analysis</p>
                     </a>
                 </li>
@@ -184,7 +181,7 @@
                     </ul>
                 </nav>
 				<div class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart fa-lg fa-spin fa-fw text-danger"></i>
+                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa ti-heart fa-lg fa-spin fa-fw text-danger"></i>
                 </div>
 {#            </div>#}
         </footer>
@@ -195,8 +192,8 @@
 </body>
 
     <!--   Core JS Files   -->
-{#    <script src="{{ url_for('static', filename="js/jquery-1.10.2.js") }}" type="text/javascript"></script>#}
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{{ url_for('static', filename="js/jquery-1.10.2.js") }}" type="text/javascript"></script>
+{#    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>#}
 	<script src="{{ url_for('static', filename="js/bootstrap.min.js") }}" type="text/javascript"></script>
 
 	<!--  Checkbox, Radio & Switch Plugins -->
