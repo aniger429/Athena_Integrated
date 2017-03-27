@@ -1,7 +1,8 @@
 from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
+
 from controllers.DataCleaning.Patterns import *
-from controllers.Topic_Analysis.Pickle_Saver import *
+from controllers.analysis_controller.Pickle_Saver import *
+
 
 def find_topic_tweets(topics_dict,tweets):
     print(topics_dict)
@@ -21,5 +22,5 @@ def find_topic_tweets(topics_dict,tweets):
 
         topics_dict[key] = {'topic_tweets':topic_tweets, 'words': value}
 
-    save_obj(topics_dict, "topics")
+    save_obj(topics_dict, "Topics")
     return topics_dict

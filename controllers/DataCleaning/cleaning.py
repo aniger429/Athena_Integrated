@@ -65,7 +65,7 @@ def data_cleaning (tweet, nameTuple):
     shortword = re.compile(r'\W*\b\w{1,2}\b')
     tweet = shortword.sub('', tweet)
     # remove punctuation marks
-    tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…)", '', tweet)
+    tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
 
     # standardize words # collapse to 1 letter ex: cooool to col
     # tweet = ''.join(ch for ch, _ in itertools.groupby(tweet))

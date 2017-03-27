@@ -26,18 +26,24 @@ Tweet
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
                     <thead>
-                        <th class="col-md-4">Name</th>
-{#                        <th class="col-md-1">Count</th>#}
-                        <th class="col-md-4">Name</th>
-{#                        <th class="col-md-1">Count</th>#}
-                        <th class="col-md-4">Name</th>
-{#                        <th class="col-md-1">Count</th>#}
+                        <th class="col-md-3">Name</th>
+                        <th class="col-md-1">Count</th>
+                        <th class="col-md-3">Name</th>
+                        <th class="col-md-1">Count</th>
+                        <th class="col-md-3">Name</th>
+                        <th class="col-md-1">Count</th>
                     </thead>
                     <tbody>
                         {% for cname_row in candidate_data['kb_names'] | batch(3, '&nbsp;') %}
                             <tr>
                                 {% for cname in cname_row %}
-                                    <td>{% if cname != '&nbsp;' %}{{ cname }}{% endif %}</td>
+                                    {% if cname != '&nbsp;' %}
+                                        <td>{{ cname }}</td>
+                                        <td>{{ candidate_name_count[cname] }}</td>
+                                    {% else %}
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
                                 {% endfor %}
                             </tr>
                         {% endfor %}
@@ -53,7 +59,7 @@ Tweet
          <div class="card">
             <div class="header">
                 <h4 class="title custom">CONCORDANCER</h4>
-                <p class="category custom">Here are all the names</p>
+                <p class="category custom">{{ candidate_tweets | length }} Tweets</p>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
@@ -67,9 +73,8 @@ Tweet
                             <tr><td>No Tweets</td><td>to</td><td>show</td></tr>
                         {% else %}
                             {% for tweet in candidate_tweets %}
-                                {% set t = tweet['tweet'].split() %}
+                                {% set t = tweet['tweet'] %}
                                 <tr>
-
                                     <td> {% for word in t[0:tweet['cand_ana'][candidate_name]] %}
                                             {% if word[:1] != '@' %}
                                                 {{ word }}

@@ -55,7 +55,6 @@ Analyze Data
               <div class="form-group col-md-12">
                   <label for="sel1" class="col-md-12">Analyze for Candidate:</label>
                   <select name="candidate-name" class="form-control col-md-12" id="sel1">
-                    <option value="none">None</option>
                     {% for cname in candidate_names %}
                         <option value={{ cname }}>{{ cname | capitalize }}</option>
                     {% endfor %}

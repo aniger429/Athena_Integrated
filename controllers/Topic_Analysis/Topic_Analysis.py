@@ -89,7 +89,6 @@ def topic_lda_tfidf(tweets, start_range,end_range, num_topics, num_iter):
     tfidfvec = TfidfVectorizer(ngram_range=(start_range, end_range), min_df=0, use_idf=True, sublinear_tf=True, norm='l2',
                                smooth_idf=True)
     z = tfidfvec.fit_transform(tweets)
-    print("Topic Modeling")
     lda = LatentDirichletAllocation(n_topics=num_topics, max_iter=num_iter, learning_method='batch')
     # tweets.reshape(1, -1)
     lda.fit_transform(z)
