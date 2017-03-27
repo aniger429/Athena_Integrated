@@ -13,6 +13,12 @@ active
 {% block content %}
 <div class="row">
     <div class="col-md-12">
+        <button class="btn btn-info btn-md"><a href={{ url_for('view_sentiment_for_topic', key=key) }}>View Sentiment</a></button>
+    </div>
+    </br>
+</div>
+<div class="row">
+    <div class="col-md-12">
         <div class="card">
             <div class="header">
                 <h4 class="title">Topic # {{ key }}</h4>
@@ -43,12 +49,23 @@ active
         </div>
     </div>
 </div>
+
+{#{% block content %}#}
+{##}
+{#{% endblock %}#}
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="header">
                 <h4 class="title">Topic # {{ key }}</h4>
                 <p class="category">Number of Tweets: {{ topic['topic_tweets']|length }}</p>
+                <div class="row justify-content-center">
+                    Candidates Mentioned:
+                    {% for cand in candidates_mentioned %}
+                        <a class="username" href="{{ url_for('view_candidate_data',candidate_name=cand) }}">{{ cand | capitalize }}</a>
+                    {% endfor %}
+                </div>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
@@ -66,14 +83,13 @@ active
                                         <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
                                         {% endif %}
                                         </br>
-                                            {{ tweet['tweet'] }}
-{#                                        {% for word in tweet['tweet'] %}#}
-{#                                            {% if word[:1] != '@' %}#}
-{#                                                {{ word }}#}
-{#                                            {% else %}#}
-{#                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>#}
-{#                                            {% endif %}#}
-{#                                        {% endfor %}#}
+                                        {% for word in tweet['tweet'] %}
+                                            {% if word[:1] != '@' %}
+                                                {{ word }}
+                                            {% else %}
+                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                            {% endif %}
+                                        {% endfor %}
                                     </td>
                                 {% endfor %}
                             </tr>

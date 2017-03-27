@@ -74,14 +74,17 @@ def view_specific_tweet():
 @app.route('/candidate')
 def view_candidate_data():
     cname = request.args.get('candidate_name')
+    datasource = request.args.get('datasource')
 
     tweets = get_all_tweets()
-    candidate_presence = identify_candidate(tweets, cname)
+
+    if datasource in ["positive", "neutral", "negative"]:
+        tweets = load_obj("Sentiment")[datasource]
+
+    identify_candidate(tweets, cname=cname)
     data = load_obj("Candidate")
     candidate_name_count = Counter([tweet['tweet'][tweet['cand_ana'][cname]] for tweet in data])
-    # filter_tweet_on_candidate(cname, data)
 
-    # return render_template("View Data/view_candidate_data.html", candidate_data=get_specific_candidate_names(cname), candidate_tweets=get_candidate_tweets(cname))
     return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count, candidate_data=get_specific_candidate_names(cname),
                            candidate_tweets=data)
 
@@ -95,7 +98,7 @@ def view_topic_analysis():
     find_topic_tweets(lda,topic_tweets)
 
 
-    return render_template("analysis/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
+    return render_template("analysis/Topic/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
                            topic_analysis_for="ALL")
 
 @app.route('/sentiment')
@@ -177,10 +180,40 @@ def find_more_kb_names():
 # Route that will process the file upload
 @app.route('/topic_tweets')
 def view_tweets_for_topic():
-    topic = request.args.to_dict('topic')
     key = request.args.get('key')
     data = load_obj("Topics")
-    return render_template("View Data/view_topic_tweets.html", key=key, topic=data[key])
+    candidates_mentioned = identify_candidate_mentioned(data[key]['topic_tweets'])
+    return render_template("analysis/Topic/view_topic_tweets.html", key=key, topic=data[key], candidates_mentioned=candidates_mentioned)
+
+
+@app.route('/topic_sentiment')
+def view_sentiment_for_topic():
+    key = request.args.get('key')
+    data = load_obj("Topics")
+    positive_tweets, neutral_tweets, negative_tweets = compute_tweets_sentiment(data[key]['topic_tweets'])
+
+    positive_tweets = {'tweets': positive_tweets, 'candidate_mentioned': identify_candidate_mentioned(positive_tweets)}
+    neutral_tweets = {'tweets': neutral_tweets, 'candidate_mentioned': identify_candidate_mentioned(neutral_tweets)}
+    negative_tweets = {'tweets': negative_tweets, 'candidate_mentioned': identify_candidate_mentioned(negative_tweets)}
+
+    return render_template("analysis/view_tweets_sentiment.html", tweet_list=[negative_tweets, positive_tweets,neutral_tweets], sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for="Topic # "+key)
+
+
+@app.route('/sentiment_topic')
+def view_topic_for_sentiment():
+    senti = request.args.get('senti')
+    data = load_obj("Sentiment")
+    topic_tweets = data[senti]
+
+    tweets = [remove_usernames(t['tweet']) for t in topic_tweets]
+
+    final_list = tfidf_vectorizer(tweets, 1, 3)
+    lda = topic_lda_tfidf(tweets, 1, 1, 10, 100)
+    find_topic_tweets(lda,topic_tweets)
+
+
+    return render_template("analysis/Topic/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
+                           topic_analysis_for=senti+"Tweets")
 
 
 @app.route('/new_workspace', methods=['POST'])

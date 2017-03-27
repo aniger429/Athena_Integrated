@@ -31,5 +31,9 @@ def remove_from_tweet(tweet):
 
 
 def remove_usernames(tweet):
-    tweet = MENTION_PATTERN.sub('', tweet)
+    if isinstance(tweet, str):
+        tweet = MENTION_PATTERN.sub('', tweet)
+    else:
+        tweet = MENTION_PATTERN.sub('', ' '.join(tweet))
     return tweet
+

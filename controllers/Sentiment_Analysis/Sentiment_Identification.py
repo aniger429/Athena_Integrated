@@ -5,6 +5,7 @@ from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
 import pandas as pd
 import os
+from controllers.analysis_controller.Pickle_Saver import *
 
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "Lexicon_Files")
@@ -133,6 +134,9 @@ def compute_tweets_sentiment(tweet_list):
             neg_tweets.append(tweet)
         else:
             neut_tweets.append(tweet)
+
+    obj = {'positive':posi_tweets, 'neutral':neut_tweets, 'negative':neg_tweets}
+    save_obj(obj,'Sentiment')
 
     return posi_tweets, neut_tweets, neg_tweets
 

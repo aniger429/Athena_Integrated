@@ -35,9 +35,7 @@ Tweet
                 <div class="header">
                     <h4 class="title custom">{{ "Topic # " + (key) }}</h4>
                     <p class="category custom">
-                        {% set words =  value.keys()| list %}
-
-                        <a href="{{ url_for('view_tweets_for_topic', key=key) }}"> View Tweet</a>
+                        <a href="{{ url_for('view_tweets_for_topic', key=key) }}">View Tweet</a>
                     </p>
                 </div>
                 <div class="content table-responsive table-full-width">
@@ -61,13 +59,14 @@ Tweet
         </div>
         {% endfor %}
     </div>
-
     </div>
+
+
     <div class="col-md-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <h4 class="title custom">{{ "Top 100 Unigrams" }}</h4>
+                    <h4 class="title custom">{{ "Top" }} {{ tf_idf | length }} {{ "Unigrams" }}</h4>
 {#                    <p class="category custom">0.99 - topic score</p>#}
                 </div>
                 <div class="content table-responsive table-full-width">

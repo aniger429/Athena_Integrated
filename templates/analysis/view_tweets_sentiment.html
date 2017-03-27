@@ -32,7 +32,16 @@ Sentiment
             <div class="card">
                 <div class="header">
                     <h4 class="title custom">{{ sentiment_labels[c] | capitalize }} Tweets</h4>
-{#                    <p class="category custom">0.99 - topic score</p>#}
+                    <p class="category custom">{{ tweet_list[c]['tweets'] | length  }} Tweets</p>
+                    </br>
+                    <button class="col-md-12 btn btn-info btn-md"><a href={{ url_for('view_topic_for_sentiment', senti=sentiment_labels[c]) }}>Determine Topics</a></button>
+                    </br>
+                    <div class="row justify-content-center">
+                        Candidates Mentioned:
+                        {% for cand in tweet_list[c]['candidate_mentioned'] %}
+                            <a class="username" href="{{ url_for('view_candidate_data',candidate_name=cand, datasource=sentiment_labels[c]) }}">{{ cand | capitalize }}</a>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="content table-responsive table-full-width">
                     <table class="table table-striped">
@@ -40,10 +49,10 @@ Sentiment
                             <th class="col-md-12">Tweet</th>
                         </thead>
                         <tbody>
-                        {% for tweet in tweet_list[c]%}
+                        {% for tweet in tweet_list[c]['tweets'] %}
                              <tr>
                                 <td>
-                            {% for word in tweet['tweet']%}
+                            {% for word in tweet['tweet'] %}
                                 {% if word[:1] != '@' %}
                                     {{ word }}
                                 {% else %}

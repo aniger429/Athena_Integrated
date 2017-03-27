@@ -10,6 +10,9 @@
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/templates" />
+        <option value="$MODULE_DIR$/templates/analysis/Topic" />
+        <option value="$MODULE_DIR$/templates/analysis" />
+        <option value="$MODULE_DIR$/templates/View Data" />
       </list>
     </option>
   </component>
