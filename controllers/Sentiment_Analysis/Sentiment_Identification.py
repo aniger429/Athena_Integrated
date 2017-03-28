@@ -6,6 +6,7 @@ from nltk.util import ngrams
 import pandas as pd
 import os
 from controllers.analysis_controller.Pickle_Saver import *
+from collections import Counter
 
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "Lexicon_Files")
@@ -27,6 +28,15 @@ def compute_filscore(tweet):
     # score = [fil_dict.get(w, {}).get('negativity',0) + fil_dict.get(w, {}).get('positivity',0) for w in tweet.split()]
     # print(score)
     return sum([fil_dict.get(w, {}).get('negativity',0) + fil_dict.get(w, {}).get('positivity',0) for w in tweet])
+
+
+def evaluate_score(score):
+    if score > 0:
+        return "POSITIVE"
+    elif score == 0:
+        return "NEUTRAL"
+    else:
+        return "NEGATIVE"
 
 
 def compute_afinn_score(tweet):
@@ -97,9 +107,9 @@ def compute_bing_score(tweet):
 
 def compute_sentiment(tweet):
     # print('Processing Sentiment Analysis for the word..')
-    filScore = compute_filscore(tweet)
-    afinnScore = compute_afinn_score(tweet)
-    bingScore = compute_bing_score(tweet)
+    filScore = evaluate_score(compute_filscore(tweet))
+    afinnScore = evaluate_score(compute_afinn_score(tweet))
+    bingScore = evaluate_score(compute_bing_score(tweet))
 
     """
     sip = swn.senti_synsets(aa)
@@ -109,16 +119,9 @@ def compute_sentiment(tweet):
             pos += sipList[i].pos_score()
             neg += sipList[i].neg_score()
     """
-    final_score = bingScore + filScore + afinnScore
 
-    if final_score > 0.0:
-        return "POSITIVE"
-    elif final_score < 0.0:
-        return "NEGATIVE"
-    else:
-        return "NEUTRAL"
-
-
+    final_score = Counter([bingScore,filScore,afinnScore]).most_common(1)
+    return final_score[0][0]
 
 def compute_tweets_sentiment(tweet_list):
     neg_tweets = []

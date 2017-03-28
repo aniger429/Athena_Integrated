@@ -20,12 +20,15 @@ active
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
                     <thead>
-                        <th class="col-md-4">Username</th>
-                        <th class="col-md-4">Username</th>
-                        <th class="col-md-4">Username</th>
+                        <th class="col-md-2">Username</th>
+                        <th class="col-md-2">Username</th>
+                        <th class="col-md-2">Username</th>
+                        <th class="col-md-2">Username</th>
+                        <th class="col-md-2">Username</th>
+                        <th class="col-md-2">Username</th>
                     </thead>
                     <tbody>
-                        {% for username_row in usernameList | batch(3, '&nbsp;') %}
+                        {% for username_row in usernameList | batch(6, '&nbsp;') %}
                             <tr>
                                 {% for uname in username_row %}
                                     <td>

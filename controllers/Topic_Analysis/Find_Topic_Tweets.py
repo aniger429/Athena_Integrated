@@ -13,6 +13,7 @@ def find_topic_tweets(topics_dict,tweets):
             twords = remove_usernames(tweet['tweet'])
 
             if fuzz.token_sort_ratio(twords,topic_words) >= 30:
+                # print(str(fuzz.token_sort_ratio(twords,topic_words)) +":"+twords + ":" + str(topic_words))
                 # tweet = {'tweet':tweet['tweet'], '_id':tweet['_id']}
                 topic_tweets.append(tweet)
 
