@@ -18,32 +18,20 @@ active
                 <p class="category">Here are all the Usernames</p>
             </div>
             <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
+                <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable">
                     <thead>
-                        <th class="col-md-2">Username</th>
-                        <th class="col-md-2">Username</th>
-                        <th class="col-md-2">Username</th>
-                        <th class="col-md-2">Username</th>
-                        <th class="col-md-2">Username</th>
-                        <th class="col-md-2">Username</th>
+                        <th class="col-md-4">Username</th>
+                        <th class="col-md-3">Number of Tweets</th>
+                        <th class="col-md-3">Number of Mentions</th>
+                        <th class="col-md-2">User Tweets</th>
                     </thead>
                     <tbody>
-                        {% for username_row in usernameList | batch(6, '&nbsp;') %}
+                        {% for uname in usernameList%}
                             <tr>
-                                {% for uname in username_row %}
-                                    <td>
-                                        {% if uname != '&nbsp;' %}
-                                            <strong class="username">{{ uname['username'] }}</strong>
-                                            </br>
-                                            <a href="{{ url_for('view_specific_user', user_id=uname['_id'])}}"> View User</a>
-                                            </br>
-                                            Tweets: {{ uname['numTweets'] }}
-                                            </br>
-                                            Mentions: {{ uname['numMentions'] }}
-                                        {% endif %}
-
-                                    </td>
-                                {% endfor %}
+                                <td><strong class="username">{{ uname['username'] }}</strong></td>
+                                <td>{{ uname['numTweets'] }}</td>
+                                <td>{{ uname['numMentions'] }}</td>
+                                <td><a href="{{ url_for('view_specific_user', user_id=uname['_id'])}}"> View</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -57,5 +45,9 @@ active
 {% endblock %}
 
 {% block customJS %}
-
+    <script>
+        $(document).ready(function(){
+            $('#myTable').DataTable();
+        });
+    </script>
 {% endblock %}
