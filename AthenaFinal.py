@@ -219,6 +219,7 @@ def find_more_kb_names():
 
 @app.route('/new_workspace', methods=['POST'])
 def new_workspace():
+    print (request.form)
     return new_analysis.new_analysis()
 
 

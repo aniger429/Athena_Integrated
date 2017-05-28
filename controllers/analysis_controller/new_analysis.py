@@ -13,10 +13,15 @@ def candidate_analysis(tweets, candidate_name):
 
 
 def new_analysis():
+    print("here")
+
     flevel = request.form['first-level']
     slevel = request.form['second-level']
     tlevel = request.form['third-level']
+    print("again and again")
     candidate_name = request.form['candidate-name']
+
+
 
     # first level
     if flevel == "candidate":
