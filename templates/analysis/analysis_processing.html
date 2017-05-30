@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block customCSS %}
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <style>
+        .title.custom{
+            font-size: 30px;
+        }
+    </style>
+{% endblock %}
+
+{%block name%}
+Analyze Data
+{%endblock%}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">Configure Analysis</h4>
+{#                <p class="category custom">Tweet</p>#}
+            </div>
+            <hr/>
+              <div class="panel-body">
+                banana
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+
+{% endblock %}

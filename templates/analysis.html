@@ -54,16 +54,16 @@ Analyze Data
                     <option value="none" selected>None</option>
                   </select>
               </div>
-              </br>
-              </br>
-              <div class="form-group col-md-12">
-                  <label for="sel1" class="col-md-12">Analyze for Candidate:</label>
-                  <select name="candidate-name" class="form-control col-md-12" id="sel1">
-                    {% for cname in candidate_names %}
-                        <option value={{ cname }}>{{ cname | capitalize }}</option>
-                    {% endfor %}
-                  </select>
-              </div>
+
+{#              <div class="form-group col-md-12">#}
+{#                  <label for="sel1" class="col-md-12">Analyze for Candidate:</label>#}
+{#                  <select name="candidate-name" class="form-control col-md-12" id="sel1">#}
+{#                    {% for cname in candidate_names %}#}
+{#                        <option value={{ cname }}>{{ cname | capitalize }}</option>#}
+{#                    {% endfor %}#}
+{#                  </select>#}
+{#              </div>#}
+
 {#              <div class="form-group col-md-6">#}
 {#                  <label for="sel1" class="col-md-6">Workspace</label>#}
 {#                  <select name="use-workspace-name" class="form-control col-md-12" id="sel1">#}
@@ -77,25 +77,16 @@ Analyze Data
 {#                  <label for="sel1" class="col-md-6">New Workspace Name</label>#}
 {#                  <input type="text" name="new-workspace-name" class="form-control col-md-12" value="Default"/>#}
 {#              </div>#}
-              <button id="reset-selection" type="button" class="btn btn-info col-md-2">Reset</button>
-              <input id="submit-button" type="submit" class="btn btn-success col-md-2 pull-right" Value="Analyze">
+              <div class="row">
+                  <div class="col-md-12" style="margin: 15px;">
+                      <button id="reset-selection" type="button" class="btn btn-info col-md-2">Reset</button>
+                      <input id="submit-button" type="submit" class="btn btn-success col-md-2 pull-right" Value="Analyze">
+                  </div>
+              </div>
+
               </div>
             </div>
          </form>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">Configure Analysis</h4>
-{#                <p class="category custom">Tweet</p>#}
-            </div>
-            <hr/>
-              <div class="panel-body">
-                banana
-              </div>
-        </div>
     </div>
 </div>
 {% endblock %}
