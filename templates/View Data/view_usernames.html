@@ -16,6 +16,10 @@ active
             <div class="header">
                 <h4 class="title">Usernames in the Database</h4>
                 <p class="category">Here are all the Usernames</p>
+                <form action="/download" method="post" enctype="multipart/form-data">
+                    <input type="text" name="download_data" value="all_usernames" hidden/>
+                    <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download Usernames">
+                </form>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable">

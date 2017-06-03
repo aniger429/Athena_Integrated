@@ -34,7 +34,22 @@ def bulk_update(username_dict):
 def get_all_username():
     return db.Username.find()
 
+def get_dict_list_usernames():
+    usernames = db.Username.find()
+    uNames = []
+    idUsername = []
+    numMentions = []
+    numTweets = []
 
+    for uname in usernames:
+        uNames.append(uname['username'])
+        numMentions.append(uname['numMentions'])
+        numTweets.append(uname['numTweets'])
+        idUsername.append('@'+str(uname['_id']))
+
+    unameDict = {'uNames': uNames, 'numMentions': numMentions, 'numTweets': numTweets, 'idUsername': idUsername}
+
+    return unameDict
 def get_all_username_tup():
     usernameTup = []
     for user in db.Username.find({}, {'username': 1}):

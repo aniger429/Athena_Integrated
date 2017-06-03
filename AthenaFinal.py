@@ -14,6 +14,7 @@ from controllers.Topic_Analysis.Find_Topic_Tweets import *
 from controllers.Topic_Analysis.Topic_Analysis import *
 from controllers.analysis_controller import new_analysis
 from controllers.analysis_controller.Pickle_Saver import *
+from controllers.download import *
 from collections import Counter
 
 # Initialize the Flask application
@@ -112,6 +113,7 @@ def view_topic_analysis():
     final_list = tfidf_vectorizer(tweets_only, 1, 3)
     lda = topic_lda_tfidf(tweets_only, 1, 1, 10, 100)
     find_topic_tweets(lda,tweets)
+    save_obj(final_list, "tf_idf")
 
     return render_template("analysis/Topic/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
                            topic_analysis_for=topic_for)
@@ -219,9 +221,13 @@ def find_more_kb_names():
 
 @app.route('/new_workspace', methods=['POST'])
 def new_workspace():
-    return render_template("analysis/analysis_processing.html")
+    # return render_template("analysis/analysis_processing.html")
 
-    # return new_analysis.new_analysis()
+    return new_analysis.new_analysis()
+
+@app.route('/download', methods=['POST'])
+def download_data():
+    return download()
 
 
 if __name__ == '__main__':

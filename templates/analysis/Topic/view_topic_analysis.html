@@ -72,13 +72,19 @@ Tweet
                 <div class="header">
                     <h4 class="title custom">{{ "Top" }} {{ tf_idf | length }} {{ "Unigrams" }}</h4>
 {#                    <p class="category custom">0.99 - topic score</p>#}
+                    <form action="/download" method="post" enctype="multipart/form-data">
+                    <input type="text" name="download_data" value="download_topic_ngrams" hidden/>
+                    <input type="text" name="data_value" value={{ tf_idf }} hidden/>
+                    <input id="submit" type="submit" class="btn btn-info col-md-12" Title="FIlename: topic_ngrams"
+                           Value="Download N-grams">
+                </form>
                 </div>
                 <div class="content table-responsive table-full-width">
                     <table class="table table-striped">
                         <thead>
                             <th class="col-md-1">Number</th>
-                            <th class="col-md-7">Word</th>
-                            <th class="col-md-4">Score</th>
+                            <th class="col-md-6">Word</th>
+                            <th class="col-md-5">Score</th>
                         </thead>
                         <tbody>
                                 {% for key, value in tf_idf.items() %}

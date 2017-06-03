@@ -62,10 +62,13 @@ def data_cleaning (tweet, nameTuple):
     # remove stopwords
     tweet = ' '.join([word for word in tweet.split() if word not in stopwords])
     # remove shortwords 1-2 characters
-    shortword = re.compile(r'\W*\b\w{1,2}\b')
-    tweet = shortword.sub('', tweet)
+    # shortword = re.compile(r'\W*\b\w{1,2}\b')
+    # tweet = shortword.sub('', tweet)
     # remove punctuation marks
-    tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
+    tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”|\[|\])", ' ', tweet)
+
+    # remove extra spaces between words
+    tweet = ' '.join(tweet.split())
 
     # standardize words # collapse to 1 letter ex: cooool to col
     # tweet = ''.join(ch for ch, _ in itertools.groupby(tweet))
@@ -106,7 +109,10 @@ def cleaning_file(fname):
 
     unigrams, bigrams, trigrams = ngram_extractor.get_ngrams(cleaned_tweets)
 
-    d = {'idTweet': data_source['Id'], 'idUsername': anonymize_poster_username(data_source['Username']),'tweet': cleaned_tweets, 'date_created': data_source['Date Created'], 'location':data_source['Location'], 'hashtags': process_hashtags(data_source['Hashtags']), 'favorite':data_source['Favorites'], 'retweet':data_source['Retweets'], 'users_mentioned':get_usernames(cleaned_tweets), 'unigram':unigrams, 'bigram':bigrams, 'trigram':trigrams}
+    d = {'idTweet': data_source['Id'], 'idUsername': anonymize_poster_username(data_source['Username']),
+         'orig_tweets': raw_tweets, 'tweet': cleaned_tweets, 'date_created': data_source['Date Created'], 'location':data_source['Location'],
+         'hashtags': process_hashtags(data_source['Hashtags']), 'favorite':data_source['Favorites'], 'retweet':data_source['Retweets'],
+         'users_mentioned':get_usernames(cleaned_tweets), 'unigram':unigrams, 'bigram':bigrams, 'trigram':trigrams}
 
     df = pd.DataFrame(data=d, index=None)
     # df.to_excel("CleanedTweets.xlsx", index=False)
