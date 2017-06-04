@@ -80,6 +80,32 @@ def data_cleaning (tweet, nameTuple):
 
     return tweet
 
+def data_cleaning (tweet):
+    tweet = pat.remove_from_tweet(tweet)
+    # remove HTML characters
+    tweet = re.sub("(&\S+;)",'', tweet)
+    # converts the tweets to lowercase
+    tweet = tweet.lower()
+    # expand contradictions
+    tweet = expand_contractions(tweet)
+    # remove stopwords
+    tweet = ' '.join([word for word in tweet.split() if word not in stopwords])
+    # remove shortwords 1-2 characters
+    shortword = re.compile(r'\W*\b\w{1,2}\b')
+    tweet = shortword.sub('', tweet)
+    # remove punctuation marks
+    tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
+
+    # standardize words # collapse to 1 letter ex: cooool to col
+    # tweet = ''.join(ch for ch, _ in itertools.groupby(tweet))
+
+    # standardize words # collapse to 2 letter ex: cooool to cool
+    # tweet = re.sub(r'(.)\1+', r'\1\1', tweet)
+
+    # print("After:"+ tweet)
+
+    return tweet
+
 def anonymize_poster_username(username_list):
     username_dict = get_all_username_dict()
     return [username_dict['@'+u] for u in username_list]
