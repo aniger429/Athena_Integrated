@@ -50,11 +50,14 @@ def get_dict_list_usernames():
     unameDict = {'uNames': uNames, 'numMentions': numMentions, 'numTweets': numTweets, 'idUsername': idUsername}
 
     return unameDict
+
+
 def get_all_username_tup():
     usernameTup = []
     for user in db.Username.find({}, {'username': 1}):
         usernameTup.append((user['username'], '@'+str(user['_id'])))
     return usernameTup
+
 
 def get_all_username_dict():
     username_dict = {}

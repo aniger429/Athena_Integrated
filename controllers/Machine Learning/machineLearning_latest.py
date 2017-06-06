@@ -49,7 +49,7 @@ def decideSentiment(tweet ,df, text_clf):
     print(data.Tweet)
     print(predict)
 
-data = preprocess('Election-18.xlsx', 3500)
+data = preprocess('../../Data/Election-18.xlsx', 3500)
 nb = train(data, 1)
 svm  = train(data, 2)
 knn = train(data, 3)
