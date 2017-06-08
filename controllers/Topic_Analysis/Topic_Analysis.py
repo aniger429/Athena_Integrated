@@ -85,7 +85,7 @@ ngrams you want to analyze. Pure unigrams would require 1,1 as value respectivel
 num_iter refer to the number of topics you want it to produce and number of iterations you want it to iterate through
 each document.
 """
-def topic_lda_tfidf(tweets, start_range,end_range, num_topics, num_iter):
+def topic_lda_tfidf(tweets, start_range,end_range, num_topics, num_iter, no_top_words=15):
     tfidfvec = TfidfVectorizer(ngram_range=(start_range, end_range), min_df=0, use_idf=True, sublinear_tf=True, norm='l2',
                                smooth_idf=True)
     z = tfidfvec.fit_transform(tweets)
@@ -94,7 +94,7 @@ def topic_lda_tfidf(tweets, start_range,end_range, num_topics, num_iter):
     lda.fit_transform(z)
     score = lda.score(z)
 
-    no_top_words = 15
+    # no_top_words = 15
     feature_names = tfidfvec.get_feature_names()
     topics_dict= collections.OrderedDict()
 

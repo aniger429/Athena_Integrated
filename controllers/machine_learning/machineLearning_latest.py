@@ -1,4 +1,4 @@
-import cleaning as cl
+from controllers.machine_learning.cleaning import *
 from sklearn.feature_extraction.text import CountVectorizer
 import pandas as pd
 import numpy as np
@@ -17,7 +17,7 @@ def preprocess(file_name, samples):
     removeSp = re.compile(r'@(\w+)')
 
     for i in range(0, len(data)):
-        data['Tweet'][i] = cl.dataCleaning(data['Tweet'][i])
+        data['Tweet'][i] = data_cleaning(data['Tweet'][i])
         data['Tweet'][i] = removeSp.sub('', data['Tweet'][i])
     data = shuffle(data)    
     data = data[:samples]
@@ -57,6 +57,6 @@ dt = train(data, 4)
 me = train(data, 5)
 
 decideSentiment('hi', data, me)
-decideSentiment('I hate bananas', data, me)
+decideSentiment('I hate bananas but i love strawberries', data, me)
 decideSentiment('I love bananas', data, me)
 

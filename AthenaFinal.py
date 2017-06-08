@@ -221,9 +221,32 @@ def find_more_kb_names():
 
 @app.route('/new_workspace', methods=['POST'])
 def new_workspace():
-    # return render_template("analysis/analysis_processing.html")
+    flevel = request.form['first-level']
+    slevel = request.form['second-level']
+    tlevel = request.form['third-level']
+    last = ""
+    vizOptions = []
+    count= 5
+    if tlevel == "none":
+        if slevel == "none":
+            last = flevel;
+            count = 3
+        else:
+            count = 4
+            last = slevel
+    else:
+        last = tlevel
 
-    return new_analysis.new_analysis()
+    if last == "candidate":
+        vizOptions = ['concordancer']
+    elif last == "topic":
+        vizOptions = ['default']
+    elif last == "sentiment":
+        vizOptions = ['default_SA']
+
+    return render_template("analysis/analysis_processing.html", flevel=flevel, slevel=slevel, tlevel=tlevel, vizOptions=vizOptions, count=count)
+
+    # return new_analysis.new_analysis()
 
 @app.route('/download', methods=['POST'])
 def download_data():
