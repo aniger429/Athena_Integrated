@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% from 'analysis/macros.html' import candidate_config, topic_config, sentiment_config %}
+
 {% block customCSS %}
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
@@ -55,9 +57,11 @@ Configure Analysis
 {%endblock%}
 
 {% block content %}
-<h3 style="text-align: center">
-    {{ flevel | capitalize }} - {% if slevel != "none" %} {{ slevel |capitalize }} {% endif %} - {% if tlevel != "none" %} {{ tlevel |capitalize}} {% endif %}
-</h3>
+<h4 style="text-align: center">
+    {{ flevel | capitalize }}
+    {% if slevel != "none" %} - {{ slevel |capitalize }} {% endif %}
+    {% if tlevel != "none" %} - {{ tlevel |capitalize }} {% endif %}
+</h4>
 <div class="container"></div>,<div class="container">
 
 <div class="stepwizard col-md-offset-3">
@@ -71,85 +75,38 @@ Configure Analysis
     </div>
   </div>
 
-  <form role="form" action="" method="post">
+  <form role="form" action="/new_analysis" method="post">
 
-  {% if flevel == "candidate" or slevel == "candidate" or tlevel == "candidate" %}
-    <div class="row setup-content" id="step-1">
-      <div class="col-xs-6 col-md-offset-3">
-        <div class="col-md-12">
-          <h3> Candidate Analysis</h3>
-          <div class="form-group">
-            <label class="control-label">Name</label>
-             <select name="candidate-name" class="form-control col-md-12" id="sel1">
-                    {% for cname in candidate_names %}
-                        <option value={{ cname }}>{{ cname | capitalize }}</option>
-                    {% endfor %}
-              </select>
-          </div>
-          <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
-        </div>
-      </div>
-    </div>
-   {% endif %}
-
-   {% if flevel == "topic" or slevel == "topic" or tlevel == "topic" %}
-    <div class="row setup-content" id="step-2">
-      <div class="col-xs-6 col-md-offset-3">
-        <div class="col-md-12">
-          <h3> Topic Analysis</h3>
-
-          <h5>Topic Modeling - LDA</h5>
-          <div class="form-group">
-            <label class="control-label">Minimum N-Gram: </label>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-min-gram">
-          </div>
-          <div class="form-group">
-            <label class="control-label">Maximum N-Gram</label>
-           <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-max-gram">
-          </div>
-          <div class="form-group">
-            <label class="control-label">Number of Iterations</label>
-            <input type="number" class="form-control" id="email" min="1" max="10000" value="100" name="lda-iter">
-          </div>
-          <div class="form-group">
-            <label class="control-label">Number of Topics</label>
-            <input type="number" class="form-control" id="email" min="10" max="100" value="10" name="lda-topic">
-          </div>
-          <div class="form-group">
-            <label class="control-label">Words per Topic</label>
-            <input type="number" class="form-control" id="email" min="10" max="1000" value="15" name="lda-word">
-          </div>
-
-          <hr style="height:1px;border:none;color:#333;background-color:#333;" />
-
-          <h5>TF-IDF</h5>
-          <div class="form-group">
-            <label class="control-label">Minimum N-Gram: </label>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="tfidf-min-gram">
-          </div>
-          <div class="form-group">
-            <label class="control-label">Maximum N-Gram</label>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="3" name="tfidf-max-gram">
-          </div>
-
-          <button class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
-          <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
-        </div>
-      </div>
-    </div>
+  {% if flevel == "candidate" %}
+        {{ candidate_config(1, candidate_names) }}
+  {% elif flevel == "topic" %}
+        {{ topic_config(1) }}
+  {% else %}
+        {{ sentiment_config(1) }}
   {% endif %}
 
- {% if flevel == "sentiment" or slevel == "sentiment" or tlevel == "sentiment" %}
-    <div class="row setup-content" id="step-3">
-      <div class="col-xs-6 col-md-offset-3">
-        <div class="col-md-12">
-          <h3> Sentiment Analysis</h3>
-          <button class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
-          <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
-        </div>
-      </div>
-    </div>
+
+  {%  if count > 3  %}
+      {% if slevel == "candidate" %}
+            {{ candidate_config(2, candidate_names) }}
+      {% elif slevel == "topic" %}
+            {{ topic_config(2) }}
+      {% elif slevel == "sentiment" %}
+            {{ sentiment_config(2) }}
+      {% endif %}
+
+    {%  if count > 4  %}
+      {% if tlevel == "candidate" %}
+            {{ candidate_config(3, candidate_names) }}
+      {% elif tlevel == "topic" %}
+            {{ topic_config(3) }}
+      {% elif tlevel == "sentiment" %}
+            {{ sentiment_config(3) }}
+      {% endif %}
+    {% endif %}
   {% endif %}
+
+
     <div class="row setup-content" id="step-{{ count - 1 }}">
       <div class="col-xs-6 col-md-offset-3">
         <div class="col-md-12">
@@ -167,6 +124,8 @@ Configure Analysis
         </div>
       </div>
     </div>
+
+  <input name="steps" value="{{ flevel }}-{{ slevel }}-{{ tlevel }}" hidden/>
   </form>
 
 </div>

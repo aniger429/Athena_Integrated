@@ -16,6 +16,7 @@ from controllers.analysis_controller import new_analysis
 from controllers.analysis_controller.Pickle_Saver import *
 from controllers.download import *
 from collections import Counter
+from controllers.analysis_controller.view_analysis import *
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -92,31 +93,20 @@ def view_candidate_data():
                            candidate_tweets=data)
 
 
-@app.route('/topic')
-def view_topic_analysis():
-    tweets = get_all_tweets()
-    datasource=request.args.get('datasource')
-    topic_for = "All Tweets"
-
+@app.route('/topic_analysis_manager', methods=['POST'])
+# this calls the view_analysis under controllers folder
+def topic_analysis_manager():
+    datasource = request.form['datasource']
+    print(datasource)
+    # source: candidate
     if datasource == "candidate":
-        cname = request.args.get('candidate_name')
-        # tweets = [d for d in load_obj("Candidate") if d['cand_ana'][cname] != '-1']
-        tweets = load_obj("Tweets")
-        topic_for = "Candidate: "+cname
+        candidate_name = request.form['candidate_name']
+        return view_candidate(candidate_name)
+    # source: sentiment
     elif datasource == "sentiment":
-        senti = request.args.get('senti')
-        data = load_obj("Sentiment")
-        topic_tweets = data[senti]
-        topic_for=senti+"Sentiment"
+        sentiment = request.form['sentiment']
+        return view_sentiment(sentiment)
 
-    tweets_only = [remove_usernames(t['tweet']) for t in tweets]
-    final_list = tfidf_vectorizer(tweets_only, 1, 3)
-    lda = topic_lda_tfidf(tweets_only, 1, 1, 10, 100)
-    find_topic_tweets(lda,tweets)
-    save_obj(final_list, "tf_idf")
-
-    return render_template("analysis/Topic/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
-                           topic_analysis_for=topic_for)
 
 @app.route('/topic_tweets')
 def view_tweets_for_topic():
@@ -219,8 +209,8 @@ def find_more_kb_names():
     return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(), kbFileList=get_all_kbfile(), duplicate=False)
 
 
-@app.route('/new_workspace', methods=['POST'])
-def new_workspace():
+@app.route('/analysis_config', methods=['POST'])
+def analysis_config():
     flevel = request.form['first-level']
     slevel = request.form['second-level']
     tlevel = request.form['third-level']
@@ -244,9 +234,16 @@ def new_workspace():
     elif last == "sentiment":
         vizOptions = ['default_SA']
 
-    return render_template("analysis/analysis_processing.html", flevel=flevel, slevel=slevel, tlevel=tlevel, vizOptions=vizOptions, count=count)
+    return render_template("analysis/analysis_processing.html",
+                           candidate_names=get_all_candidate_names(), flevel=flevel, slevel=slevel, tlevel=tlevel,
+                           vizOptions=vizOptions, count=count)
 
-    # return new_analysis.new_analysis()
+
+@app.route('/new_analysis', methods=['POST'])
+def new_ana():
+    print("here!")
+    return new_analysis.new_analysis()
+
 
 @app.route('/download', methods=['POST'])
 def download_data():

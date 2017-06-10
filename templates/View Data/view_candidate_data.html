@@ -1,10 +1,14 @@
 {% extends "base.html" %}
+{% from 'analysis/macros.html' import collapsible_topic_config%}
 {% block customCSS %}
 
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
         .title.custom{
             font-size: 30px;
+        }
+        .form-group {
+            padding:10px;
         }
     </style>
 {% endblock %}
@@ -17,7 +21,18 @@ Tweet
 {% set candidate_name = candidate_data['candidate_name'] %}
 <div class="row">
     <div class="col-md-12">
-        <button class="btn btn-info btn-md"><a href={{ url_for('view_topic_analysis', datasource="candidate", candidate_name=candidate_name) }}>Determine Topics</a></button>
+        <div class="collapse" id="collapse_topic">
+            <form action="/topic_analysis_manager" method="POST">
+              <input name="datasource" value="candidate" hidden>
+              <input name="candidate_name" value="{{ candidate_name }}" hidden>
+
+                 {{ collapsible_topic_config() }}
+
+              <button type="submit" class="btn btn-success btn-md pull-right btn-lg">Submit Configuration</button>
+            </form>
+        </div>
+
+        <button href="#collapse_topic" class="btn btn-info btn-md" data-toggle="collapse" style="margin: 10px">Determine Topics</button>
         <button class="btn btn-info btn-md"><a href={{ url_for('view_sentiment_analysis', datasource="Candidate", candidate_name=candidate_name) }}>View Sentiment</a></button>
     </div>
     </br>
