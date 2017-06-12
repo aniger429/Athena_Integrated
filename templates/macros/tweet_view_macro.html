@@ -1,0 +1,47 @@
+{% macro view_user_tweets(type, tweetDataList, id) %}
+    <div class="card">
+        <div class="header">
+            <h4 class="title custom">User {{ type }}</h4>
+            <p class="category custom">Tweets</p>
+        </div>
+        <div class="content table-responsive table-full-width">
+            <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="{{ id }}">
+                <thead>
+                    <th class="col-md-1">Number</th>
+                    <th class="col-md-10">Tweet</th>
+                    <th class="col-md-1">View Tweet</th>
+                </thead>
+                    {% if tweetDataList == [] %}
+                        <tr><td colspan="2">No Tweets</td></tr>
+                    {% else %}
+                        {% for tweet in tweetDataList %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    {% for word in tweet['tweet'] %}
+                                        {% if word[:1] != '@' %}
+                                            {{ word }}
+                                        {% else %}
+                                           <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td><a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+            </table>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro card_header(title, subtitle) %}
+<div class="card">
+    <div class="header">
+        <h4 class="title custom">{{ title }}</h4>
+        <p class="category custom">{{ subtitle }}</p>
+    </div>
+    <br/>
+</div>
+{% endmacro %}

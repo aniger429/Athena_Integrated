@@ -18,7 +18,7 @@
         <option value="$MODULE_DIR$/templates/analysis/Topic" />
         <option value="$MODULE_DIR$/templates/analysis" />
         <option value="$MODULE_DIR$/templates/View Data" />
-        <option value="$MODULE_DIR$/static/fonts/bilbo" />
+        <option value="$MODULE_DIR$/templates/macros" />
       </list>
     </option>
   </component>

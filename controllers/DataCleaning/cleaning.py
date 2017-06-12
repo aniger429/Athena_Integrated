@@ -46,7 +46,8 @@ def get_usernames(tweet_list):
 
     return found_username_list
 
-def data_cleaning (tweet, nameTuple):
+
+def init_data_cleaning (tweet, nameTuple):
     # print ("Before:"+ tweet)
     # data anonymization
     tweet = reduce(lambda a, kv: a.replace(*kv), nameTuple, tweet)
@@ -79,6 +80,7 @@ def data_cleaning (tweet, nameTuple):
     # print("After:"+ tweet)
 
     return tweet
+
 
 def data_cleaning (tweet):
     tweet = pat.remove_from_tweet(tweet)
@@ -131,7 +133,7 @@ def cleaning_file(fname):
 
     raw_tweets = data_source['Tweet']
     cleaned_tweets = []
-    [cleaned_tweets.append(data_cleaning(t, nameTuple)) for t in raw_tweets]
+    [cleaned_tweets.append(init_data_cleaning(t, nameTuple)) for t in raw_tweets]
 
     unigrams, bigrams, trigrams = ngram_extractor.get_ngrams(cleaned_tweets)
 
@@ -141,6 +143,9 @@ def cleaning_file(fname):
          'users_mentioned':get_usernames(cleaned_tweets), 'unigram':unigrams, 'bigram':bigrams, 'trigram':trigrams}
 
     df = pd.DataFrame(data=d, index=None)
+    # this removes empty tweets after cleaning
+    df.drop(df[df.tweet == ""].index, inplace=True)
+
     # df.to_excel("CleanedTweets.xlsx", index=False)
     print("done cleaning")
     insert_new_tweet(df.to_dict(orient='records'))

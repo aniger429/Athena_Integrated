@@ -27,7 +27,7 @@ active
                         <th class="col-md-4">Username</th>
                         <th class="col-md-3">Number of Tweets</th>
                         <th class="col-md-3">Number of Mentions</th>
-                        <th class="col-md-2">User Tweets</th>
+                        <th class="col-md-2">User Profile</th>
                     </thead>
                     <tbody>
                         {% for uname in usernameList%}
@@ -35,7 +35,7 @@ active
                                 <td><strong class="username">{{ uname['username'] }}</strong></td>
                                 <td>{{ uname['numTweets'] }}</td>
                                 <td>{{ uname['numMentions'] }}</td>
-                                <td><a href="{{ url_for('view_specific_user', user_id=uname['_id'])}}"> View</a></td>
+                                <td><a href="{{ url_for('view_specific_user', user_id=uname['_id'])}}">View</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

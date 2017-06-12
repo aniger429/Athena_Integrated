@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% from "macros/tweet_view_macro.html" import view_user_tweets, card_header %}
+
 {% block customCSS %}
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
@@ -15,111 +17,61 @@ User
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ userData['numMentions'] }}</h4>
-                    <p class="category custom">Mentions</p>
-
-                </div>
-                </br>
-            </div>
-        </div>
-         <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ userData['username'] }}
-                    </h4>
-                    <p class="category custom">{{ userData['_id'] }}</p>
-                </div>
-                </br>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ userData['numTweets'] }}</h4>
-                    <p class="category custom">Tweets</p>
-                </div>
-            </br>
-            </div>
-        </div>
+        <form action="/download" method="post" enctype="multipart/form-data">
+            <input type="text" name="download_data" value="specific_username" hidden/>
+            <input type="text" name="username_id" value="{{ userData['_id'] }}" hidden/>
+            <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download User Data">
+        </form>
     </div>
 </div>
+
+{#<div class="row">#}
+{#    <div class="col-md-4">#}
+{#        {{ card_header(userData['numMentions'], "Mentions") }}#}
+{#    </div>#}
+{#    <div class="col-md-4">#}
+{#        {{ card_header(userData['username'], userData['_id']) }}#}
+{#    </div>#}
+{#    <div class="col-md-4">#}
+{#        {{ card_header(userData['numTweets'], "Tweets") }}#}
+{#    </div>#}
+{#</div>#}
+{#<div class="row">#}
+{#    {{ view_user_tweets("Mentioned",user_mentioned_tweet_list, "myTable1" ) }}#}
+{#    {{ view_user_tweets("Posted",tweetDataList,"myTable2" ) }}#}
+{#</div>#}
+
 <div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">User Mentioned</h4>
-                <p class="category custom">Tweets</p>
-            </div>
-            <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
-                    <thead>
-                        <th class="col-md-12"></th>
-                    </thead>
-                        {% if user_mentioned_tweet_list == [] %}
-                            <tr><td>No Tweets</td></tr>
-                        {% else %}
-                            {% for tweet in user_mentioned_tweet_list %}
-                                <tr>
-                                    <td>
-                                        <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
-                                        </br>
-    {#                                    {{ tweet['tweet'] }}#}
-                                        {% for word in tweet['tweet'] %}
-                                            {% if word[:1] != '@' %}
-                                                {{ word }}
-                                            {% else %}
-                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                </table>
-            </div>
-        </div>
+    <div class="col-md-4">
+        {{ card_header(userData['numMentions'], "Mentions") }}
     </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">User Posted</h4>
-                <p class="category custom">Tweets</p>
-            </div>
-            <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
-                    <thead>
-                        <th class="col-md-12"></th>
-                    </thead>
-                        {% if tweetDataList == [] %}
-                            <tr><td>No Tweets</td></tr>
-                        {% else %}
-                            {% for tweet in tweetDataList %}
-                                <tr>
-                                    <td>
-                                        <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
-                                        </br>
-                                        {% for word in tweet['tweet'] %}
-                                            {% if word[:1] != '@' %}
-                                                {{ word }}
-                                            {% else %}
-                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                </table>
-            </div>
-        </div>
+    <div class="col-md-4">
+        {{ card_header(userData['username'], userData['_id']) }}
+    </div>
+    <div class="col-md-4">
+        {{ card_header(userData['numTweets'], "Tweets") }}
     </div>
 </div>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#posted">User Posted</a></li>
+    <li><a data-toggle="tab" href="#mentioned">User Mentioned</a></li>
+</ul>
 
+<div class="tab-content">
+    <div id="posted" class="tab-pane fade in active">
+      {{ view_user_tweets("Posted",tweetDataList,"myTable2" ) }}
+    </div>
+    <div id="mentioned" class="tab-pane fade">
+      {{ view_user_tweets("Mentioned",user_mentioned_tweet_list, "myTable1" ) }}
+    </div>
+</div>
 {% endblock %}
 
 {% block customJS %}
-
+    <script>
+        $(document).ready(function(){
+            $('#myTable1').DataTable();
+            $('#myTable2').DataTable();
+        });
+    </script>
 {% endblock %}

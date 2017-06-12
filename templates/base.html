@@ -11,7 +11,6 @@
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
-
     <!-- Bootstrap core CSS     -->
     <link href="{{ url_for('static', filename="css/bootstrap.min.css") }}" rel="stylesheet" />
 
@@ -53,7 +52,6 @@
             height:70px;
         }
     </style>
-
 </head>
 <body>
 
@@ -184,7 +182,7 @@
                     </ul>
                 </nav>
 				<div class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa ti-heart fa-lg fa-spin fa-fw text-danger"></i>
+                    &copy; 2017, made with <i class="fa ti-heart fa-lg fa-spin fa-fw text-danger"></i>
                 </div>
 {#            </div>#}
         </footer>
@@ -216,6 +214,8 @@
     <!-- Layout -->
     <script src="{{ url_for('static', filename="js/layout/bootstrap-layout.js") }}" ></script>
 
+
     {%block customJS%}
+
     {%endblock%}
 </html>
