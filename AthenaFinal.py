@@ -6,17 +6,16 @@ from DBModels.KBFile import *
 from DBModels.MongoDB_Manager import *
 from DBModels.Username import *
 from controllers import uploadFile
-from controllers.Candidate_Analysis.Candidate_Identification_Final import *
+from controllers.Candidate_Analysis.Candidate_Identification import *
 from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
-from controllers.Topic_Analysis.Find_Topic_Tweets import *
-from controllers.Topic_Analysis.Topic_Analysis import *
-from controllers.analysis_controller import new_analysis
-from controllers.analysis_controller.Pickle_Saver import *
+# from controllers.analysis_controller import new_analysis
 from controllers.download import *
 from collections import Counter
-from controllers.analysis_controller.view_analysis import *
+from controllers.analysis_controller.topic_view_analysis import *
+from controllers.analysis_controller.analysis_manager import new_analysis
+
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -138,7 +137,7 @@ def view_sentiment_analysis():
     neutral_tweets = {'tweets': neutral_tweets, 'candidate_mentioned': identify_candidate_mentioned(neutral_tweets)}
     negative_tweets = {'tweets': negative_tweets, 'candidate_mentioned': identify_candidate_mentioned(negative_tweets)}
 
-    return render_template("analysis/view_tweets_sentiment.html", tweet_list=[negative_tweets, positive_tweets,neutral_tweets], sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=sentiment_for)
+    return render_template("analysis/Sentiment/view_tweets_sentiment.html", tweet_list=[negative_tweets, positive_tweets, neutral_tweets], sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=sentiment_for)
 
 
 @app.route('/analysis')
@@ -232,7 +231,9 @@ def analysis_config():
     elif last == "topic":
         vizOptions = ['default']
     elif last == "sentiment":
-        vizOptions = ['default_SA']
+        vizOptions = ['Tabular VIew']
+        if flevel == "candidate" or slevel == "candidate":
+            vizOptions.append("Concordancer with Sentiment")
 
     return render_template("analysis/analysis_processing.html",
                            candidate_names=get_all_candidate_names(), flevel=flevel, slevel=slevel, tlevel=tlevel,
@@ -242,8 +243,8 @@ def analysis_config():
 @app.route('/new_analysis', methods=['POST'])
 def new_ana():
     print("here!")
-    return new_analysis.new_analysis()
-
+    # return new_analysis.new_analysis()
+    return new_analysis()
 
 @app.route('/download', methods=['POST'])
 def download_data():

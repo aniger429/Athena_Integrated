@@ -1,8 +1,9 @@
 from flask import request, redirect, url_for, render_template
-from controllers.Candidate_Analysis.Candidate_Identification_Final import *
+from controllers.Candidate_Analysis.Candidate_Identification import *
 from controllers.Topic_Analysis.Topic_Analysis import *
 from collections import Counter
 from controllers.Topic_Analysis.Find_Topic_Tweets import *
+from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
 
 def candidate_analysis(tweets, candidate_name):
@@ -14,14 +15,8 @@ def candidate_analysis(tweets, candidate_name):
 
 def new_analysis():
     print("here")
-
-    flevel = request.form['first-level']
-    slevel = request.form['second-level']
-    tlevel = request.form['third-level']
-    print("again and again")
+    flevel,slevel,tlevel = request.form['steps'].split("-")
     candidate_name = request.form['candidate-name']
-
-
 
     # first level
     if flevel == "candidate":
@@ -38,12 +33,14 @@ def new_analysis():
 
         elif slevel == "sentiment":
             print("slevel: sentiment")
-            # tweets = load_obj('Tweets')
-            # positive_tweets, neutral_tweets, negative_tweets = sentiment_analysis(tweets)
-            #
-            # return render_template("analysis/view_tweets_sentiment.html",
-            #                        tweet_list=[negative_tweets, positive_tweets, neutral_tweets],
-            #                        sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=candidate_name)
+            viz_selected = request.form['viz_selected']
+
+            if viz_selected == "Concordancer with Sentiment":
+                final_tweets= compute_senti_candidate_tweet(data)
+                print(final_tweets)
+                return render_template("analysis/Sentiment/view_concordancer_sentiment.html", candidate_name_count=candidate_name_count,
+                                       candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets)
+
             return redirect(url_for('view_sentiment_analysis', datasource='Candidate', candidate_name=candidate_name))
 
 

@@ -19,6 +19,7 @@
         <option value="$MODULE_DIR$/templates/analysis" />
         <option value="$MODULE_DIR$/templates/View Data" />
         <option value="$MODULE_DIR$/templates/macros" />
+        <option value="$MODULE_DIR$/templates/analysis/Sentiment" />
       </list>
     </option>
   </component>

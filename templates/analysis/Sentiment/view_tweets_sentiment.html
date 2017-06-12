@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% from 'analysis/macros.html' import collapsible_topic_config %}
+
+{% block customCSS %}
+
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <style>
+        .title.custom{
+            font-size: 30px;
+        }
+    </style>
+{% endblock %}
+
+{%block name%}
+Sentiment
+{%endblock%}
+
+{% block content %}
+{% for c in range(0, sentiment_labels | length) %}
+    <div class="col-md-12">
+        <div class="collapse" id="{{ sentiment_labels[c] }}_collapse_topic">
+            <h3>{{ sentiment_labels[c] | capitalize}}</h3>
+            <form action="/topic_analysis_manager" method="POST">
+              <input name="datasource" value="sentiment" hidden>
+              <input name="sentiment" value="{{ sentiment_labels[c] }}" hidden>
+                 {{ collapsible_topic_config() }}
+              <button type="submit" class="btn btn-success btn-md pull-right btn-lg">Submit Configuration</button>
+            </form>
+            <br/>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">Sentiment Analysis</h4>
+                <p class="category custom">{{ sentiment_analysis_for }}</p>
+            </br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#positive">Positive</a></li>
+        <li><a data-toggle="tab" href="#neutral">Neutral</a></li>
+        <li><a data-toggle="tab" href="#negative">Negative</a></li>
+    </ul>
+
+    <div class="tab-content">
+        {% for c in range(0, sentiment_labels | length) %}
+            <div id="{{ sentiment_labels[c] }}" class="tab-pane fade">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title custom">{{ sentiment_labels[c] | capitalize }} Tweets</h4>
+                        <p class="category custom">{{ tweet_list[c]['tweets'] | length  }} Tweets</p>
+
+                        <div class="row">
+                            <div class="col-md-9">
+                                Candidates Mentioned:
+                                {% for cand in tweet_list[c]['candidate_mentioned'] %}
+                                    <a class="username" href="{{ url_for('view_candidate_data',candidate_name=cand, datasource=sentiment_labels[c]) }}">{{ cand | capitalize }}</a>
+                                {% endfor %}
+                            </div>
+                            <button href="#{{ sentiment_labels[c] }}_collapse_topic" class="btn btn-info btn-md col-md-3 pull-right" data-toggle="collapse" style="margin: 10px">Determine Topics</button>
+                        </div>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="{{ sentiment_labels[c] }}_table">
+                            <thead>
+                                <th class=col-md-1">Number</th>
+                                <th class="col-md-10">Tweet</th>
+                                <th class="col-md-1">View Tweet</th>
+                            </thead>
+                            <tbody>
+                            {% for tweet in tweet_list[c]['tweets'] %}
+                                 <tr>
+                                    <td class="col-md-1">{{ loop.index }}</td>
+                                    <td class="col-md-10">
+                                        {% for word in tweet['tweet'] %}
+                                            {% if word[:1] != '@' %}
+                                                {{ word }}
+                                            {% else %}
+                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="col-md-1"><a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{%block before_body_end %}
+{%endblock%}
+
+{% block customJS %}
+    <script>
+        $(document).ready(function(){
+            $('#positive_table').DataTable();
+            $('#negative_table').DataTable();
+            $('#neutral_table').DataTable();
+        });
+    </script>
+{% endblock %}

@@ -90,6 +90,10 @@ def download():
 
         return redirect(redirect_url())
 
+    elif which_data == "all_tweets":
+        data_source = [d['tweet'] for d in DBModels.Tweet.get_tweets_only()]
+        filename = "Data/Downloads/all_tweets.xlsx"
+        data = {'Tweets': data_source}
 
     writeToFile(data, filename)
     return redirect(redirect_url())

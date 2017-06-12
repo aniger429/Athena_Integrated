@@ -13,23 +13,32 @@ active
 {% block content %}
 <div class="row">
     <div class="col-md-12">
+        <form action="/download" method="post" enctype="multipart/form-data">
+            <input type="text" name="download_data" value="all_tweets" hidden/>
+            <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download All Tweets">
+        </form>
+    </div>
+</div>
+<div class="card">
+    <div class="header">
+        <h4 class="title custom">Cleaned tweets in the database</h4>
+        <p class="category custom">Here are all the tweets</p>
+    </div>
+    <br/>
+</div>
+<div class="row">
+    <div class="col-md-12">
         <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable">
             <thead>
-                <th class="col-md-12">
-                    <div class="header">
-                        <h6 class="title">Cleaned Tweets in the Database</h6>
-                        <p class="category">Here are all the tweets</p>
-                    </div>
-                </th>
+                <th class="col-md-1">Number</th>
+                <th class="col-md-10">Tweet</th>
+                <th class="col-md-1">View Tweeet</th>
             </thead>
             <tbody>
             {% for tweet in tweetFileList %}
                     <tr>
-                        <td>{% if tweet != '&nbsp;' %}
-                            <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
-                            {% endif %}
-                            </br>
-
+                        <td>{{ loop.index }}</td>
+                        <td>
                             {% for word in tweet['tweet']%}
                                 {% if word[:1] != '@' %}
                                     {{ word }}
@@ -37,6 +46,10 @@ active
                                    <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
                                 {% endif %}
                             {% endfor %}
+                        </td>
+                        <td>{% if tweet != '&nbsp;' %}
+                                <a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a>
+                            {% endif %}
                         </td>
                     </tr>
             {% endfor %}

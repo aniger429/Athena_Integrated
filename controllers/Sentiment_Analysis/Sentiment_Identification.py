@@ -143,5 +143,23 @@ def compute_tweets_sentiment(tweet_list):
 
     return posi_tweets, neut_tweets, neg_tweets
 
+def compute_senti_candidate_tweet(tweet_list):
+    final_tweet_list = []
+
+    for tweet in tweet_list:
+        result = compute_sentiment(' '.join(tweet['tweet']))
+
+        if result == "POSITIVE":
+            senti = "positive"
+        elif result == "NEGATIVE":
+            senti = "negative"
+        else:
+            senti = "neutral"
+
+        final_tweet_list.append({'cand_ana': tweet['cand_ana'], 'tweet': tweet['tweet'], '_id': tweet['_id'],
+                                 'sentiment': senti})
+
+    return final_tweet_list
+
 # print (compute_sentiment("i super hate banana"))
 

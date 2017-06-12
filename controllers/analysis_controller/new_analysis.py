@@ -1,7 +1,7 @@
 from flask import request, redirect, url_for, render_template
-from controllers.Candidate_Analysis.Candidate_Identification_Final import *
+from controllers.Candidate_Analysis.Candidate_Identification import *
 from collections import Counter
-from controllers.analysis_controller.view_analysis import *
+from controllers.analysis_controller.topic_view_analysis import *
 
 
 def candidate_analysis(tweets, candidate_name):
