@@ -12,7 +12,7 @@
                     <th class="col-md-1">View Tweet</th>
                 </thead>
                     {% if tweetDataList == [] %}
-                        <tr><td colspan="2">No Tweets</td></tr>
+                        <tr><td colspan="3">No Tweets {{ type }}</td></tr>
                     {% else %}
                         {% for tweet in tweetDataList %}
                             <tr>
@@ -22,7 +22,7 @@
                                         {% if word[:1] != '@' %}
                                             {{ word }}
                                         {% else %}
-                                           <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                           <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>@USER</i></a>
                                         {% endif %}
                                     {% endfor %}
                                 </td>

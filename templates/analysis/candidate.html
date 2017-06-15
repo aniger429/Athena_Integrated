@@ -54,7 +54,7 @@ Candidate Analysis
                         {% if word[:1] != '@' %}
                             {{ word }}
                         {% else %}
-                           <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                           <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>@USER</i></a>
                         {% endif %}
                     {% endfor %}
 "
@@ -76,7 +76,7 @@ Candidate Analysis
                            <td>Poster Username ID</td>
                            <td>
                                <a class="username_link" href="{{ url_for('view_specific_user', user_id=tweetData['idUsername'][1:])}}">
-                                   <i>{{ tweetData['idUsername'] }}</i>
+                                   <i>@USER</i>
                                </a>
                            </td>
                        </tr>

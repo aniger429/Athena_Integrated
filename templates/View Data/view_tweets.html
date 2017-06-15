@@ -43,7 +43,7 @@ active
                                 {% if word[:1] != '@' %}
                                     {{ word }}
                                 {% else %}
-                                   <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                   <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>@USER</i></a>
                                 {% endif %}
                             {% endfor %}
                         </td>
