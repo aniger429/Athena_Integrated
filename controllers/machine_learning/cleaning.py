@@ -34,6 +34,7 @@ def expand_contractions(text, c_re=c_re):
         return dictionary[match.group(0)]
     return c_re.sub(replace, text)
 
+
 def get_usernames(tweet_list):
     pattern = re.compile("@[a-zA-Z0-9]+")
     found_username_list = []
@@ -45,6 +46,7 @@ def get_usernames(tweet_list):
         found_username_list.append(temp)
 
     return found_username_list
+
 
 def data_cleaning (tweet, nameTuple):
     # print ("Before:"+ tweet)
@@ -67,6 +69,9 @@ def data_cleaning (tweet, nameTuple):
     # remove punctuation marks
     tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
 
+    # remove control characters
+    tweet = lambda s: "".join(i for i in s if 31 < ord(i) < 127)
+
     # standardize words # collapse to 1 letter ex: cooool to col
     # tweet = ''.join(ch for ch, _ in itertools.groupby(tweet))
 
@@ -77,8 +82,10 @@ def data_cleaning (tweet, nameTuple):
 
     return tweet
 
+# Data Cleaning used by Sentiment Analysis (Machine Learning)
 def data_cleaning (tweet):
-    tweet = pat.remove_from_tweet(tweet)
+    # removes Username, URL, Reserved Words
+    tweet = pat.remove_from_tweet_sentiment(tweet)
     # remove HTML characters
     tweet = re.sub("(&\S+;)",'', tweet)
     # converts the tweets to lowercase
@@ -89,23 +96,22 @@ def data_cleaning (tweet):
     tweet = ' '.join([word for word in tweet.split() if word not in stopwords])
     # remove shortwords 1-2 characters
     shortword = re.compile(r'\W*\b\w{1,2}\b')
+
+    # TODO: handle emoticon processing here
+
     tweet = shortword.sub('', tweet)
     # remove punctuation marks
-    tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
-
-    # standardize words # collapse to 1 letter ex: cooool to col
-    # tweet = ''.join(ch for ch, _ in itertools.groupby(tweet))
-
-    # standardize words # collapse to 2 letter ex: cooool to cool
-    # tweet = re.sub(r'(.)\1+', r'\1\1', tweet)
-
+    # tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
+    tweet = re.sub('\W+',' ', tweet)
     # print("After:"+ tweet)
 
     return tweet
 
+
 def anonymize_poster_username(username_list):
     username_dict = get_all_username_dict()
     return [username_dict['@'+u] for u in username_list]
+
 
 def write_csv(filename, cleanedTweets):
     # out = csv.writer(open("/home/dudegrim/Documents/"+filename, "w"), delimiter='\r')

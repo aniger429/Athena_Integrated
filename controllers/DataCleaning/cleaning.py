@@ -34,6 +34,7 @@ def expand_contractions(text, c_re=c_re):
         return dictionary[match.group(0)]
     return c_re.sub(replace, text)
 
+
 def get_usernames(tweet_list):
     pattern = re.compile("@[a-zA-Z0-9]+")
     found_username_list = []
@@ -51,20 +52,20 @@ def init_data_cleaning (tweet, nameTuple):
     # print ("Before:"+ tweet)
     # data anonymization
     tweet = reduce(lambda a, kv: a.replace(*kv), nameTuple, tweet)
-    # removes URL, hashtags, and Reserved words
-    # tweet = p.clean(tweet)
+    # removes URL, hashtags, HTML, and Reserved words
     tweet = pat.remove_from_tweet(tweet)
-    # remove HTML characters
-    tweet = re.sub("(&\S+;)",'', tweet)
     # converts the tweets to lowercase
     tweet = tweet.lower()
     # expand contradictions
     tweet = expand_contractions(tweet)
     # remove stopwords
     tweet = ' '.join([word for word in tweet.split() if word not in stopwords])
+
     # remove shortwords 1-2 characters
+    tweet = ' '.join(word for word in tweet.split() if len(word) > 2)
     # shortword = re.compile(r'\W*\b\w{1,2}\b')
     # tweet = shortword.sub('', tweet)
+
     # remove punctuation marks
     tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”|\[|\])", ' ', tweet)
 
@@ -108,16 +109,10 @@ def data_cleaning (tweet):
 
     return tweet
 
+
 def anonymize_poster_username(username_list):
     username_dict = get_all_username_dict()
     return [username_dict['@'+u] for u in username_list]
-
-def write_csv(filename, cleanedTweets):
-    # out = csv.writer(open("/home/dudegrim/Documents/"+filename, "w"), delimiter='\r')
-    # out.writerow(cleanedTweets)
-    script_path = os.path.dirname(__file__)
-    directoryPath = os.path.join(script_path, filename)
-    cleanedTweets.to_excel(excel_writer="/home/dudegrim/Documents/"+filename, index=False, header=None, encoding="utf-8")
 
 
 def process_hashtags(hashtag_list):
@@ -125,8 +120,8 @@ def process_hashtags(hashtag_list):
     return [pattern.split(hashtags) if hashtags is not '' else [] for hashtags in hashtag_list]
 
 
-def cleaning_file(fname):
-    data_source = read_xlsx(fname)
+def cleaning_file(file_name):
+    data_source = read_xlsx(file_name)
     # add usernames to DB
     preprocessing.process_usernames(data_source)
     nameTuple = get_all_username_tup()

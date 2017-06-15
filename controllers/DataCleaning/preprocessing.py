@@ -1,12 +1,6 @@
 import re
 from collections import Counter
-# from Model.UsernameModel import *
 from DBModels.Username import *
-import pandas as pd
-import time
-
-def findUsername(tweet):
-    pattern = '@'
 
 
 # this function returns a dictionary where the key is the username and the value is the username model class
@@ -45,39 +39,15 @@ def process_usernames(data_source):
 
     tweet_data = data_source['Tweet']
     # 3. Iterate over all Tweet column
-    pattern = re.compile("@[a-zA-Z0-9_]+")
+    username_pattern = re.compile("@[a-zA-Z0-9_]+")
     found_username_list = []
-    [found_username_list.extend(m) for l in tweet_data for m in [pattern.findall(l)] if m]
-    found_username_list = filterOutUsernames(found_username_list)
+    [found_username_list.extend(m) for l in tweet_data for m in [username_pattern.findall(l)] if m]
+    found_username_list = [username for username in found_username_list if len(username) < 17]
 
     u_dict = username_mentions(u_dict, found_username_list)
 
-    addToDB(u_dict)
+    insert_new_username(u_dict)
     print("Done processing the username")
-    return 0
+    return
 
-
-def read_xlsx(filename):
-    return pd.read_excel(filename, encoding='utf-8')
-
-
-# from pymodm import connect
-# # Connect to MongoDB and call the connection "athenaDB.
-# connect("mongodb://localhost:27017/Athena", alias="athenaDB")
-#
-#
-# start = time.time()
-# file_name = "C:\\Users\\Regina\\Google Drive\\Thesis\\Dummy Data\\test1.xlsx"
-# process_usernames(read_xlsx(file_name))
-#
-# ulist = get_all_username()
-#
-# ctr = 1
-# for u in ulist:
-#     print(str(ctr) + " : " + str(u['_id']) + " : " + u['username'])
-#     ctr = ctr + 1
-#
-# end = time.time()
-# print("Time to clean file:" + str(end - start))
-#
 

@@ -24,10 +24,7 @@ fil_dict = fil_words.to_dict(orient='index')
 
 
 def compute_filscore(tweet):
-    # print("fil_score")
-    # score = [fil_dict.get(w, {}).get('negativity',0) + fil_dict.get(w, {}).get('positivity',0) for w in tweet.split()]
-    # print(score)
-    return sum([fil_dict.get(w, {}).get('negativity',0) + fil_dict.get(w, {}).get('positivity',0) for w in tweet])
+    return sum([fil_dict.get(word, {}).get('positivity',0) - fil_dict.get(word, {}).get('negativity',0) for word in tweet])
 
 
 def evaluate_score(score):
@@ -40,73 +37,53 @@ def evaluate_score(score):
 
 
 def compute_afinn_score(tweet):
-    # print("afinn")
-    # score = [afinn.score(w) for w in tweet.split()]
-    # print(score)
-    # return sum([afinn.score(w) for w in tweet])
     afinnScore = 0
     afinnSum = 0
-    for aa in tweet:
-        if (afinn.score(aa) > 0) and (afinnScore < 0):  # N + P
+    for word in tweet.split(' '):
+        if (afinn.score(word) > 0) and (afinnScore < 0):  # N + P
             afinnScore = 0
-            afinnScore -= afinn.score(aa)
-
-        elif (afinn.score(aa) < 0) and (afinnScore < 0):  # N + N
+            afinnScore -= afinn.score(word)
+        elif (afinn.score(word) < 0) and (afinnScore < 0):  # N + N
             afinnScore = 0
-            afinnScore += (afinn.score(aa) * -1)
+            afinnScore += (afinn.score(word) * -1)
 
-        elif (afinn.score(aa) < 0) and (afinnScore > 0):  # P + N
+        elif (afinn.score(word) < 0) and (afinnScore > 0):  # P + N
             afinnScoreAdd = afinnScore
             afinnScore = 0
-            afinnScore += (-(afinnScoreAdd) + afinn.score(aa))
+            afinnScore += (-(afinnScoreAdd) + afinn.score(word))
         else:  # P + P or else
             afinnScore = 0
-            afinnScore += afinn.score(aa)
+            afinnScore += afinn.score(word)
 
         afinnSum += afinnScore
 
     return afinnSum
 
+
 def compute_bing_score(tweet):
-    # print("bing")
-    # score = [1 if w in posi_list else -1 if w in nega_list else 0 for w in tweet.split()]
-    # print(score)
-    # return sum([1 if w in posi_list else -1 if w in nega_list else 0 for w in tweet])
     bingScore = 0
     bingSum = 0
-    for aa in tweet:
-        found = 0
-        if (aa in posi_list) and (bingScore < 0):  # N + P
+    for word in tweet.split(' '):
+        if (word in posi_list) and (bingScore < 0):  # N + P
             bingScore = -2
-            found = 1
-            break
-        elif (aa in posi_list):  # P + P
+        elif (word in posi_list):  # P + P
             bingScore = 1
-            found = 1
-            break
-
-        if (found == 0):
-            if (aa in nega_list) and (bingScore > 0):  # P + N
+        else:
+            if (word in nega_list) and (bingScore > 0):  # P + N
                 bingScore = -2
-                found = 1
-                break
-            elif (aa in nega_list) and (bingScore < 0):  # N + N (double negative)
+            elif (word in nega_list) and (bingScore < 0):  # N + N (double negative)
                 bingScore = 1
-                found = 1
-                break
-            elif (aa in nega_list):
+            elif (word in nega_list):
                 bingScore = -1
-                found = 1
-                break
+            else:
+                bingScore = 0
 
-        if (found == 0):
-            bingScore = 0
         bingSum += bingScore
 
     return bingSum
 
+
 def compute_sentiment(tweet):
-    # print('Processing Sentiment Analysis for the word..')
     filScore = evaluate_score(compute_filscore(tweet))
     afinnScore = evaluate_score(compute_afinn_score(tweet))
     bingScore = evaluate_score(compute_bing_score(tweet))
@@ -120,8 +97,15 @@ def compute_sentiment(tweet):
             neg += sipList[i].neg_score()
     """
 
-    final_score = Counter([bingScore,filScore,afinnScore]).most_common(1)
-    return final_score[0][0]
+    final_score = Counter([bingScore, filScore, afinnScore]).most_common()[0]
+
+    if final_score[1] == 1:
+        final =  "NEUTRAL"
+    else:
+        final = final_score[0]
+
+    return final
+
 
 def compute_tweets_sentiment(tweet_list):
     neg_tweets = []
@@ -143,6 +127,7 @@ def compute_tweets_sentiment(tweet_list):
 
     return posi_tweets, neut_tweets, neg_tweets
 
+
 def compute_senti_candidate_tweet(tweet_list):
     final_tweet_list = []
 
@@ -160,6 +145,3 @@ def compute_senti_candidate_tweet(tweet_list):
                                  'sentiment': senti})
 
     return final_tweet_list
-
-# print (compute_sentiment("i super hate banana"))
-

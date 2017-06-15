@@ -40,55 +40,53 @@ active
           </form>
       </div>
     </div>
-    <div class="col-md-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title">Election Data</h4>
-                <p class="category">Here are all the election data uploaded</p>
-            </div>
-            <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
-                    <thead>
-                        <th class="col-md-6">Filename</th>
-                        <th class="col-md-3">Date Uploaded</th>
-                        <th class="col-md-1">Remarks</th>
-                        <th class="col-md-1">Download</th>
-                        <th class="col-md-1">Delete</th>
-                    </thead>
-                    <tbody>
-                        {% for dataFile in dataFileList %}
-                        <tr>
-                            <td>{{ dataFile.filename }}</td>
-                            <td>{{ dataFile.dateUploaded }}</td>
-                            <td>
-                                {% if dataFile.isClean == "false" %}
-                                    <a class="btn btn-info" href="{{ url_for('clean_file', filename= dataFile.filename) }}">
-                                            Clean Now!
-                                    </a>
-                                    {% else%}
-                                    <a class="btn btn-info" href="#" disabled="false">
-                                            Cleaned
-                                    </a>
-                                {% endif %}
-                            </td>
-
-
-                            <td>
-                                <a class="btn btn-info" href="#" disabled="true">
-                                  <i class="ti-file"></i>
+    <div class="card col-md-12">
+        <div class="header">
+            <h4 class="title">Election Data</h4>
+            <p class="category">Here are all the election data uploaded</p>
+        </div>
+        <div class="content table-responsive table-full-width">
+            <table class="table table-striped">
+                <thead>
+                    <th class="col-md-6">Filename</th>
+                    <th class="col-md-3">Date Uploaded</th>
+                    <th class="col-md-1">Remarks</th>
+                    <th class="col-md-1">Download</th>
+                    <th class="col-md-1">Delete</th>
+                </thead>
+                <tbody>
+                    {% for dataFile in dataFileList %}
+                    <tr>
+                        <td>{{ dataFile.filename }}</td>
+                        <td>{{ dataFile.dateUploaded }}</td>
+                        <td>
+                            {% if dataFile.isClean == "false" %}
+                                <a class="btn btn-info" href="{{ url_for('clean_file', filename= dataFile.filename) }}">
+                                        Clean Now!
                                 </a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" href="#" disabled="true">
-                                  <i class="ti-trash"></i> Delete
+                                {% else%}
+                                <a class="btn btn-info" href="#" disabled="false">
+                                        Cleaned
                                 </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                            {% endif %}
+                        </td>
 
-            </div>
+
+                        <td>
+                            <a class="btn btn-info" href="#" disabled="true">
+                              <i class="ti-file"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" href="#" disabled="true">
+                              <i class="ti-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
         </div>
     </div>
 </div>

@@ -5,6 +5,7 @@ URL_PATTERN=re.compile(r'(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{
 HASHTAG_PATTERN = re.compile(r'#\w*')
 MENTION_PATTERN = re.compile(r'@\w*')
 RESERVED_WORDS_PATTERN = re.compile(r'^(RT|FAV)')
+HTML_PATTERN = re.compile('(&\S+;)')
 
 try:
     # UCS-4
@@ -25,7 +26,16 @@ def remove_from_tweet(tweet):
     # tweet = EMOJIS_PATTERN.sub('', tweet)
     # tweet = SMILEYS_PATTERN.sub('', tweet)
     tweet = NUMBERS_PATTERN.sub('', tweet)
+    tweet = HTML_PATTERN.sub('',tweet)
 
+    return tweet
+
+
+# This is the function used by the machine learning algorithm
+def remove_from_tweet_sentiment(tweet):
+    tweet = URL_PATTERN.sub('', tweet)
+    tweet = RESERVED_WORDS_PATTERN.sub('', tweet)
+    tweet = MENTION_PATTERN.sub('', tweet)
 
     return tweet
 
