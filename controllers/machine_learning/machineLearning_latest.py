@@ -29,11 +29,12 @@ def preprocess(file_name, samples):
         data['Tweet'][i] = data_cleaning(data['Tweet'][i])
         data['Tweet'][i] = removeSp.sub('', data['Tweet'][i])
     data = shuffle(data)    
-    # data = data[:samples]
+    data = data[:samples]
     
     return data
 
-def train(data, index):
+
+def train(dataX, dataY, index):
     if (index == 1): # Naive Bayes
         text_clf = Pipeline([('vect',CountVectorizer()),('tfidf',TfidfTransformer()),('clf',MultinomialNB())])
     elif (index == 2): # SVM
@@ -44,33 +45,38 @@ def train(data, index):
         text_clf = Pipeline([('vect',CountVectorizer()),('tfidf',TfidfTransformer()),('clf',DecisionTreeClassifier())])
     elif (index == 5): # Maximum Entropy
         text_clf = Pipeline([('vect',CountVectorizer()),('tfidf',TfidfTransformer()),('clf',LogisticRegression())])
-    text_clf = text_clf.fit(data['Tweet'],data['Sentiment'])
+    text_clf = text_clf.fit(dataX,dataY)
     
     return text_clf
 
-def accuracy(file_name):
+def accuracy(data):
     # load dataset
-    names = ['tweet', 'sentiment']
-    dataframe = pd.read_excel(file_name, parse_cols='B,G')[:500]
-
-    array = dataframe.values
-    X = array[:, 0:1]
-    Y = array[:, 1]
-
-
-
-
-
-    # prepare configuration for cross validation test harness
     seed = 7
+    X = data['Tweet']
+    Y = data['Sentiment']
+    #test/validation size
+    size = 0.5
+    X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, test_size=size, random_state=seed)
+    print(X_train.shape)
+    print(Y_train.shape)
+    print(X_validation.shape)
+    print(Y_validation.shape)
+
+
     # prepare models
     models = []
-    models.append(('LR', LogisticRegression()))
-    models.append(('LDA', LinearDiscriminantAnalysis()))
-    models.append(('KNN', KNeighborsClassifier()))
-    models.append(('CART', DecisionTreeClassifier()))
-    models.append(('NB', GaussianNB()))
-    models.append(('SVM', SVC()))
+    #models.append(('LR', LogisticRegression()))
+    #models.append(('LDA', LinearDiscriminantAnalysis()))
+    #models.append(('KNN', KNeighborsClassifier()))
+    #models.append(('CART', DecisionTreeClassifier()))
+    #models.append(('NB', GaussianNB()))
+    #models.append(('SVM', SVC()))
+    models.append(('NB', train(data['Tweet'], data['Sentiment'],1)))
+    models.append(('LR', train(data['Tweet'], data['Sentiment'],5)))
+    models.append(('SVM', train(data['Tweet'], data['Sentiment'],2)))
+    models.append(('KNN', train(data['Tweet'], data['Sentiment'],3)))
+    models.append(('CART', train(data['Tweet'], data['Sentiment'],4)))
+    
     # evaluate each model in turn
     results = []
     names = []
@@ -82,7 +88,8 @@ def accuracy(file_name):
     scoring = 'accuracy'
     for name, model in models:
         kfold = model_selection.KFold(n_splits=10, random_state=seed)
-        cv_results = model_selection.cross_val_score(model, X, Y, cv=kfold, scoring=scoring)
+        print(kfold)
+        cv_results = model_selection.cross_val_score(model, X_train, Y_train, cv=kfold)
         results.append(cv_results)
         names.append(name)
         msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
@@ -95,30 +102,36 @@ def accuracy(file_name):
     ax.set_xticklabels(names)
     plt.show()
 
+    # test
+    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 1))
+    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 2))
+    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 3))
+    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 4))
+    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 5))
+    
+
 
 def decideSentiment(tweet ,df, text_clf):
-    data = shuffle(df)
-    data = data[:1]
-    data[:1].Tweet = tweet
-    docs_test = data.Tweet
-    predict = text_clf.predict(docs_test)
+    a = []
+    a.append(tweet)
+    predict = text_clf.predict(a)
     #print(np.mean(predict == data.Sentiment))
-    print(data.Tweet)
+    print(tweet)
     print(predict)
 
-# data = preprocess('../../Data/Election-18.xlsx', 100)
-#
-# nb = train(data, 1)
-# # svm  = train(data, 2)
-# # knn = train(data, 3)
-# # dt = train(data, 4)
-# # me = train(data, 5)
-#
-# decideSentiment('Anong gagawin natin?! Puro kayo reklamo putangina nyo #DUTERTE https://t.co/pibO3KGeWH', data, nb)
-# decideSentiment('I hate bananas but i love strawberries', data, nb)
-# decideSentiment('I love bananas', data, nb)
 
-# accuracy('../../Data/Election-18.xlsx')
+data = preprocess('../../Data/Election-18.xlsx', 2000)
+accuracy(data)
+
+#nb = train(data, 1)
+#svm  = train(data, 2)
+#knn = train(data, 3)
+#dt = train(data, 4)
+#me = train(data, 5)
+#decideSentiment('Anong gagawin natin?! Puro kayo reklamo putangina nyo #DUTERTE https://t.co/pibO3KGeWH', data, nb)
+#decideSentiment('I hate bananas but i love strawberries', data, nb)
+#decideSentiment('I love bananas', data, nb)
+
 
 def test(file_name):
     # load dataset
@@ -134,4 +147,4 @@ def test(file_name):
     test_vectors = vectorizer.fit(train_data)
 
 
-test('../../Data/Election-18.xlsx')
+#test('../../Data/Election-18.xlsx')
