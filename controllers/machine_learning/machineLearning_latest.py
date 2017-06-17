@@ -20,13 +20,17 @@ from sklearn.svm import SVC
 
 from sklearn.utils import shuffle
 from controllers.machine_learning.cleaning import *
+from controllers.analysis_controller import Pickle_Saver as ps
+
+# save path for classifiers 
+path = 'C:/Users/HKJ/Documents/GitHub/Athena_Integrated/controllers/analysis_controller/Pickles/'
 
 def preprocess(file_name, samples):
     data = pd.read_excel(file_name, parse_cols='B,G')
     removeSp = re.compile(r'@(\w+)')
 
     for i in range(0, len(data[:samples])):
-        data['Tweet'][i] = data_cleaning(data['Tweet'][i])
+        data['Tweet'][i] = cl.data_cleaning(data['Tweet'][i])
         data['Tweet'][i] = removeSp.sub('', data['Tweet'][i])
     data = shuffle(data)    
     data = data[:samples]
@@ -49,7 +53,7 @@ def train(dataX, dataY, index):
     
     return text_clf
 
-def accuracy(data):
+def process(data):
     # load dataset
     seed = 7
     X = data['Tweet']
@@ -65,17 +69,11 @@ def accuracy(data):
 
     # prepare models
     models = []
-    #models.append(('LR', LogisticRegression()))
-    #models.append(('LDA', LinearDiscriminantAnalysis()))
-    #models.append(('KNN', KNeighborsClassifier()))
-    #models.append(('CART', DecisionTreeClassifier()))
-    #models.append(('NB', GaussianNB()))
-    #models.append(('SVM', SVC()))
     models.append(('NB', train(data['Tweet'], data['Sentiment'],1)))
-    models.append(('LR', train(data['Tweet'], data['Sentiment'],5)))
     models.append(('SVM', train(data['Tweet'], data['Sentiment'],2)))
     models.append(('KNN', train(data['Tweet'], data['Sentiment'],3)))
-    models.append(('CART', train(data['Tweet'], data['Sentiment'],4)))
+    models.append(('DT', train(data['Tweet'], data['Sentiment'],4)))
+    models.append(('SVM', train(data['Tweet'], data['Sentiment'],5)))
     
     # evaluate each model in turn
     results = []
@@ -102,14 +100,26 @@ def accuracy(data):
     ax.set_xticklabels(names)
     plt.show()
 
-    # test
-    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 1))
-    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 2))
-    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 3))
-    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 4))
-    decideSentiment('I love bananas', X_validation, train(X_train, Y_train, 5))
+    #train classifiers
+    NB = train(X_train, Y_train, 1)
+    SVM = train(X_train, Y_train, 2)
+    KNN = train(X_train, Y_train, 3)
+    DT = train(X_train, Y_train, 4)
+    ME = train(X_train, Y_train, 5)
     
+    # test
+    decideSentiment('I love bananas', X_validation, NB)
+    decideSentiment('I love bananas', X_validation, SVM)
+    decideSentiment('I love bananas', X_validation, KNN)
+    decideSentiment('I love bananas', X_validation, DT)
+    decideSentiment('I love bananas', X_validation, ME)
 
+    # save trained classifiers
+    ps.write_pickle(path + 'NB', NB)
+    ps.write_pickle(path + 'SVM', SVM)
+    ps.write_pickle(path + 'KNN', KNN)
+    ps.write_pickle(path + 'DT', DT)
+    ps.write_pickle(path + 'ME', ME)
 
 def decideSentiment(tweet ,df, text_clf):
     a = []
@@ -120,31 +130,5 @@ def decideSentiment(tweet ,df, text_clf):
     print(predict)
 
 
-data = preprocess('../../Data/Election-18.xlsx', 2000)
-accuracy(data)
-
-#nb = train(data, 1)
-#svm  = train(data, 2)
-#knn = train(data, 3)
-#dt = train(data, 4)
-#me = train(data, 5)
-#decideSentiment('Anong gagawin natin?! Puro kayo reklamo putangina nyo #DUTERTE https://t.co/pibO3KGeWH', data, nb)
-#decideSentiment('I hate bananas but i love strawberries', data, nb)
-#decideSentiment('I love bananas', data, nb)
-
-
-def test(file_name):
-    # load dataset
-    train_data = pd.read_excel(file_name, parse_cols='B,G')[:500]
-    tweet = [data_cleaning(tweet) for tweet in train_data["Tweet"]]
-
-    vectorizer = TfidfVectorizer(min_df=1,
-                                 max_df=0.8,
-                                 sublinear_tf=True,
-                                 use_idf=True)
-
-    train_vectors = vectorizer.fit_transform(train_data)
-    test_vectors = vectorizer.fit(train_data)
-
-
-#test('../../Data/Election-18.xlsx')
+data = preprocess('Election-18.xlsx', 2000)
+process(data)
