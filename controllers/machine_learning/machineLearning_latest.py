@@ -48,53 +48,6 @@ def train(data, index):
     
     return text_clf
 
-def accuracy(file_name):
-    # load dataset
-    names = ['tweet', 'sentiment']
-    dataframe = pd.read_excel(file_name, parse_cols='B,G')[:500]
-
-    array = dataframe.values
-    X = array[:, 0:1]
-    Y = array[:, 1]
-
-
-
-
-
-    # prepare configuration for cross validation test harness
-    seed = 7
-    # prepare models
-    models = []
-    models.append(('LR', LogisticRegression()))
-    models.append(('LDA', LinearDiscriminantAnalysis()))
-    models.append(('KNN', KNeighborsClassifier()))
-    models.append(('CART', DecisionTreeClassifier()))
-    models.append(('NB', GaussianNB()))
-    models.append(('SVM', SVC()))
-    # evaluate each model in turn
-    results = []
-    names = []
-    scoring = 'accuracy'
-
-    # evaluate each model in turn
-    results = []
-    names = []
-    scoring = 'accuracy'
-    for name, model in models:
-        kfold = model_selection.KFold(n_splits=10, random_state=seed)
-        cv_results = model_selection.cross_val_score(model, X, Y, cv=kfold, scoring=scoring)
-        results.append(cv_results)
-        names.append(name)
-        msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-        print(msg)
-    # boxplot algorithm comparison
-    fig = plt.figure()
-    fig.suptitle('Algorithm Comparison')
-    ax = fig.add_subplot(111)
-    plt.boxplot(results)
-    ax.set_xticklabels(names)
-    plt.show()
-
 
 def decideSentiment(tweet ,df, text_clf):
     data = shuffle(df)
@@ -106,32 +59,17 @@ def decideSentiment(tweet ,df, text_clf):
     print(data.Tweet)
     print(predict)
 
-# data = preprocess('../../Data/Election-18.xlsx', 100)
-#
-# nb = train(data, 1)
-# # svm  = train(data, 2)
-# # knn = train(data, 3)
-# # dt = train(data, 4)
-# # me = train(data, 5)
-#
-# decideSentiment('Anong gagawin natin?! Puro kayo reklamo putangina nyo #DUTERTE https://t.co/pibO3KGeWH', data, nb)
-# decideSentiment('I hate bananas but i love strawberries', data, nb)
-# decideSentiment('I love bananas', data, nb)
+data = preprocess('../../Data/Election-18.xlsx', 100)
 
-# accuracy('../../Data/Election-18.xlsx')
+nb = train(data, 1)
+svm  = train(data, 2)
+knn = train(data, 3)
+dt = train(data, 4)
+me = train(data, 5)
 
-def test(file_name):
-    # load dataset
-    train_data = pd.read_excel(file_name, parse_cols='B,G')[:500]
-    tweet = [data_cleaning(tweet) for tweet in train_data["Tweet"]]
-
-    vectorizer = TfidfVectorizer(min_df=1,
-                                 max_df=0.8,
-                                 sublinear_tf=True,
-                                 use_idf=True)
-
-    train_vectors = vectorizer.fit_transform(train_data)
-    test_vectors = vectorizer.fit(train_data)
+decideSentiment('Anong gagawin natin?! Puro kayo reklamo putangina nyo #DUTERTE https://t.co/pibO3KGeWH', data, nb)
+decideSentiment('I hate bananas but i love strawberries', data, nb)
+decideSentiment('I love bananas', data, nb)
 
 
-test('../../Data/Election-18.xlsx')
+

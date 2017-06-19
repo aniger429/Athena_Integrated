@@ -3,6 +3,7 @@
 {% block customCSS %}
 
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename="css/bootstrap-tagsinput.css") }}" rel="stylesheet"/>
     <style>
         .title.custom{
             font-size: 30px;
@@ -43,29 +44,49 @@ Tweet
             <div class="header">
                 <h4 class="title custom">{{ candidate_data['candidate_name'] | capitalize }}</h4>
                 <p class="category custom">Here are all the names</p>
-                 <form action="/download" method="post" enctype="multipart/form-data">
+                <br/><br/>
+                <form class="col-md-9" action="/add_candidate_names" method="POST" enctype="multipart/form-data">
+                        <input  name="candidate_name" value="{{ candidate_name }}" hidden/>
+                        <input id="tags" type="text" name="add_names" class="col-md-10" placeholder="name" tooltip="Tab for next name" data-role="tagsinput" />
+                        <button type="submit" class="btn btn-success btn-md  col-md-2">Add names</button>
+                 </form>
+
+                 <form class="col-md-3" action="/download" method="post" enctype="multipart/form-data">
                     <input type="text" name="download_data" value="all_candidate_names" hidden/>
-                    <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download Names">
+                    <input id="submit" type="submit" class="btn btn-info col-md-6 pull-right" Value="Download Names">
                 </form>
             </div>
             <div class="content table-responsive table-full-width">
+             <form action="/delete_candidate_names" method="POST" enctype="multipart/form-data">
+                <input  name="candidate_name" value="{{ candidate_name }}" hidden/>
                 <table class="table table-striped">
                     <thead>
-                        <th class="col-md-3">Name</th>
+                        <th class="col-md-1"></th>
+                        <th class="col-md-2">Name</th>
                         <th class="col-md-1">Count</th>
-                        <th class="col-md-3">Name</th>
+                        <th class="col-md-1"></th>
+                        <th class="col-md-2">Name</th>
                         <th class="col-md-1">Count</th>
-                        <th class="col-md-3">Name</th>
+                        <th class="col-md-1"></th>
+                        <th class="col-md-2">Name</th>
                         <th class="col-md-1">Count</th>
                     </thead>
                     <tbody>
+
                         {% for cname_row in candidate_data['kb_names'] | batch(3, '&nbsp;') %}
                             <tr>
                                 {% for cname in cname_row %}
                                     {% if cname != '&nbsp;' %}
+                                        <td>
+                                        <label class="checkbox checkbox-red" for="checkbox5">
+                                           <input type="checkbox" value="{{ cname }}" name="names[]" data-toggle="checkbox">
+                                        </label>
+                                        </td>
+{#                                        <td><input  type="checkbox" name="selected_kb_name"  data-toggle="checkbox"/> </td>#}
                                         <td>{{ cname }}</td>
                                         <td>{{ candidate_name_count[cname] }}</td>
                                     {% else %}
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                     {% endif %}
@@ -74,7 +95,11 @@ Tweet
                         {% endfor %}
                     </tbody>
                 </table>
-
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-danger btn-md col-md-offset-10 col-md-2">Delete</button>
+                </div>
+             <br/><br/><br/>
+            </form>
             </div>
         </div>
     </div>
@@ -141,9 +166,14 @@ Tweet
 {% endblock %}
 
 {% block customJS %}
+    <script src="{{ url_for('static', filename="js/bootstrap-tagsinput.min.js") }}"></script>
     <script>
         $(document).ready(function(){
             $('#myTable').DataTable();
+        });
+        $('#tags').tagsinput({
+          confirmKeys: [13, 188, 9],
+          allowDuplicates: false
         });
     </script>
 {% endblock %}

@@ -2,14 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ebda205c-4c70-4578-ac01-57ea82d059e0" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/bootstrap-tagsinput.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/bootstrap-tagsinput.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AthenaFinal.py" afterPath="$PROJECT_DIR$/AthenaFinal.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DBModels/KB_Names.py" afterPath="$PROJECT_DIR$/DBModels/KB_Names.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/KnowledgeBaseCreation.py" afterPath="$PROJECT_DIR$/controllers/KnowledgeBaseCreation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py" afterPath="$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/View Data/view_candidate_data.html" afterPath="$PROJECT_DIR$/templates/View Data/view_candidate_data.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/View Data/view_tweet.html" afterPath="$PROJECT_DIR$/templates/View Data/view_tweet.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/View Data/view_tweets.html" afterPath="$PROJECT_DIR$/templates/View Data/view_tweets.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/View Data/view_user.html" afterPath="$PROJECT_DIR$/templates/View Data/view_user.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/analysis/Sentiment/view_concordancer_sentiment.html" afterPath="$PROJECT_DIR$/templates/analysis/Sentiment/view_concordancer_sentiment.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/analysis/candidate.html" afterPath="$PROJECT_DIR$/templates/analysis/candidate.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/macros/tweet_view_macro.html" afterPath="$PROJECT_DIR$/templates/macros/tweet_view_macro.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_bokeh.py" afterPath="$PROJECT_DIR$/test_bokeh.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,14 +23,14 @@
     <SUITE FILE_PATH="coverage/Athena_Integrated$machineLearning_latest.coverage" NAME="machineLearning_latest Coverage Results" MODIFIED="1496823636467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Machine Learning" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Unittests_in_Sentiment_Identification_py.coverage" NAME="Unittests in Sentiment_Identification.py Coverage Results" MODIFIED="1497494237989" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Sentiment_Analysis" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Sentiment_Identification.coverage" NAME="Sentiment_Identification Coverage Results" MODIFIED="1497547390350" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Sentiment_Analysis" />
-    <SUITE FILE_PATH="coverage/Athena_Integrated$AthenaFinal.coverage" NAME="AthenaFinal Coverage Results" MODIFIED="1497547483745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Athena_Integrated$AthenaFinal.coverage" NAME="AthenaFinal Coverage Results" MODIFIED="1497668533537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$KnowledgeBaseCreation.coverage" NAME="KnowledgeBaseCreation Coverage Results" MODIFIED="1489930243014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$save_fil_words.coverage" NAME="save_fil_words Coverage Results" MODIFIED="1490501784197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Lexicon_Files" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Topic_Analysis.coverage" NAME="Topic Analysis Coverage Results" MODIFIED="1490575841377" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Unittests_in_AthenaFinal_py.coverage" NAME="Unittests in AthenaFinal.py Coverage Results" MODIFIED="1490594670740" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Tweet.coverage" NAME="Tweet Coverage Results" MODIFIED="1490431595127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DBModels" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Candidate_Identification_Mar18.coverage" NAME="Candidate_Identification_Mar18 Coverage Results" MODIFIED="1490205342147" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Candidate_Analysis" />
-    <SUITE FILE_PATH="coverage/Athena_Integrated$Unittests_in_test_bokeh_py.coverage" NAME="Unittests in test_bokeh.py Coverage Results" MODIFIED="1497206309383" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Athena_Integrated$Unittests_in_test_bokeh_py.coverage" NAME="Unittests in test_bokeh.py Coverage Results" MODIFIED="1497619079192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$machineLearning_latest__1_.coverage" NAME="machineLearning_latest (1) Coverage Results" MODIFIED="1497338000854" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/machine_learning" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Sentiment_Assignment_March25.coverage" NAME="Sentiment_Assignment_March25 Coverage Results" MODIFIED="1490501824858" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Feature_Extraction" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$cleaning.coverage" NAME="cleaning Coverage Results" MODIFIED="1489825358374" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/DataCleaning" />
@@ -46,8 +47,8 @@
       <file leaf-file-name="AthenaFinal.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AthenaFinal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="133" column="64" lean-forward="false" selection-start-line="133" selection-start-column="64" selection-end-line="133" selection-end-column="64" />
+            <state relative-caret-position="252">
+              <caret line="84" column="34" lean-forward="true" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
@@ -55,31 +56,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="view_user.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/View Data/view_user.html">
+      <file leaf-file-name="KnowledgeBaseCreation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/KnowledgeBaseCreation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="46" column="56" lean-forward="true" selection-start-line="46" selection-start-column="56" selection-end-line="46" selection-end-column="56" />
+            <state relative-caret-position="210">
+              <caret line="11" column="181" lean-forward="false" selection-start-line="11" selection-start-column="181" selection-end-line="11" selection-end-column="181" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tweet_view_macro.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/macros/tweet_view_macro.html">
+      <file leaf-file-name="KB_Names.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DBModels/KB_Names.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="14" column="61" lean-forward="false" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
+            <state relative-caret-position="356">
+              <caret line="53" column="35" lean-forward="true" selection-start-line="53" selection-start-column="35" selection-end-line="53" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="macros.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/analysis/macros.html">
+      <file leaf-file-name="view_candidate_data.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/View Data/view_candidate_data.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="772">
-              <caret line="162" column="33" lean-forward="false" selection-start-line="162" selection-start-column="9" selection-end-line="162" selection-end-column="33" />
+            <state relative-caret-position="1931">
+              <caret line="174" column="34" lean-forward="false" selection-start-line="174" selection-start-column="34" selection-end-line="174" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -117,7 +118,6 @@
       <find>topic</find>
       <find>slevel: sentiment</find>
       <find>slevel</find>
-      <find>candidate</find>
       <find>write_csv</find>
       <find>anonymize_poster_username</find>
       <find>read_xlsx</find>
@@ -129,6 +129,7 @@
       <find>neutral</find>
       <find>evaluate_score</find>
       <find>sentiment</find>
+      <find>candidate</find>
     </findStrings>
     <replaceStrings>
       <replace>kbfile</replace>
@@ -141,11 +142,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/static/css/layout/font.css" />
         <option value="$PROJECT_DIR$/static/css/font.css" />
         <option value="$PROJECT_DIR$/static/css/paper-dashboard.css" />
         <option value="$PROJECT_DIR$/controllers/stop_words/eng-function-word.txt" />
-        <option value="$PROJECT_DIR$/DBModels/KB_Names.py" />
         <option value="$PROJECT_DIR$/controllers/Topic_Analysis/Find_Topic_Tweets.py" />
         <option value="$PROJECT_DIR$/controllers/analysis_controller/Pickle_Saver.py" />
         <option value="$PROJECT_DIR$/templates/analysis/Topic/view_topic_analysis.html" />
@@ -159,7 +158,6 @@
         <option value="$PROJECT_DIR$/controllers/analysis_controller/new_analysis.py" />
         <option value="$PROJECT_DIR$/templates/analysis/macros.html" />
         <option value="$PROJECT_DIR$/controllers/analysis_controller/view_analysis.py" />
-        <option value="$PROJECT_DIR$/test_bokeh.py" />
         <option value="$PROJECT_DIR$/static/js/pace.min.js" />
         <option value="$PROJECT_DIR$/static/js/nprogressbar.js" />
         <option value="$PROJECT_DIR$/static/nprogressbar.min.css" />
@@ -173,11 +171,9 @@
         <option value="$PROJECT_DIR$/templates/analysis/view_tweets_sentiment.html" />
         <option value="$PROJECT_DIR$/templates/analysis/analysis_processing.html" />
         <option value="$PROJECT_DIR$/controllers/analysis_controller/sentiment_view_analysis.py" />
-        <option value="$PROJECT_DIR$/AthenaFinal.py" />
         <option value="$PROJECT_DIR$/controllers/analysis_controller/analysis_manager.py" />
         <option value="$PROJECT_DIR$/controllers/Sentiment_Analysis/machine_learning/machineLearning_latest.py" />
         <option value="$PROJECT_DIR$/controllers/Sentiment_Analysis/machine_learning/cleaning.py" />
-        <option value="$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py" />
         <option value="$PROJECT_DIR$/controllers/machine_learning/cleaning.py" />
         <option value="$PROJECT_DIR$/templates/datacleaning.html" />
         <option value="$PROJECT_DIR$/controllers/DataCleaning/cleaning.py" />
@@ -185,13 +181,18 @@
         <option value="$PROJECT_DIR$/DBModels/Tweet.py" />
         <option value="$PROJECT_DIR$/controllers/DataCleaning/Patterns.py" />
         <option value="$PROJECT_DIR$/controllers/Sentiment_Analysis/Sentiment_Identification.py" />
-        <option value="$PROJECT_DIR$/templates/View Data/view_candidate_data.html" />
         <option value="$PROJECT_DIR$/templates/analysis/Sentiment/view_concordancer_sentiment.html" />
         <option value="$PROJECT_DIR$/templates/View Data/view_tweet.html" />
         <option value="$PROJECT_DIR$/templates/View Data/view_tweets.html" />
         <option value="$PROJECT_DIR$/templates/View Data/view_user.html" />
         <option value="$PROJECT_DIR$/templates/analysis/candidate.html" />
         <option value="$PROJECT_DIR$/templates/macros/tweet_view_macro.html" />
+        <option value="$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py" />
+        <option value="$PROJECT_DIR$/test_bokeh.py" />
+        <option value="$PROJECT_DIR$/controllers/KnowledgeBaseCreation.py" />
+        <option value="$PROJECT_DIR$/templates/View Data/view_candidate_data.html" />
+        <option value="$PROJECT_DIR$/AthenaFinal.py" />
+        <option value="$PROJECT_DIR$/DBModels/KB_Names.py" />
       </list>
     </option>
   </component>
@@ -225,6 +226,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -337,6 +340,56 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Athena_Integrated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Athena_Integrated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Athena_Integrated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Athena_Integrated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Athena_Integrated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Athena_Integrated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -391,68 +444,12 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Lexicon_Files" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Athena_Integrated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Athena_Integrated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DataCleaning" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Athena_Integrated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Athena_Integrated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Candidate_Analysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Athena_Integrated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Athena_Integrated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="analysis_controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -466,19 +463,19 @@
     <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/Programs/Python/Python36/python.exe" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\CCS\Documents\Athena_Integrated\controllers" />
-      <recent name="C:\Users\CCS\Documents\Athena_Integrated\controllers\Sentiment_Analysis" />
-      <recent name="C:\Users\CCS\Documents\Athena_Integrated\templates\analysis\Sentiment" />
-      <recent name="C:\Users\CCS\Documents\Athena_Integrated\static\css" />
-      <recent name="C:\Users\Regina\Documents\GitHub\Athena_Integrated\static\css" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\CCS\Documents\Athena_Integrated\static\css" />
       <recent name="C:\Users\CCS\Documents\Athena_Integrated\static\js" />
       <recent name="C:\Users\CCS\Documents\Athena_Integrated\templates\analysis" />
       <recent name="C:\Users\CCS\Documents\Athena_Integrated\static\fonts" />
       <recent name="C:\Users\Regina\Documents\GitHub\Athena_Integrated" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\CCS\Documents\Athena_Integrated\static\css" />
+      <recent name="C:\Users\CCS\Documents\Athena_Integrated\static\js" />
+      <recent name="C:\Users\CCS\Documents\Athena_Integrated\controllers" />
+      <recent name="C:\Users\CCS\Documents\Athena_Integrated\controllers\Sentiment_Analysis" />
+      <recent name="C:\Users\CCS\Documents\Athena_Integrated\templates\analysis\Sentiment" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -532,25 +529,6 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="machineLearning_latest (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/controllers/Sentiment_Analysis/machine_learning" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Athena_Integrated" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/controllers/Sentiment_Analysis/machine_learning/machineLearning_latest.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="Unittests in Sentiment_Identification.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -584,6 +562,22 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests in test_bokeh.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Athena_Integrated" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test_bokeh.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
@@ -791,17 +785,17 @@
       <item index="0" class="java.lang.String" itemvalue="Python.Topic Analysis" />
       <item index="1" class="java.lang.String" itemvalue="Python.AthenaFinal" />
       <item index="2" class="java.lang.String" itemvalue="Python.machineLearning_latest (1)" />
-      <item index="3" class="java.lang.String" itemvalue="Python.machineLearning_latest (2)" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in Sentiment_Identification.py" />
-      <item index="5" class="java.lang.String" itemvalue="Python.Sentiment_Identification" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in Sentiment_Identification.py" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Sentiment_Identification" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests in test_bokeh.py" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.AthenaFinal" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Sentiment_Identification" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in Sentiment_Identification.py" />
-        <item index="3" class="java.lang.String" itemvalue="Python.machineLearning_latest (1)" />
-        <item index="4" class="java.lang.String" itemvalue="Python.machineLearning_latest (2)" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in test_bokeh.py" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Sentiment_Identification" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in Sentiment_Identification.py" />
+        <item index="4" class="java.lang.String" itemvalue="Python.machineLearning_latest (1)" />
       </list>
     </recent_temporary>
     <configuration default="true" type="tests" factoryName="Attests">
@@ -842,9 +836,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_AthenaFinal_py - 2017.03.27 at 08h 50m 20s.xml">
-      <configuration name="Unittests in AthenaFinal.py" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_in_AthenaFinal_py - 2017.03.27 at 08h 52m 09s.xml">
       <configuration name="Unittests in AthenaFinal.py" configurationId="tests" />
     </history-entry>
@@ -869,6 +860,12 @@
     <history-entry file="Unittests_in_test_bokeh_py - 2017.06.12 at 02h 38m 30s.xml">
       <configuration name="Unittests in test_bokeh.py" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittests_in_test_bokeh_py - 2017.06.16 at 02h 04m 22s.xml">
+      <configuration name="Unittests in test_bokeh.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_bokeh_py - 2017.06.16 at 21h 18m 01s.xml">
+      <configuration name="Unittests in test_bokeh.py" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -883,15 +880,16 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19172932" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.49785176" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49377123" sideWeight="0.132116" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2876557" sideWeight="0.66272825" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25481313" sideWeight="0.867884" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28652322" sideWeight="0.867884" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1944146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3272933" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -900,7 +898,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3272933" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -912,9 +909,9 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2876557" sideWeight="0.66272825" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18233296" sideWeight="0.867884" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28652322" sideWeight="0.867884" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19172932" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1944146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3272933" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -934,25 +931,18 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/AthenaFinal.py</url>
-          <line>242</line>
-          <option name="timeStamp" value="34" />
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/templates/View Data/view_candidate_data.html</url>
+          <line>173</line>
+          <properties />
+          <option name="timeStamp" value="39" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="36" />
+      <option name="time" value="40" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/DBModels/Username.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-96">
-          <caret line="60" column="0" lean-forward="true" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/analysis_controller/Pickle_Saver.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="546">
@@ -1019,35 +1009,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DBModels/KB_Names.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/knowledgebase.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
           <caret line="92" column="19" lean-forward="true" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_bokeh.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="27" column="7" lean-forward="false" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/download.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="93" column="76" lean-forward="false" selection-start-line="93" selection-start-column="76" selection-end-line="93" selection-end-column="76" />
-          <folding>
-            <element signature="e#0#19#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1067,35 +1032,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/Candidate_Analysis/Candidate_Identification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/analysis.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1732">
-          <caret line="130" column="14" lean-forward="true" selection-start-line="130" selection-start-column="14" selection-end-line="130" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/analysis_controller/new_analysis.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="283">
           <caret line="26" column="38" lean-forward="false" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/analysis_controller/analysis_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="777">
-          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#61#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1134,19 +1074,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="45" column="110" lean-forward="false" selection-start-line="45" selection-start-column="92" selection-end-line="45" selection-end-column="110" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/machine_learning/cleaning.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1154,9 +1085,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="604">
           <caret line="50" column="10" lean-forward="true" selection-start-line="50" selection-start-column="10" selection-end-line="50" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1173,7 +1101,7 @@
         <state relative-caret-position="686">
           <caret line="147" column="0" lean-forward="true" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1182,7 +1110,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="42" column="30" lean-forward="false" selection-start-line="42" selection-start-column="30" selection-end-line="42" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1206,15 +1133,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="987">
           <caret line="140" column="137" lean-forward="false" selection-start-line="140" selection-start-column="137" selection-end-line="140" selection-end-column="137" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/View Data/view_candidate_data.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="122" column="56" lean-forward="true" selection-start-line="122" selection-start-column="56" selection-end-line="122" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1222,7 +1140,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1176">
           <caret line="56" column="116" lean-forward="true" selection-start-line="56" selection-start-column="116" selection-end-line="56" selection-end-column="121" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1230,17 +1147,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-15">
           <caret line="45" column="129" lean-forward="false" selection-start-line="45" selection-start-column="129" selection-end-line="45" selection-end-column="129" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AthenaFinal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="133" column="64" lean-forward="false" selection-start-line="133" selection-start-column="64" selection-end-line="133" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1248,7 +1154,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-126">
           <caret line="78" column="43" lean-forward="false" selection-start-line="78" selection-start-column="43" selection-end-line="78" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1256,7 +1161,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="696">
           <caret line="53" column="23" lean-forward="false" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1264,15 +1168,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="772">
           <caret line="162" column="33" lean-forward="false" selection-start-line="162" selection-start-column="9" selection-end-line="162" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/View Data/view_user.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="46" column="56" lean-forward="true" selection-start-line="46" selection-start-column="56" selection-end-line="46" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1280,6 +1175,91 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
           <caret line="14" column="61" lean-forward="false" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/View Data/view_user.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="46" column="56" lean-forward="true" selection-start-line="46" selection-start-column="56" selection-end-line="46" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="55" column="26" lean-forward="true" selection-start-line="55" selection-start-column="26" selection-end-line="55" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_bokeh.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="693">
+          <caret line="35" column="11" lean-forward="false" selection-start-line="35" selection-start-column="11" selection-end-line="35" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/analysis.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1437">
+          <caret line="130" column="14" lean-forward="true" selection-start-line="130" selection-start-column="14" selection-end-line="130" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/analysis_controller/analysis_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/Candidate_Analysis/Candidate_Identification.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/download.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="95" column="38" lean-forward="true" selection-start-line="95" selection-start-column="38" selection-end-line="95" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/View Data/view_candidate_data.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1931">
+          <caret line="174" column="34" lean-forward="false" selection-start-line="174" selection-start-column="34" selection-end-line="174" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AthenaFinal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="84" column="34" lean-forward="true" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/KnowledgeBaseCreation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="11" column="181" lean-forward="false" selection-start-line="11" selection-start-column="181" selection-end-line="11" selection-end-column="181" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DBModels/KB_Names.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="53" column="35" lean-forward="true" selection-start-line="53" selection-start-column="35" selection-end-line="53" selection-end-column="35" />
           <folding />
         </state>
       </provider>

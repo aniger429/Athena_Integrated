@@ -1,28 +1,36 @@
-from bokeh.plotting import figure, output_file, show
+from collections import OrderedDict
 
-# prepare some data
-x = [0.1, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
-y0 = [i**2 for i in x]
-y1 = [10**i for i in x]
-y2 = [10**(i**2) for i in x]
+import pandas as pd
 
-# output to static HTML file
-output_file("log_lines.html")
+from bokeh._legacy_charts import Donut, show, output_file
+from bokeh.sampledata.olympics2014 import data
 
-# create a new plot
-p = figure(
-   tools="pan,box_zoom,reset,save",
-   y_axis_type="log", y_range=[0.001, 10**11], title="log axis example",
-   x_axis_label='sections', y_axis_label='particles'
-)
+# throw the data into a pandas data frame
+df = pd.io.json.json_normalize(data['data'])
 
-# add some renderers
-p.line(x, x, legend="y=x")
-p.circle(x, x, legend="y=x", fill_color="white", size=8)
-p.line(x, y0, legend="y=x^2", line_width=3)
-p.line(x, y1, legend="y=10^x", line_color="red")
-p.circle(x, y1, legend="y=10^x", fill_color="red", line_color="red", size=6)
-p.line(x, y2, legend="y=10^x^2", line_color="orange", line_dash="4 4")
+# filter by countries with at least one medal and sort
+df = df[df['medals.total'] > 8]
+df = df.sort("medals.total", ascending=False)
 
-# show the results
-show(p)
+# get the countries and we group the data by medal type
+countries = df.abbr.values.tolist()
+gold = df['medals.gold'].astype(float).values
+silver = df['medals.silver'].astype(float).values
+bronze = df['medals.bronze'].astype(float).values
+
+# build a dict containing the grouped data
+medals = OrderedDict()
+medals['bronze'] = bronze
+medals['silver'] = silver
+medals['gold'] = gold
+
+# any of the following commented are also valid Donut inputs
+#medals = list(medals.values())
+#medals = np.array(list(medals.values()))
+#medals = pd.DataFrame(medals)
+
+output_file("donut.html")
+
+donut = Donut(medals, countries)
+
+show(donut)

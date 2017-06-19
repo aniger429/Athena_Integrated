@@ -70,6 +70,22 @@ def view_specific_tweet():
     return render_template("View Data/view_tweet.html", tweetData=get_tweet_data(tweet_id))
 
 
+@app.route('/delete_candidate_names', methods=['POST'])
+def delete_candidate_names():
+    candidate = request.form['candidate_name']
+    names = request.form.getlist('names[]')
+    delete_kb_names(names, candidate)
+    return redirect(redirect_url())
+
+
+@app.route('/add_candidate_names', methods=['POST'])
+def add_candidate_names():
+    candidate = request.form['candidate_name']
+    names = request.form.getlist('add_names')
+    new_kb_names(names, candidate)
+    return redirect(redirect_url())
+
+
 @app.route('/candidate')
 def view_candidate_data():
     cname = request.args.get('candidate_name')
@@ -166,6 +182,7 @@ def knowledge_base():
     return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(), kbFileList=get_all_kbfile(), duplicate=False)
 
 
+
 @app.route('/chart-view')
 def chart_view():
     return render_template("chart-view.html")
@@ -245,6 +262,7 @@ def new_ana():
     print("here!")
     # return new_analysis.new_analysis()
     return new_analysis()
+
 
 @app.route('/download', methods=['POST'])
 def download_data():
