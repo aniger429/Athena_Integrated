@@ -23,13 +23,16 @@ def insert_new_username(username_dict):
 
 
 def bulk_update(username_dict):
-    bulk = db.Username.initialize_ordered_bulk_op()
+    bulk = db.Username.initialize_unordered_bulk_op()
     [bulk.find({'username': key}).upsert().update(
-        {'$set': {'numTweets': value['numTweets'],'numMentions': value['numMentions']}})
-     for key, value in username_dict.items()]
-    result = bulk.execute()
-    print (result)
+        {
+            '$inc': {
+                'numTweets': value['numTweets'], 'numMentions': value['numMentions']
+            }
+        }
+    )for key, value in username_dict.items()]
 
+    bulk.execute()
 
 def get_all_username():
     return db.Username.find()

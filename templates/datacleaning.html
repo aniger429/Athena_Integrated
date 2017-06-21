@@ -97,7 +97,8 @@ active
     <script src="{{ url_for('static',filename='js/fileinput.min.js') }}"></script>
     <script>
         $("#file-0").fileinput({
-            'allowedFileExtensions': ['csv', 'xls', 'xlsx']
+            'allowedFileExtensions': ['csv', 'xls', 'xlsx'],
+            'showPreview':false
         });
     </script>
 {% endblock %}

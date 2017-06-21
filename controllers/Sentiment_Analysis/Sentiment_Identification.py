@@ -12,7 +12,7 @@ script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "Lexicon_Files")
 nltk.data.path.append(script_path+"/Lexicon_Files")
 
-afinn = Afinn()
+afinn = Afinn(emoticons=True)
 posiFile = pd.read_csv(file_path + "/positive.txt", header=None)
 posi_list = posiFile[0].tolist()
 

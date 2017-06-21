@@ -25,8 +25,12 @@ dictionary = dict(zip(contractions[0].tolist(), contractions[1].tolist()))
 c_re = re.compile('(%s)' % '|'.join(dictionary.keys()))
 
 
-def read_xlsx(filename):
-    return pd.read_excel(filename, encoding='utf-8', keep_default_na=False)
+def read_csv(filename):
+    return pd.read_csv(filename, encoding="utf8", keep_default_na=False, index_col=None, sep=",", skipinitialspace = True, chunksize=500)
+
+
+# def read_xlsx(filename):
+#     return pd.read_excel(filename, encoding='utf-8', keep_default_na=False)
 
 
 def expand_contractions(text, c_re=c_re):
@@ -121,38 +125,33 @@ def process_hashtags(hashtag_list):
 
 
 def cleaning_file(file_name):
-    data_source = read_xlsx(file_name)
-    # add usernames to DB
-    preprocessing.process_usernames(data_source)
-    nameTuple = get_all_username_tup()
+    print("Start Cleaning File")
+    reader = read_csv(file_name)
+    # num_chunks = sum(1 for _ in reader)
 
-    raw_tweets = data_source['Tweet']
-    cleaned_tweets = []
-    [cleaned_tweets.append(init_data_cleaning(t, nameTuple)) for t in raw_tweets]
+    for ctr, chunk in enumerate(reader):
+        # print(ctr +"/"+num_chunks)
 
-    unigrams, bigrams, trigrams = ngram_extractor.get_ngrams(cleaned_tweets)
+        # add usernames to DB
+        preprocessing.process_usernames(chunk)
+        nameTuple = get_all_username_tup()
 
-    d = {'idTweet': data_source['Id'], 'idUsername': anonymize_poster_username(data_source['Username']),
-         'orig_tweets': raw_tweets, 'tweet': cleaned_tweets, 'date_created': data_source['Date Created'], 'location':data_source['Location'],
-         'hashtags': process_hashtags(data_source['Hashtags']), 'favorite':data_source['Favorites'], 'retweet':data_source['Retweets'],
-         'users_mentioned':get_usernames(cleaned_tweets), 'unigram':unigrams, 'bigram':bigrams, 'trigram':trigrams}
+        raw_tweets = chunk['Tweet']
+        cleaned_tweets = []
+        [cleaned_tweets.append(init_data_cleaning(t, nameTuple)) for t in raw_tweets]
 
-    df = pd.DataFrame(data=d, index=None)
-    # this removes empty tweets after cleaning
-    df.drop(df[df.tweet == ""].index, inplace=True)
+        unigrams, bigrams, trigrams = ngram_extractor.get_ngrams(cleaned_tweets)
 
-    # df.to_excel("CleanedTweets.xlsx", index=False)
-    print("done cleaning")
-    insert_new_tweet(df.to_dict(orient='records'))
+        d = {'idTweet': chunk['Id'], 'idUsername': anonymize_poster_username(chunk['Username']),
+             'orig_tweets': raw_tweets, 'tweet': cleaned_tweets, 'date_created': chunk['Date Created'], 'location':chunk['Location'],
+             'hashtags': process_hashtags(chunk['Hashtags']), 'favorite':chunk['Favorites'], 'retweet':chunk['Retweets'],
+             'users_mentioned':get_usernames(cleaned_tweets), 'unigram':unigrams, 'bigram':bigrams, 'trigram':trigrams}
 
+        df = pd.DataFrame(data=d, index=None)
+        # this removes empty tweets after cleaning
+        df.drop(df[df.tweet == ""].index, inplace=True)
 
-# file_name = "C:\\Users\\Regina\\Google Drive\\Thesis\\Dummy Data\\test1.xlsx"
-# data_source = read_xlsx(file_name)
-# raw_tweets = data_source['Tweet']
-# print(get_usernames(raw_tweets))
+        insert_new_tweet(df.to_dict(orient='records'))
 
-
-# start = time.time()
-# cleaning_file(file_name)
-# end = time.time()
-# print(end - start)
+    print("Done Cleaning File")
+# cleaning_file("C:/Users/CCS/Documents/Election Data/CSV8/Election-18.csv")

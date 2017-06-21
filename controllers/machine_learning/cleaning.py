@@ -146,13 +146,29 @@ def cleaning_file(fname):
     insert_new_tweet(df.to_dict(orient='records'))
 
 
-# file_name = "C:\\Users\\Regina\\Google Drive\\Thesis\\Dummy Data\\test1.xlsx"
-# data_source = read_xlsx(file_name)
-# raw_tweets = data_source['Tweet']
-# print(get_usernames(raw_tweets))
 
+def test(tweet):
+    # # Emoticons
+    # emoticons = [
+    #         ('__positive__', [':-)', ':)', '(:', '(-:',
+    #                           ':-D', ':D', 'X-D', 'XD', 'xD',
+    #                           '<3', ':\*', ';-)', ';)', ';-D', ';D', '(;', '(-;', ]),
+    #         ('__negative__', [':-(', ':(', '(:', '(-:', ':,(',
+    #                           ':\'(', ':"(', ':((', ])
+    #     ]
+    #
+    # emoticons_regex = [(repl, re.compile(regex_join(replace_parenth(regx)))) \
+    #                    for (repl, regx) in emoticons]
+    #
+    # for (repl, regx) in emoticons_regex:
+    #     tweet = re.sub(regx, ' ' + repl + ' ', tweet)
+    emoticons_str = r"""
+        (?:
+            [:=;] # Eyes
+            [oO\-]? # Nose (optional)
+            [D\)\]\(\]/\\OpP] # Mouth
+        )"""
 
-# start = time.time()
-# cleaning_file(file_name)
-# end = time.time()
-# print(end - start)
+    emoticon_re = re.compile(r'^' + emoticons_str + '$', re.VERBOSE | re.IGNORECASE)
+    
+

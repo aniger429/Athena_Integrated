@@ -25,10 +25,6 @@ def username_mentions(username_dict, new_username_list):
     return username_dict
 
 
-def addToDB(usernameList):
-    insert_new_username(usernameList)
-    print("done inserting to table: username")
-
 def filterOutUsernames(usernameList):
     return [username for username in usernameList if len(username) < 17]
 
@@ -46,8 +42,8 @@ def process_usernames(data_source):
 
     u_dict = username_mentions(u_dict, found_username_list)
 
-    insert_new_username(u_dict)
-    print("Done processing the username")
+    bulk_update(u_dict)
+    # print("Done processing the username")
     return
 
 
