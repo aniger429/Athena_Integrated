@@ -103,7 +103,7 @@ active
                     <h4 class="title custom"> {{ cname['kb_names'] | length }}</h4>
                     <p class="category custom">{{ cname['candidate_name'] | capitalize }}</p>
                     <hr/>
-                    <a class="username_link" href="{{ url_for('view_candidate_data', candidate_name=cname['candidate_name'])}}">
+                    <a class="username_link" href="{{ url_for('view_candidate_names', candidate_name=cname['candidate_name'])}}">
                         <p style="text-align: center"><i>View Names</i></p>
                     </a>
                 </div>

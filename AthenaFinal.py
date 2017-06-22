@@ -81,9 +81,16 @@ def delete_candidate_names():
 @app.route('/add_candidate_names', methods=['POST'])
 def add_candidate_names():
     candidate = request.form['candidate_name']
-    names = request.form.getlist('add_names')
+    names = request.form['add_names'].split(",")
     new_kb_names(names, candidate)
     return redirect(redirect_url())
+
+
+@app.route('/candidate_names')
+def view_candidate_names():
+    cname = request.args.get('candidate_name')
+
+    return render_template("View Data/view_candidate_names.html", candidate_data=get_specific_candidate_names(cname))
 
 
 @app.route('/candidate')
@@ -144,7 +151,7 @@ def view_sentiment_analysis():
 
     elif datasource == "Candidate":
         candidate_name = request.args.get('candidate_name')
-        tweets = load_obj("Tweets")
+        tweets = load_obj("Candidate")
         sentiment_for="Candidate: "+candidate_name
 
     positive_tweets, neutral_tweets, negative_tweets = compute_tweets_sentiment(tweets)

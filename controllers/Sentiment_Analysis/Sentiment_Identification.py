@@ -39,7 +39,7 @@ def evaluate_score(score):
 def compute_afinn_score(tweet):
     afinnScore = 0
     afinnSum = 0
-    for word in tweet.split(' '):
+    for word in tweet:
         if (afinn.score(word) > 0) and (afinnScore < 0):  # N + P
             afinnScore = 0
             afinnScore -= afinn.score(word)
@@ -63,7 +63,7 @@ def compute_afinn_score(tweet):
 def compute_bing_score(tweet):
     bingScore = 0
     bingSum = 0
-    for word in tweet.split(' '):
+    for word in tweet:
         if (word in posi_list) and (bingScore < 0):  # N + P
             bingScore = -2
         elif (word in posi_list):  # P + P
@@ -96,7 +96,7 @@ def compute_sentiment(tweet):
             pos += sipList[i].pos_score()
             neg += sipList[i].neg_score()
     """
-
+    # print(' '.join(tweet)  + filScore + afinnScore + bingScore)
     final_score = Counter([bingScore, filScore, afinnScore]).most_common()[0]
 
     if final_score[1] == 1:
@@ -113,7 +113,10 @@ def compute_tweets_sentiment(tweet_list):
     neut_tweets = []
 
     for tweet in tweet_list:
-        senti = compute_sentiment(tweet['tweet'])
+        if isinstance(tweet['tweet'], list):
+            senti = compute_sentiment(tweet['tweet'])
+        else:
+            senti = compute_sentiment(tweet['tweet'].split(' '))
 
         if senti == "POSITIVE":
             posi_tweets.append(tweet)
@@ -132,7 +135,10 @@ def compute_senti_candidate_tweet(tweet_list):
     final_tweet_list = []
 
     for tweet in tweet_list:
-        result = compute_sentiment(' '.join(tweet['tweet']))
+        if isinstance(tweet['tweet'], list):
+            result = compute_sentiment(tweet['tweet'])
+        else:
+            result = compute_sentiment(tweet['tweet'].split(' '))
 
         if result == "POSITIVE":
             senti = "positive"

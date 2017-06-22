@@ -13,30 +13,6 @@ def get_sentiment_identified(tweets):
     return positive_tweets, neutral_tweets, negative_tweets
 
 
-# def view_candidate(viz_selected, candidate):
-#     # tweets = get_all_tweets()
-#     sentiment_for = "Candidate: " + candidate
-#
-#     positive_tweets, neutral_tweets, negative_tweets = get_sentiment_identified(tweets)
-#
-#     identify_candidate(tweets, cname=cname)
-#     data = load_obj("Candidate")
-#     candidate_name_count = Counter([tweet['tweet'][tweet['cand_ana'][cname]] for tweet in data])
-#
-#     if viz_selected == "Concordancer with Sentiment":
-#         return render_template("analysis/Sentiment/view_concordancer_sentiment.html",
-#                     tweet_list=[negative_tweets, positive_tweets, neutral_tweets],
-#                     sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=sentiment_for)
-#
-#         return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
-#                                candidate_data=get_specific_candidate_names(cname),
-#                                candidate_tweets=data)
-
-
-    return render_template("analysis/Sentiment/view_tweets_sentiment.html", tweet_list=[negative_tweets, positive_tweets, neutral_tweets], sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=sentiment_for)
-
-
-
 def view_sentiment_analysis():
     tweets = get_all_tweets()
     datasource = request.args.get('datasource')

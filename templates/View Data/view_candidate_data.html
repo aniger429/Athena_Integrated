@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from 'analysis/macros.html' import collapsible_topic_config%}
+{% from 'analysis/macros.html' import collapsible_topic_config, card_header%}
 {% block customCSS %}
 
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
@@ -20,6 +20,7 @@ Tweet
 
 {% block content %}
 {% set candidate_name = candidate_data['candidate_name'] %}
+
 <div class="row">
     <div class="col-md-12">
         <div class="collapse" id="collapse_topic">
@@ -38,55 +39,46 @@ Tweet
     </div>
     </br>
 </div>
-    <div class="row">
+{% if withsenti == True %}
+    {% set sentiments = ["positive", "neutral", "negative"] %}
+    {% for foo in candidate_tweets %}
+        {% if products|length > 1 %}
+        {% endif %}
+    {% endfor %}
+
+    {{ card_header() }}
+{% endif %}
+<div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="header">
                 <h4 class="title custom">{{ candidate_data['candidate_name'] | capitalize }}</h4>
                 <p class="category custom">Here are all the names</p>
                 <br/><br/>
-                <form class="col-md-9" action="/add_candidate_names" method="POST" enctype="multipart/form-data">
-                        <input  name="candidate_name" value="{{ candidate_name }}" hidden/>
-                        <input id="tags" type="text" name="add_names" class="col-md-10" placeholder="name" tooltip="Tab for next name" data-role="tagsinput" />
-                        <button type="submit" class="btn btn-success btn-md  col-md-2">Add names</button>
-                 </form>
 
-                 <form class="col-md-3" action="/download" method="post" enctype="multipart/form-data">
+                 <form action="/download" method="post" enctype="multipart/form-data">
                     <input type="text" name="download_data" value="all_candidate_names" hidden/>
-                    <input id="submit" type="submit" class="btn btn-info col-md-6 pull-right" Value="Download Names">
+                    <input id="submit" type="submit" class="btn btn-info col-md-3 pull-right" Value="Download Names">
                 </form>
             </div>
             <div class="content table-responsive table-full-width">
-             <form action="/delete_candidate_names" method="POST" enctype="multipart/form-data">
-                <input  name="candidate_name" value="{{ candidate_name }}" hidden/>
                 <table class="table table-striped">
                     <thead>
-                        <th class="col-md-1"></th>
-                        <th class="col-md-2">Name</th>
+                        <th class="col-md-3">Name</th>
                         <th class="col-md-1">Count</th>
-                        <th class="col-md-1"></th>
-                        <th class="col-md-2">Name</th>
+                        <th class="col-md-3">Name</th>
                         <th class="col-md-1">Count</th>
-                        <th class="col-md-1"></th>
-                        <th class="col-md-2">Name</th>
+                        <th class="col-md-3">Name</th>
                         <th class="col-md-1">Count</th>
                     </thead>
                     <tbody>
-
                         {% for cname_row in candidate_data['kb_names'] | batch(3, '&nbsp;') %}
                             <tr>
                                 {% for cname in cname_row %}
                                     {% if cname != '&nbsp;' %}
-                                        <td>
-                                        <label class="checkbox checkbox-red" for="checkbox5">
-                                           <input type="checkbox" value="{{ cname }}" name="names[]" data-toggle="checkbox">
-                                        </label>
-                                        </td>
-{#                                        <td><input  type="checkbox" name="selected_kb_name"  data-toggle="checkbox"/> </td>#}
                                         <td>{{ cname }}</td>
                                         <td>{{ candidate_name_count[cname] }}</td>
                                     {% else %}
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                     {% endif %}
@@ -95,15 +87,11 @@ Tweet
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-danger btn-md col-md-offset-10 col-md-2">Delete</button>
-                </div>
-             <br/><br/><br/>
-            </form>
             </div>
         </div>
     </div>
-    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
          <div class="card">
@@ -112,17 +100,26 @@ Tweet
                 <p class="category custom">{{ candidate_tweets | length }} Tweets</p>
                 <form action="/download" method="post" enctype="multipart/form-data">
                     <input type="text" name="download_data" value="download_tweets_candidate" hidden/>
-                    <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download Names">
+                    <input id="submit" type="submit" class="btn btn-info col-md-3 pull-right" Value="Download Candidate Tweets">
                 </form>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable">
                     <thead>
+                    {% if withsenti == True %}
+                        <th class="col-md-1">Number</th>
+                        <th class="col-md-4"></th>
+                        <th class="col-md-1">Name</th>
+                        <th class="col-md-4"></th>
+                        <th class="col-md-1">View Tweet</th>
+                        <th class="col-md-1">Sentiment</th>
+                    {% else %}
                         <th class="col-md-1">Number</th>
                         <th class="col-md-4"></th>
                         <th class="col-md-2">Name</th>
                         <th class="col-md-4"></th>
                         <th class="col-md-1">View Tweet</th>
+                    {% endif %}
                     </thead>
                     <tbody>
                         {% if candidate_tweets == [] %}
@@ -130,7 +127,17 @@ Tweet
                         {% else %}
                             {% for tweet in candidate_tweets %}
                                 {% set t = tweet['tweet'] %}
-                                <tr>
+                                 {% if withsenti == True  %}
+                                     {% if tweet['sentiment'] == "positive" %}
+                                        <tr class="success">
+                                     {% elif tweet['sentiment'] == "negative"%}
+                                        <tr class="danger">
+                                     {% else %}
+                                        <tr class="active">
+                                     {% endif %}
+                                 {% else %}
+                                    <tr>
+                                 {% endif %}
                                     <td>{{ loop.index }}</td>
                                     <td style="text-align: right">
                                         {% for word in t[0:tweet['cand_ana'][candidate_name]] %}
@@ -154,6 +161,7 @@ Tweet
                                          {% endfor %}
                                     </td>
                                     <td><a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a></td>
+                                    {% if withsenti == True  %}<td>{{ tweet['sentiment'] | capitalize  }}</td>{% endif %}
                                 </tr>
                             {% endfor %}
                         {% endif %}

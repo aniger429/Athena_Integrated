@@ -37,16 +37,14 @@ def new_analysis():
 
             if viz_selected == "Concordancer with Sentiment":
                 final_tweets= compute_senti_candidate_tweet(data)
-                print(final_tweets)
-                return render_template("analysis/Sentiment/view_concordancer_sentiment.html", candidate_name_count=candidate_name_count,
-                                       candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets)
+                return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
+                                       candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets, withsenti=True)
 
             return redirect(url_for('view_sentiment_analysis', datasource='Candidate', candidate_name=candidate_name))
 
 
         return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
-                               candidate_data=get_specific_candidate_names(candidate_name),
-                               candidate_tweets=data)
+                               candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=data, withsenti=False)
     # first level
     elif (flevel == "topic"):
         print("flvel: topic")
