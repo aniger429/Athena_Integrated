@@ -21,7 +21,7 @@ from sklearn.svm import SVC
 from sklearn.utils import shuffle
 from controllers.machine_learning.cleaning import *
 from controllers.analysis_controller import Pickle_Saver as ps
-
+from controllers.DataCleaning import emojip as ep
 
 # save path for classifiers
 script_path = os.path.dirname(os.path.dirname(__file__))
@@ -33,7 +33,12 @@ def preprocess(file_name, samples):
     data = pd.read_excel(file_name, parse_cols='B,G')
     removeSp = re.compile(r'@(\w+)')
 
+    posi_list = ep.pos_file_to_list()
+    nega_list = ep.neg_file_to_list()
+    
     for i in range(0, len(data[:samples])):
+        data['Tweet'][i] = ep.pos(data['Tweet'][i], posi_list)
+        data['Tweet'][i] = ep.neg(data['Tweet'][i], nega_list)
         data['Tweet'][i] = data_cleaning(data['Tweet'][i])
         data['Tweet'][i] = removeSp.sub('', data['Tweet'][i])
     data = shuffle(data)    
