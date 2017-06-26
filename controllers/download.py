@@ -2,8 +2,7 @@ import pandas as pd
 from flask import request, redirect, url_for, render_template
 import DBModels
 import controllers
-import openpyxl
-
+# import openpyxl
 
 
 def writeToFile(data, filename):
@@ -19,7 +18,7 @@ def redirect_url():
 
 
 def multi_sheets(filename, data_list):
-    writer = pd.ExcelWriter(filename, index=None)
+    writer = pd.ExcelWriter(filename)
     for d in data_list:
         d['data'].to_excel(writer, d['sheet_name'], index=None, columns=None)
     writer.save()
@@ -54,6 +53,27 @@ def download():
     elif which_data == "download_tweets_candidate":
         data = controllers.analysis_controller.Pickle_Saver.load_obj("Candidate")
         filename = "Data/Downloads/candidate_tweets.xlsx"
+
+    elif which_data == "download_topic_lda_results":
+        from collections import OrderedDict
+
+        data = controllers.analysis_controller.Pickle_Saver.load_obj("Topics")
+        word_list = OrderedDict()
+        tweets = []
+
+        for key, value in data.items():
+            tweets.append({"sheet_name": "Tweets "+key,
+                           "data": pd.DataFrame({'Tweets': [' '.join(v['tweet']) for v in value['topic_tweets']]})})
+            word_list["word: "+str(key)] = ([w['word'] for w in value['words']])
+            word_list["score: "+str(key)] = ([w['score'] for w in value['words']])
+
+        filename1 = "Data/Downloads/topic_lda_words.xlsx"
+        filename2 = "Data/Downloads/topic_lda_tweets.xlsx"
+
+        writeToFile(word_list, filename1)
+        multi_sheets(filename2, tweets)
+
+        return redirect(url_for('analysis'))
 
     elif which_data == "download_topic_words":
         key = request.form['key']

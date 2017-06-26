@@ -1,8 +1,7 @@
 from flask import request, redirect, url_for, render_template
 from controllers.Candidate_Analysis.Candidate_Identification import *
-from controllers.Topic_Analysis.Topic_Analysis import *
-from collections import Counter
-from controllers.Topic_Analysis.Find_Topic_Tweets import *
+# from controllers.Topic_Analysis.Topic_Analysis import *
+from controllers.analysis_controller.topic_view_analysis import *
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
 
@@ -26,10 +25,7 @@ def new_analysis():
 
         if slevel == "topic":
             print("slevel: topic")
-            # data = load_obj('Tweets')
-            # final_list, lda = topic_analysis(tweets)
-            return redirect(url_for('view_topic_analysis', datasource='candidate', candidate_name=candidate_name))
-            # return render_template("analysis/Topic/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda, topic_analysis_for=candidate_name)
+            return view_candidate(candidate_name)
 
         elif slevel == "sentiment":
             print("slevel: sentiment")
@@ -48,45 +44,8 @@ def new_analysis():
     # first level
     elif (flevel == "topic"):
         print("flvel: topic")
-        # topic_tweets = list(get_all_tweets())
-        # final_list, lda = topic_analysis(topic_tweets)
-
-        # if slevel == "none":
-        #     print("slevel: none")
-        # elif slevel == "candidate":
-        #     print("slevel: candidate")
-        #
-        #     if tlevel == "none":
-        #         print("tlevel: none")
-        #     elif tlevel == "sentiment":
-        #         print("tlevel: sentiment")
-        # else:
-        #     print("slevel: sentiment")
-        #     if tlevel == "none":
-        #         print("tlevel: none")
-        #     elif tlevel == "candidate":
-        #         print("tlevel: candidate")
-
-        return redirect(url_for('view_topic_analysis'))
+        return view_all()
     # first level
     else:
         print("flevel: sentiment")
-
-        # if slevel == "none":
-        #     print("slevel: none")
-        # elif slevel == "candidate":
-        #     print("slevel: candidate")
-        #
-        #     if tlevel == "none":
-        #         print("tlevel: none")
-        #     elif tlevel == "topic":
-        #         print("tlevel: topic")
-        # else:
-        #     print("slevel: topic")
-        #     if tlevel == "none":
-        #         print("tlevel: none")
-        #     elif tlevel == "candidate":
-        #         print("tlevel: candidate")
-
-
         return redirect(url_for('view_sentiment_analysis'))

@@ -15,6 +15,13 @@ Tweet
 
 {% block content %}
 <div class="row">
+    <form action="/download" method="post" enctype="multipart/form-data">
+        <input type="text" name="download_data" value="download_topic_lda_results" hidden/>
+        <input id="submit" type="submit" class="btn btn-info col-md-3 pull-right" Title="Filename: topic_lda_words"
+                   Value="Download LDA Results">
+    </form>
+</div>
+<div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="header">
@@ -48,7 +55,7 @@ Tweet
                             <th class="col-md-5">Score</th>
                         </thead>
                         <tbody>
-                                {% for v in value['words']%}
+                                {% for v in value['words'] %}
                                 <tr>
                                     <td>{{ loop.index }}</td>
                                     <td>{{ v['word'] }}</td>
