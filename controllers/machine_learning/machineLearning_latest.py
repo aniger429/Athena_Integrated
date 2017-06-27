@@ -1,9 +1,3 @@
-import re
-
-import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.linear_model import SGDClassifier
@@ -13,9 +7,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
 from sklearn import model_selection
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.naive_bayes import GaussianNB
-from sklearn.svm import SVC
 
 
 from sklearn.utils import shuffle
@@ -29,22 +20,36 @@ path = os.path.join(script_path, "analysis_controller", "Pickles", "ML_Classifie
 
 # path = 'C:/Users/HKJ/Documents/GitHub/Athena_Integrated/controllers/analysis_controller/Pickles/'
 
-def preprocess(file_name, samples):
-    data = pd.read_excel(file_name, parse_cols='B,G')
-    removeSp = re.compile(r'@(\w+)')
+removeSp = re.compile(r'@(\w+)')
+posi_list = ep.pos_file_to_list()
+nega_list = ep.neg_file_to_list()
 
-    posi_list = ep.pos_file_to_list()
-    nega_list = ep.neg_file_to_list()
-    
-    for i in range(0, len(data[:samples])):
-        data['Tweet'][i] = ep.pos(data['Tweet'][i], posi_list)
-        data['Tweet'][i] = ep.neg(data['Tweet'][i], nega_list)
-        data['Tweet'][i] = data_cleaning(data['Tweet'][i])
-        data['Tweet'][i] = removeSp.sub('', data['Tweet'][i])
-    data = shuffle(data)    
-    data = data[:samples]
-    
-    return data
+
+def preprocess(chunk):
+    chunktweet = pd.DataFrame()
+
+    for tweet in chunk:
+        print(tweet)
+        tweet['Tweet'] = ep.pos(tweet['Tweet'], posi_list)
+        tweet['Tweet'] = ep.neg(tweet['Tweet'], nega_list)
+        tweet['Tweet'] = data_cleaning(tweet['Tweet'])
+        tweet['Tweet'] = removeSp.sub('', tweet['Tweet'])
+
+        chunktweet = chunktweet.append(tweet, ignore_index=True)
+
+    return chunktweet
+
+
+def read_file(file_name):
+    # data = pd.read_excel(file_name, parse_cols='B,G')
+    data_reader = pd.read_csv(file_name, encoding = "utf8", keep_default_na = False, index_col = None, sep = ",",
+                              skipinitialspace = True, chunksize = 10000, usecols = ['Tweet', 'Sentiment'], nrows=10000)
+    dataset = pd.DataFrame()
+
+    for chunk in data_reader:
+        dataset = dataset.append(preprocess(chunk), ignore_index=True)
+
+    return dataset
 
 
 def train(dataX, dataY, index):
@@ -136,6 +141,7 @@ def process(data):
     ps.write_pickle(path + '/DT', DT)
     ps.write_pickle(path + '/ME', ME)
 
+
 def decideSentiment(tweet ,df, text_clf):
     a = []
     a.append(tweet)
@@ -145,5 +151,6 @@ def decideSentiment(tweet ,df, text_clf):
     print(predict)
 
 
-data = preprocess('../../Data/Election-18.xlsx', 10000)
+data = read_file('/home/dudegrim/Documents/CSV8/Election-18.csv')
+print(data)
 process(data)

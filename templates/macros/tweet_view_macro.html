@@ -45,3 +45,18 @@
     <br/>
 </div>
 {% endmacro %}
+
+{% macro card_header_longtitle(title, subtitle) %}
+<div class="card">
+    <div class="header">
+        <h4 class="title custom">
+            {% for t in title %}
+                {{ t }}
+                {{ ' ' }}
+            {% endfor %}
+        </h4>
+        <p class="category custom">{{ subtitle }}</p>
+    </div>
+    <br/>
+</div>
+{% endmacro %}

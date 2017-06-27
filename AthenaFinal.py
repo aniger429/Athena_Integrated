@@ -15,7 +15,7 @@ from controllers.download import *
 from collections import Counter
 from controllers.analysis_controller.topic_view_analysis import *
 from controllers.analysis_controller.analysis_manager import new_analysis
-
+from controllers.bokeh_viz.donut_chart import *
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -195,11 +195,6 @@ def chart_view():
     return render_template("chart-view.html")
 
 
-@app.route('/test')
-def test():
-    return render_template("base.html")
-
-
 # Route that will process the file upload
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -275,6 +270,17 @@ def new_ana():
 def download_data():
     return download()
 
+
+# Bokeh Visualizations
+@app.route('/test')
+def test_bokeh():
+    from bokeh.embed import components
+    # Create the plot
+    plot = load_chart()
+
+    # Embed plot into HTML via Flask Render
+    script, div = components(plot)
+    return render_template("test.html", script=script, div=div)
 
 if __name__ == '__main__':
     app.run(

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% from 'analysis/macros.html' import collapsible_topic_config, card_header%}
+{% from 'analysis/macros.html' import collapsible_topic_config%}
+{% from 'macros/tweet_view_macro.html' import  card_header, card_header_longtitle %}
 {% block customCSS %}
 
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
@@ -41,12 +42,16 @@ Tweet
 </div>
 {% if withsenti == True %}
     {% set sentiments = ["positive", "neutral", "negative"] %}
-    {% for foo in candidate_tweets %}
-        {% if products|length > 1 %}
-        {% endif %}
-    {% endfor %}
+    {% set total_count = candidate_tweets | length %}
+    <div class="row">
+        {% for s in sentiments %}
+            <div class="col-md-4">
+            {% set percentage = (senti_count[s] / total_count) | round(3, 'common') %}
 
-    {{ card_header() }}
+             {{ card_header_longtitle([senti_count[s],":",percentage, "%"], s  + " tweets") }}
+            </div>
+        {% endfor %}
+    </div>
 {% endif %}
 <div class="row">
     <div class="col-md-12">
