@@ -5,10 +5,11 @@
           <h3> Candidate Analysis</h3>
           <div class="form-group">
             <label class="control-label">Name</label>
-             <select name="candidate-name" class="form-control col-md-12">
+             <select name="candidate-name" class="form-control col-md-12" id="candidate_options">
                     {% for cname in candidate_names %}
                         <option value={{ cname }}>{{ cname | capitalize }}</option>
                     {% endfor %}
+                    <option value='all'>All</option>
               </select>
           </div>
           {% if step != 1 %}

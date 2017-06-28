@@ -15,33 +15,31 @@ Tweet
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ tweetData['favorite'] }}</h4>
-                    <p class="category custom">Favorite</p>
-                </div>
-                </br>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">{{ tweetData['favorite'] }}</h4>
+                <p class="category custom">Favorite</p>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ tweetData['location'] }}</h4>
-                    <p class="category custom">Location</p>
-                </div>
-                </br>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom">{{ tweetData['retweet'] }}</h4>
-                    <p class="category custom">Retweet</p>
-                </div>
             </br>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">{{ tweetData['location'] }}</h4>
+                <p class="category custom">Location</p>
             </div>
+            </br>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">{{ tweetData['retweet'] }}</h4>
+                <p class="category custom">Retweet</p>
+            </div>
+        </br>
         </div>
     </div>
 </div>
