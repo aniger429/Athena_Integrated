@@ -2,27 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ebda205c-4c70-4578-ac01-57ea82d059e0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controllers/bokeh_viz/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controllers/bokeh_viz/donut_chart.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/donut.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/Candidate.pkl" afterPath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/Candidate.pkl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/DT.pkl" afterPath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/DT.pkl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/KNN.pkl" afterPath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/KNN.pkl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/ME.pkl" afterPath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/ME.pkl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/NB.pkl" afterPath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/NB.pkl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/SVM.pkl" afterPath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/ML_Classifier/SVM.pkl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/Tweets.pkl" afterPath="$PROJECT_DIR$/controllers/analysis_controller/Pickles/Tweets.pkl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Athena_Integrated.iml" afterPath="$PROJECT_DIR$/.idea/Athena_Integrated.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AthenaFinal.py" afterPath="$PROJECT_DIR$/AthenaFinal.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/DataCleaning/emojip.py" afterPath="$PROJECT_DIR$/controllers/DataCleaning/emojip.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/ManageTrainingData.py" afterPath="$PROJECT_DIR$/controllers/ManageTrainingData.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/analysis_controller/analysis_manager.py" afterPath="$PROJECT_DIR$/controllers/analysis_controller/analysis_manager.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py" afterPath="$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/View Data/view_candidate_data.html" afterPath="$PROJECT_DIR$/templates/View Data/view_candidate_data.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/macros/tweet_view_macro.html" afterPath="$PROJECT_DIR$/templates/macros/tweet_view_macro.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/test.html" afterPath="$PROJECT_DIR$/templates/test.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_bokeh.py" afterPath="$PROJECT_DIR$/test_bokeh.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,8 +26,8 @@
     <SUITE FILE_PATH="coverage/Athena_Integrated$Sentiment_Identification_March26.coverage" NAME="Sentiment_Identification_March26 Coverage Results" MODIFIED="1490513110322" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Sentiment_Analysis" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1497933478422" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Unittests_in_test_bokeh_py.coverage" NAME="Unittests in test_bokeh.py Coverage Results" MODIFIED="1498551715230" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Athena_Integrated$Unittests_in_ManageTrainingData_py.coverage" NAME="Unittests in ManageTrainingData.py Coverage Results" MODIFIED="1498582257827" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers" />
-    <SUITE FILE_PATH="coverage/Athena_Integrated$machineLearning_latest__1_.coverage" NAME="machineLearning_latest (1) Coverage Results" MODIFIED="1498583060695" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/machine_learning" />
+    <SUITE FILE_PATH="coverage/Athena_Integrated$Unittests_in_ManageTrainingData_py.coverage" NAME="Unittests in ManageTrainingData.py Coverage Results" MODIFIED="1498665879059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers" />
+    <SUITE FILE_PATH="coverage/Athena_Integrated$machineLearning_latest__1_.coverage" NAME="machineLearning_latest (1) Coverage Results" MODIFIED="1498671402109" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/machine_learning" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$machineLearning_latest__2_.coverage" NAME="machineLearning_latest (2) Coverage Results" MODIFIED="1497326540396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Sentiment_Analysis/machine_learning" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Sentiment_Identification.coverage" NAME="Sentiment_Identification Coverage Results" MODIFIED="1497547390350" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/controllers/Sentiment_Analysis" />
     <SUITE FILE_PATH="coverage/Athena_Integrated$Unittests_in_AthenaFinal_py.coverage" NAME="Unittests in AthenaFinal.py Coverage Results" MODIFIED="1490594670740" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
@@ -61,7 +48,7 @@
       <file leaf-file-name="AthenaFinal.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AthenaFinal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
+            <state relative-caret-position="5140">
               <caret line="274" column="18" lean-forward="false" selection-start-line="274" selection-start-column="18" selection-end-line="274" selection-end-column="18" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
@@ -73,8 +60,18 @@
       <file leaf-file-name="machineLearning_latest.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="107">
-              <caret line="45" column="74" lean-forward="false" selection-start-line="45" selection-start-column="74" selection-end-line="45" selection-end-column="74" />
+            <state relative-caret-position="200">
+              <caret line="60" column="50" lean-forward="false" selection-start-line="60" selection-start-column="50" selection-end-line="60" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cleaning.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/DataCleaning/cleaning.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="140" column="56" lean-forward="false" selection-start-line="140" selection-start-column="56" selection-end-line="140" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -83,8 +80,8 @@
       <file leaf-file-name="ManageTrainingData.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/ManageTrainingData.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="80" lean-forward="false" selection-start-line="11" selection-start-column="23" selection-end-line="12" selection-end-column="80" />
+            <state relative-caret-position="-111">
+              <caret line="42" column="62" lean-forward="true" selection-start-line="42" selection-start-column="62" selection-end-line="42" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -104,7 +101,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>evaluate_score</find>
       <find>sentiment</find>
       <find>candidate</find>
       <find>path</find>
@@ -134,6 +130,7 @@
       <find>view_candidate_data</find>
       <find>positive</find>
       <find>test</find>
+      <find>decideSentiment</find>
     </findStrings>
     <replaceStrings>
       <replace>kbfile</replace>
@@ -230,8 +227,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -305,6 +302,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Athena_Integrated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Athena_Integrated" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DataCleaning" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -716,21 +731,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 00h 03m 51s.xml">
-      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 00h 04m 24s.xml">
-      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 00h 04m 41s.xml">
-      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 00h 04m 49s.xml">
-      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 00h 04m 55s.xml">
-      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 00h 08m 49s.xml">
       <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
     </history-entry>
@@ -744,6 +744,21 @@
       <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
     </history-entry>
     <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 00h 51m 04s.xml">
+      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 23h 43m 50s.xml">
+      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 23h 44m 29s.xml">
+      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 23h 46m 47s.xml">
+      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.28 at 23h 48m 01s.xml">
+      <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_ManageTrainingData_py - 2017.06.29 at 00h 04m 43s.xml">
       <configuration name="Unittests in ManageTrainingData.py" configurationId="tests" />
     </history-entry>
   </component>
@@ -764,7 +779,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.49785176" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49327356" sideWeight="0.132116" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36687306" sideWeight="0.867884" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30650154" sideWeight="0.867884" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2876557" sideWeight="0.66272825" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -787,7 +802,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49327356" sideWeight="0.132116" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34365326" sideWeight="0.867884" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36687306" sideWeight="0.867884" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2876557" sideWeight="0.66272825" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -810,24 +825,16 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="46" />
+      <option name="time" value="49" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/View Data/view_usernames.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="696">
-          <caret line="53" column="23" lean-forward="false" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/analysis/macros.html" />
     <entry file="file://$PROJECT_DIR$/controllers/Candidate_Analysis/Candidate_Identification.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -888,7 +895,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="11" column="141" lean-forward="false" selection-start-line="11" selection-start-column="141" selection-end-line="11" selection-end-column="141" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -910,7 +916,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="551">
           <caret line="53" column="4" lean-forward="false" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -941,7 +946,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="718">
           <caret line="140" column="65" lean-forward="false" selection-start-line="140" selection-start-column="65" selection-end-line="140" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -959,7 +963,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="125">
           <caret line="228" column="0" lean-forward="false" selection-start-line="228" selection-start-column="0" selection-end-line="228" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -967,9 +970,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-900">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#10#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -977,9 +977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-477">
           <caret line="38" column="56" lean-forward="false" selection-start-line="38" selection-start-column="56" selection-end-line="38" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#49#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -987,9 +984,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-15">
           <caret line="60" column="33" lean-forward="false" selection-start-line="60" selection-start-column="33" selection-end-line="60" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#19#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1018,9 +1012,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="5" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="22" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#49#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1028,7 +1019,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3595">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1036,7 +1026,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="580">
           <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1044,7 +1033,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="40">
           <caret line="2" column="89" lean-forward="false" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="89" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1052,7 +1040,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-651">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1060,7 +1047,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-491">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1068,7 +1054,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="14" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1076,7 +1061,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1084,7 +1068,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="37" column="87" lean-forward="false" selection-start-line="37" selection-start-column="87" selection-end-line="37" selection-end-column="87" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1092,7 +1075,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="159">
           <caret line="114" column="21" lean-forward="false" selection-start-line="114" selection-start-column="19" selection-end-line="114" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1100,7 +1082,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="259">
           <caret line="43" column="66" lean-forward="false" selection-start-line="43" selection-start-column="55" selection-end-line="43" selection-end-column="66" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1108,7 +1089,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="413">
           <caret line="48" column="30" lean-forward="false" selection-start-line="48" selection-start-column="9" selection-end-line="48" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1116,13 +1096,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="50" column="57" lean-forward="false" selection-start-line="50" selection-start-column="57" selection-end-line="50" selection-end-column="57" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AthenaFinal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
+        <state relative-caret-position="5140">
           <caret line="274" column="18" lean-forward="false" selection-start-line="274" selection-start-column="18" selection-end-line="274" selection-end-column="18" />
           <folding>
             <element signature="e#0#49#0" expanded="true" />
@@ -1134,7 +1113,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1142,17 +1120,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
           <caret line="16" column="27" lean-forward="false" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#49#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/DataCleaning/cleaning.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="131" column="40" lean-forward="true" selection-start-line="128" selection-start-column="4" selection-end-line="131" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1164,26 +1131,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/DataCleaning/emojip.py">
+    <entry file="file://$PROJECT_DIR$/controllers/DataCleaning/Patterns.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state relative-caret-position="127">
+          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/ManageTrainingData.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="80" lean-forward="false" selection-start-line="11" selection-start-column="23" selection-end-line="12" selection-end-column="80" />
+        <state relative-caret-position="-111">
+          <caret line="42" column="62" lean-forward="true" selection-start-line="42" selection-start-column="62" selection-end-line="42" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/DataCleaning/cleaning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="140" column="56" lean-forward="false" selection-start-line="140" selection-start-column="56" selection-end-line="140" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/DataCleaning/emojip.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-158">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/machine_learning/machineLearning_latest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="45" column="74" lean-forward="false" selection-start-line="45" selection-start-column="74" selection-end-line="45" selection-end-column="74" />
+        <state relative-caret-position="200">
+          <caret line="60" column="50" lean-forward="false" selection-start-line="60" selection-start-column="50" selection-end-line="60" selection-end-column="50" />
           <folding />
         </state>
       </provider>

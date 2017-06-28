@@ -2,6 +2,7 @@ import pandas as pd
 
 columns = ['Tweet', 'Sentiment']
 
+
 def writeToFile(data, filename):
     d = pd.DataFrame.from_dict(data)
     df = pd.DataFrame(data=d, index=None)
@@ -59,7 +60,7 @@ def test(filename):
     print("done")
 
 # 0-3 done
-for r in range(0,10,1):
+for r in range(0,5,1):
     print(r)
     directory = "/home/dudegrim/Documents/CSV8/Election-"+str(r)+".csv"
     test(directory)

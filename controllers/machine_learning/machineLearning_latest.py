@@ -25,29 +25,28 @@ posi_list = ep.pos_file_to_list()
 nega_list = ep.neg_file_to_list()
 
 
-def preprocess(chunk):
-    chunktweet = pd.DataFrame()
+# TODO add comment what each line does
+def preprocess(tweet):
 
-    for tweet in chunk:
-        print(tweet)
-        tweet['Tweet'] = ep.pos(tweet['Tweet'], posi_list)
-        tweet['Tweet'] = ep.neg(tweet['Tweet'], nega_list)
-        tweet['Tweet'] = data_cleaning(tweet['Tweet'])
-        tweet['Tweet'] = removeSp.sub('', tweet['Tweet'])
+    tweet = ep.pos(tweet, posi_list)
+    tweet = ep.neg(tweet, nega_list)
+    tweet = data_cleaning(tweet)
+    tweet = removeSp.sub('', tweet)
 
-        chunktweet = chunktweet.append(tweet, ignore_index=True)
-
-    return chunktweet
+    return tweet
 
 
 def read_file(file_name):
     # data = pd.read_excel(file_name, parse_cols='B,G')
-    data_reader = pd.read_csv(file_name, encoding = "utf8", keep_default_na = False, index_col = None, sep = ",",
-                              skipinitialspace = True, chunksize = 10000, usecols = ['Tweet', 'Sentiment'], nrows=10000)
-    dataset = pd.DataFrame()
+    data_reader = pd.read_csv(file_name, encoding = "utf8", keep_default_na= False, sep=",",
+                              skipinitialspace=True, chunksize=100, usecols=['Tweet', 'Sentiment'],
+                              nrows=1000)
+    dataset = pd.DataFrame(columns=['Tweet', 'Sentiment'])
 
     for chunk in data_reader:
-        dataset = dataset.append(preprocess(chunk), ignore_index=True)
+        # this processes the tweets
+        chunk['Tweet'] = chunk['Tweet'].apply(lambda x: preprocess(x))
+        dataset = dataset.append(chunk, ignore_index=True)
 
     return dataset
 
@@ -57,8 +56,10 @@ def train(dataX, dataY, index):
         text_clf = Pipeline([('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
                              ('clf',MultinomialNB())])
     elif (index == 2): # SVM
-        text_clf = Pipeline([('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
-                             ('clf',SGDClassifier())])
+        text_clf = Pipeline([
+                             ('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
+                             ('clf',SGDClassifier())
+                           ])
     elif (index == 3): # KNN
         text_clf = Pipeline([('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
                              ('clf',KNeighborsClassifier())])
@@ -151,6 +152,15 @@ def decideSentiment(tweet ,df, text_clf):
     print(predict)
 
 
-data = read_file('/home/dudegrim/Documents/CSV8/Election-18.csv')
-print(data)
-process(data)
+def main():
+    data = pd.DataFrame()
+
+    data = read_file('/home/dudegrim/Documents/Training/positive_tweets.csv')
+    data = data.append(read_file('/home/dudegrim/Documents/Training/negative_tweets.csv'),ignore_index=True)
+    data = data.append(read_file('/home/dudegrim/Documents/Training/neutral_tweets.csv'),ignore_index=True)
+    data = data.sample(frac=1).reset_index(drop=True)
+
+    process(data)
+
+main()
+
