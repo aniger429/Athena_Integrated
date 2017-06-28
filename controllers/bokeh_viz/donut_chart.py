@@ -4,20 +4,40 @@ from bokeh.sampledata.olympics2014 import data
 
 import pandas as pd
 
+from bokeh.charts import Bar, output_file, show
+from bokeh.sampledata.autompg import autompg as df
 
 def load_chart():
-    # utilize utility to make it easy to get json/dict data converted to a dataframe
-    df = df_from_json(data)
+    # # utilize utility to make it easy to get json/dict data converted to a dataframe
+    # df = df_from_json(data)
+    #
+    #
+    # # filter by countries with at least one medal and sort by total medals
+    # df = df[df['total'] > 8]
+    # df = df.sort_values("total", ascending=False)
+    # print(df)
+    # df = pd.melt(df, id_vars=['abbr'],
+    #              value_vars=['bronze', 'silver', 'gold'],
+    #              value_name='medal_count', var_name='medal')
+    #
+    # # original example
+    # d = Donut(df, label=['abbr', 'medal'], values='medal_count',
+    #           text_font_size='12pt', hover_text='medal_count', plot_height=800, plot_width=800)
 
-    # filter by countries with at least one medal and sort by total medals
-    df = df[df['total'] > 8]
-    df = df.sort_values("total", ascending=False)
-    df = pd.melt(df, id_vars=['abbr'],
-                 value_vars=['bronze', 'silver', 'gold'],
-                 value_name='medal_count', var_name='medal')
+    print(df)
 
-    # original example
-    d = Donut(df, label=['abbr', 'medal'], values='medal_count',
-              text_font_size='12pt', hover_text='medal_count', plot_height=800, plot_width=800)
+    d = Bar(df, label='origin', values='mpg', agg='mean', stack='cyl',
+            title="Avg MPG by ORIGIN, stacked by CYL", legend='top_right')
+
+    # show(p)
 
     return d
+
+def tweet_sentiment_per_candidate():
+    from controllers.Candidate_Analysis.Candidate_Identification import *
+
+    # get all tweets
+    tweets = get_all_tweets()
+    # candidate analysis all tweets
+    identify_candidate()
+

@@ -45,7 +45,7 @@ def view_candidate(candidate_name):
 
     lda_parameters, tfidf_parameters = topic_analysis()
 
-    tweets = load_obj("Tweets")
+    tweets = load_obj("Candidate")
     topic_for = "Candidate: " + candidate_name
 
     tweets_only = [remove_usernames(t['tweet']) for t in tweets]

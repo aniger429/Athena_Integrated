@@ -29,6 +29,7 @@ def new_analysis():
 
         elif slevel == "sentiment":
             print("slevel: sentiment")
+
             viz_selected = request.form['viz_selected']
 
             if viz_selected == "Concordancer with Sentiment":
@@ -42,6 +43,19 @@ def new_analysis():
                 return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
                                        candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets,
                                        withsenti=True, senti_count=senti_count)
+
+            if viz_selected == "stacked bar chart":
+                final_tweets = compute_senti_candidate_tweet(data)
+
+                senti_count = Counter(tweet['sentiment'] for tweet in final_tweets if tweet.get('sentiment'))
+                # print(signs)
+                # for sign, count in signs.most_common():
+                #     print(sign, count)
+
+                return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
+                                       candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets,
+                                       withsenti=True, senti_count=senti_count)
+
 
             return redirect(url_for('view_sentiment_analysis', datasource='Candidate', candidate_name=candidate_name))
 
