@@ -16,7 +16,7 @@ from controllers.DataCleaning import emojip as ep
 
 # save path for classifiers
 script_path = os.path.dirname(os.path.dirname(__file__))
-path = os.path.join(script_path, "Athena_Integrated", "controllers", "analysis_controller", "Pickles", "ML_Classifier")
+path = os.path.join(script_path, "Athena_Integrated", "controllers", "analysis_controller", "Pickles", "ML_Classifier", "test")
 
 # path = 'C:/Users/HKJ/Documents/GitHub/Athena_Integrated/controllers/analysis_controller/Pickles/'
 
@@ -26,6 +26,7 @@ nega_list = ep.neg_file_to_list() # get negative list from negative.txt
 
 
 # TODO add comment what each line does
+
 def preprocess(tweet):
 
     tweet = ep.pos(tweet, posi_list) # replace all positive emojis (written in positive.txt) to 'POSITIVEEMOTICON' 
@@ -35,6 +36,17 @@ def preprocess(tweet):
 
     return tweet
 
+def printouts(data):
+    # print out sentiments of input data (such as Election-xx)
+    for i in range(0, len(data)):
+        print(data['Sentiment'][i])
+
+    # print processed data (includes emoji processed ones)
+    # if emojis are processed, they are converted either as 'positiveemoticon' or as 'negativeemoticon'
+    for i in range(0, len(data)):
+        print(data['Tweet'][i])
+
+    
 
 def read_file(file_name):
     # data = pd.read_excel(file_name, parse_cols='B,G')
@@ -52,6 +64,8 @@ def read_file(file_name):
 
 
 def train(dataX, dataY, index):
+
+
     if (index == 1): # Naive Bayes
         text_clf = Pipeline([('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
                              ('clf',MultinomialNB())])
@@ -94,7 +108,7 @@ def process(data):
     models.append(('KNN', train(data['Tweet'], data['Sentiment'],3)))
     models.append(('DT', train(data['Tweet'], data['Sentiment'],4)))
     models.append(('ME', train(data['Tweet'], data['Sentiment'],5)))
-    
+
     # evaluate each model in turn
     results = []
     names = []
@@ -161,15 +175,20 @@ def main():
     data = data.append(read_file('/home/dudegrim/Documents/Training/neutral_tweets.csv'),ignore_index=True)
     data = data.sample(frac=1).reset_index(drop=True)
 
+
+    #printouts(data)
     process(data)
+
     
-#main()
-    
+main()
+
+
 NBc = ps.read_pickle(path + '/NB', 'NB')
 SVMc = ps.read_pickle(path + '/SVM', 'SVM')
 KNNc = ps.read_pickle(path + '/KNN', 'KNN')
 DTc = ps.read_pickle(path + '/DT', 'DT')
 MEc = ps.read_pickle(path + '/ME', 'ME')
+
 
 # example.
 decideSentiment('I love bananas', SVMc)
