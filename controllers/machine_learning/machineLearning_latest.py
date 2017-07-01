@@ -16,21 +16,21 @@ from controllers.DataCleaning import emojip as ep
 
 # save path for classifiers
 script_path = os.path.dirname(os.path.dirname(__file__))
-path = os.path.join(script_path, "analysis_controller", "Pickles", "ML_Classifier")
+path = os.path.join(script_path, "Athena_Integrated", "controllers", "analysis_controller", "Pickles", "ML_Classifier")
 
 # path = 'C:/Users/HKJ/Documents/GitHub/Athena_Integrated/controllers/analysis_controller/Pickles/'
 
 removeSp = re.compile(r'@(\w+)')
-posi_list = ep.pos_file_to_list()
-nega_list = ep.neg_file_to_list()
+posi_list = ep.pos_file_to_list() # get positive list from positive.txt
+nega_list = ep.neg_file_to_list() # get negative list from negative.txt
 
 
 # TODO add comment what each line does
 def preprocess(tweet):
 
-    tweet = ep.pos(tweet, posi_list)
-    tweet = ep.neg(tweet, nega_list)
-    tweet = data_cleaning(tweet)
+    tweet = ep.pos(tweet, posi_list) # replace all positive emojis (written in positive.txt) to 'POSITIVEEMOTICON' 
+    tweet = ep.neg(tweet, nega_list) # replace all negative emojis (written in positive.txt) to 'NEGATIVEEMOTICON'
+    tweet = data_cleaning(tweet) # data cleaning and so on.
     tweet = removeSp.sub('', tweet)
 
     return tweet
@@ -129,11 +129,11 @@ def process(data):
     ME = train(X_train, Y_train, 5)
     
     # test
-    decideSentiment('I love bananas', X_validation, NB)
-    decideSentiment('I love bananas', X_validation, SVM)
-    decideSentiment('I love bananas', X_validation, KNN)
-    decideSentiment('I love bananas', X_validation, DT)
-    decideSentiment('I love bananas', X_validation, ME)
+    decideSentiment('I love bananas', NB)
+    decideSentiment('I love bananas', SVM)
+    decideSentiment('I love bananas', KNN)
+    decideSentiment('I love bananas', DT)
+    decideSentiment('I love bananas', ME)
 
     # save trained classifiers
     ps.write_pickle(path + '/NB', NB)
@@ -143,13 +143,14 @@ def process(data):
     ps.write_pickle(path + '/ME', ME)
 
 
-def decideSentiment(tweet ,df, text_clf):
+def decideSentiment(tweet, text_clf): # use this function for sentiment
     a = []
     a.append(tweet)
     predict = text_clf.predict(a)
     #print(np.mean(predict == data.Sentiment))
     print(tweet)
     print(predict)
+    return predict
 
 
 def main():
@@ -161,6 +162,15 @@ def main():
     data = data.sample(frac=1).reset_index(drop=True)
 
     process(data)
+    
+#main()
+    
+NBc = ps.read_pickle(path + '/NB', 'NB')
+SVMc = ps.read_pickle(path + '/SVM', 'SVM')
+KNNc = ps.read_pickle(path + '/KNN', 'KNN')
+DTc = ps.read_pickle(path + '/DT', 'DT')
+MEc = ps.read_pickle(path + '/ME', 'ME')
 
-main()
+# example.
+decideSentiment('I love bananas', SVMc)
 

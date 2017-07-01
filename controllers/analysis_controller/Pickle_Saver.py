@@ -14,6 +14,11 @@ def writeToFile(data, filename):
     df = pd.DataFrame(data=d, index=None)
     df.to_csv(filename+".csv", index=False)
 
+def read_pickle(file_path, filename):
+    with open(file_path + '.pkl', 'rb') as f:
+        cl = pickle.load(f)
+        f.close()
+    return cl
 
 def save_obj(obj, name):
     file_path = os.path.join(script_path, "analysis_controller", "Pickles", name)
