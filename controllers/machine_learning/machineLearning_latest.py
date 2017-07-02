@@ -8,7 +8,6 @@ from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
 from sklearn import model_selection
 
-
 from sklearn.utils import shuffle
 from controllers.machine_learning.cleaning import *
 from controllers.analysis_controller import Pickle_Saver as ps
@@ -16,7 +15,7 @@ from controllers.DataCleaning import emojip as ep
 
 # save path for classifiers
 script_path = os.path.dirname(os.path.dirname(__file__))
-path = os.path.join(script_path, "Athena_Integrated", "controllers", "analysis_controller", "Pickles", "ML_Classifier", "test")
+path = os.path.join(script_path, "analysis_controller", "Pickles", "ML_Classifier")
 
 # path = 'C:/Users/HKJ/Documents/GitHub/Athena_Integrated/controllers/analysis_controller/Pickles/'
 
@@ -27,14 +26,18 @@ nega_list = ep.neg_file_to_list() # get negative list from negative.txt
 
 # TODO add comment what each line does
 
+
 def preprocess(tweet):
 
-    tweet = ep.pos(tweet, posi_list) # replace all positive emojis (written in positive.txt) to 'POSITIVEEMOTICON' 
-    tweet = ep.neg(tweet, nega_list) # replace all negative emojis (written in positive.txt) to 'NEGATIVEEMOTICON'
+    tweet = ep.pos(tweet, posi_list)  # replace all positive emojis (written in positive.txt) to 'POSITIVEEMOTICON'
+    tweet = ep.neg(tweet, nega_list)  # replace all negative emojis (written in positive.txt) to 'NEGATIVEEMOTICON'
     tweet = data_cleaning(tweet) # data cleaning and so on.
     tweet = removeSp.sub('', tweet)
 
     return tweet
+
+
+print(preprocess("I love banana white frowning face"))
 
 def printouts(data):
     # print out sentiments of input data (such as Election-xx)
@@ -46,11 +49,10 @@ def printouts(data):
     for i in range(0, len(data)):
         print(data['Tweet'][i])
 
-    
 
 def read_file(file_name):
     # data = pd.read_excel(file_name, parse_cols='B,G')
-    data_reader = pd.read_csv(file_name, encoding = "utf8", keep_default_na= False, sep=",",
+    data_reader = pd.read_csv(file_name, encoding="utf8", keep_default_na=False, sep=",",
                               skipinitialspace=True, chunksize=100, usecols=['Tweet', 'Sentiment'],
                               nrows=1000)
     dataset = pd.DataFrame(columns=['Tweet', 'Sentiment'])
@@ -65,27 +67,27 @@ def read_file(file_name):
 
 def train(dataX, dataY, index):
 
-
     if (index == 1): # Naive Bayes
-        text_clf = Pipeline([('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
-                             ('clf',MultinomialNB())])
+        text_clf = Pipeline([('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
+                             ('clf', MultinomialNB())])
     elif (index == 2): # SVM
         text_clf = Pipeline([
-                             ('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
-                             ('clf',SGDClassifier())
+                             ('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
+                             ('clf', SGDClassifier())
                            ])
     elif (index == 3): # KNN
-        text_clf = Pipeline([('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
-                             ('clf',KNeighborsClassifier())])
+        text_clf = Pipeline([('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
+                             ('clf', KNeighborsClassifier())])
     elif (index == 4): # Decision Tree
-        text_clf = Pipeline([('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
-                             ('clf',DecisionTreeClassifier())])
+        text_clf = Pipeline([('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
+                             ('clf', DecisionTreeClassifier())])
     elif (index == 5): # Maximum Entropy
-        text_clf = Pipeline([('vect',TfidfVectorizer(min_df=5, max_df = 0.95, use_idf =True, ngram_range =(1,3))),
-                             ('clf',LogisticRegression())])
-    text_clf = text_clf.fit(dataX,dataY)
+        text_clf = Pipeline([('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
+                             ('clf', LogisticRegression())])
+    text_clf = text_clf.fit(dataX, dataY)
     
     return text_clf
+
 
 def process(data):
     # load dataset
@@ -100,14 +102,13 @@ def process(data):
     print(X_validation.shape)
     print(Y_validation.shape)
 
-
     # prepare models
     models = []
-    models.append(('NB', train(data['Tweet'], data['Sentiment'],1)))
-    models.append(('SVM', train(data['Tweet'], data['Sentiment'],2)))
-    models.append(('KNN', train(data['Tweet'], data['Sentiment'],3)))
-    models.append(('DT', train(data['Tweet'], data['Sentiment'],4)))
-    models.append(('ME', train(data['Tweet'], data['Sentiment'],5)))
+    models.append(('NB', train(data['Tweet'], data['Sentiment'], 1)))
+    models.append(('SVM', train(data['Tweet'], data['Sentiment'], 2)))
+    models.append(('KNN', train(data['Tweet'], data['Sentiment'], 3)))
+    models.append(('DT', train(data['Tweet'], data['Sentiment'], 4)))
+    models.append(('ME', train(data['Tweet'], data['Sentiment'], 5)))
 
     # evaluate each model in turn
     results = []
@@ -157,11 +158,11 @@ def process(data):
     ps.write_pickle(path + '/ME', ME)
 
 
-def decideSentiment(tweet, text_clf): # use this function for sentiment
-    a = []
+def decideSentiment(tweet, text_clf):  # use this function for sentiment
+    a = list()
     a.append(tweet)
     predict = text_clf.predict(a)
-    #print(np.mean(predict == data.Sentiment))
+    # print(np.mean(predict == data.Sentiment))
     print(tweet)
     print(predict)
     return predict
@@ -171,25 +172,24 @@ def main():
     data = pd.DataFrame()
 
     data = read_file('/home/dudegrim/Documents/Training/positive_tweets.csv')
-    data = data.append(read_file('/home/dudegrim/Documents/Training/negative_tweets.csv'),ignore_index=True)
-    data = data.append(read_file('/home/dudegrim/Documents/Training/neutral_tweets.csv'),ignore_index=True)
+    data = data.append(read_file('/home/dudegrim/Documents/Training/negative_tweets.csv'), ignore_index=True)
+    data = data.append(read_file('/home/dudegrim/Documents/Training/neutral_tweets.csv'), ignore_index=True)
     data = data.sample(frac=1).reset_index(drop=True)
 
-
-    #printouts(data)
+    # printouts(data)
     process(data)
 
     
-main()
-
-
-NBc = ps.read_pickle(path + '/NB', 'NB')
-SVMc = ps.read_pickle(path + '/SVM', 'SVM')
-KNNc = ps.read_pickle(path + '/KNN', 'KNN')
-DTc = ps.read_pickle(path + '/DT', 'DT')
-MEc = ps.read_pickle(path + '/ME', 'ME')
-
-
-# example.
-decideSentiment('I love bananas', SVMc)
-
+# main()
+#
+#
+# NBc = ps.read_pickle(path + '/NB', 'NB')
+# SVMc = ps.read_pickle(path + '/SVM', 'SVM')
+# KNNc = ps.read_pickle(path + '/KNN', 'KNN')
+# DTc = ps.read_pickle(path + '/DT', 'DT')
+# MEc = ps.read_pickle(path + '/ME', 'ME')
+#
+#
+# # example.
+# decideSentiment('I love bananas', SVMc)
+#

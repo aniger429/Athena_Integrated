@@ -20,6 +20,9 @@ class Tweet(MongoModel):
     retweet = fields.IntegerField()
     users_mentioned = fields.ListField()
 
+    posemote = fields.IntegerField()
+    negemote = fields.IntegerField()
+
     unigram = fields.ListField()
     bigram = fields.ListField()
     trigram = fields.ListField()

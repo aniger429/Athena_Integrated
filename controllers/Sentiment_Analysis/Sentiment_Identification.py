@@ -1,10 +1,5 @@
 from afinn import Afinn
 import nltk
-from nltk.corpus import sentiwordnet as swn
-from nltk.tokenize import word_tokenize
-from nltk.util import ngrams
-import pandas as pd
-import os
 from controllers.analysis_controller.Pickle_Saver import *
 from collections import Counter
 
