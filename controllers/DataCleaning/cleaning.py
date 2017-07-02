@@ -69,11 +69,11 @@ def init_data_cleaning(tweet, nameTuple):
 
     # processes emoticons
     # positive
-    tweet = re.sub("[:;8=x][-oc]*[>D)}P\]3]", "POSEMOTE", tweet)
-    tweet = re.sub("[<({\[][-o]*[:;8=x]", "POSEMOTE", tweet)
+    tweet = re.sub("[:;8=x][-oc]*[>D)}P\]3]+", "POSEMOTE", tweet)
+    tweet = re.sub("[<({\[]+[-o]*[:;8=x]", "POSEMOTE", tweet)
 
-    tweet = re.sub("[:;8=x][-oc]*[<({\[]", "NEGEMOTE", tweet)
-    tweet = re.sub("[>D)}\]][-o]*[:;8=x]", "NEGEMOTE", tweet)
+    tweet = re.sub("[:;8=x][-oc]*[<({\[]+", "NEGEMOTE", tweet)
+    tweet = re.sub("[>D)}\]]+[-o]*[:;8=x]", "NEGEMOTE", tweet)
 
     # remove punctuation marks
     tweet = re.sub('[^A-Za-z0-9@ ]+', ' ', tweet)
