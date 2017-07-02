@@ -13,19 +13,19 @@ def candidate_analysis(tweets, candidate_name):
 
 
 def new_analysis():
-    print("here")
-    flevel,slevel,tlevel = request.form['steps'].split("-")
-    candidate_name = request.form['candidate-name']
-
+    flevel, slevel, tlevel = request.form['steps'].split("-")
+    print("here" + flevel)
+    
     # first level
     if flevel == "candidate":
         print("flevel: candidate")
+        candidate_name = request.form['candidate-name']
         tweets = get_all_tweets()
         candidate_name_count, data = candidate_analysis(tweets, candidate_name)
 
         if slevel == "topic":
             print("slevel: topic")
-            return view_candidate(candidate_name)
+            return view_candidate(candidate_name, "candidate")
 
         elif slevel == "sentiment":
             print("slevel: sentiment")
@@ -36,9 +36,6 @@ def new_analysis():
                 final_tweets = compute_senti_candidate_tweet(data)
 
                 senti_count = Counter(tweet['sentiment'] for tweet in final_tweets if tweet.get('sentiment'))
-                # print(signs)
-                # for sign, count in signs.most_common():
-                #     print(sign, count)
 
                 return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
                                        candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets,
@@ -48,24 +45,20 @@ def new_analysis():
                 final_tweets = compute_senti_candidate_tweet(data)
 
                 senti_count = Counter(tweet['sentiment'] for tweet in final_tweets if tweet.get('sentiment'))
-                # print(signs)
-                # for sign, count in signs.most_common():
-                #     print(sign, count)
 
                 return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
                                        candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets,
                                        withsenti=True, senti_count=senti_count)
 
-
             return redirect(url_for('view_sentiment_analysis', datasource='Candidate', candidate_name=candidate_name))
-
-
         return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
                                candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=data, withsenti=False)
     # first level
-    elif (flevel == "topic"):
+    elif flevel == "topic":
         print("flvel: topic")
+
         return view_all()
+
     # first level
     else:
         print("flevel: sentiment")

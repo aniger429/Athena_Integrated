@@ -79,12 +79,18 @@ Tweet
                 <div class="header">
                     <h4 class="title custom">{{ "Top" }} {{ tf_idf | length }} {{ "Unigrams" }}</h4>
 {#                    <p class="category custom">0.99 - topic score</p>#}
-                    <form action="/download" method="post" enctype="multipart/form-data">
-                    <input type="text" name="download_data" value="download_topic_ngrams" hidden/>
-                    <input type="text" name="data_value" value={{ tf_idf }} hidden/>
-                    <input id="submit" type="submit" class="btn btn-info col-md-12" Title="FIlename: topic_ngrams"
-                           Value="Download N-grams">
-                </form>
+                    <form class="col-md-6" action="/download" method="post" enctype="multipart/form-data">
+                        <input type="text" name="download_data" value="download_topic_ngrams" hidden/>
+                        <input type="text" name="data_value" value={{ tf_idf }} hidden/>
+                        <input id="submit" type="submit" class="btn btn-info col-md-12" Title="Filename: topic_ngrams"
+                               Value="Download N-grams">
+                    </form>
+                    <form class="col-md-6" action="/visualization" method="post" enctype="multipart/form-data">
+                        <input type="text" name="viz_type" value="wordcloud" hidden/>
+                        <input type="text" name="source" value={{ source }} hidden/>
+                        <input id="submit" type="submit" class="btn btn-info col-md-12"
+                               Value="View World Cloud">
+                    </form>
                 </div>
                 <div class="content table-responsive table-full-width">
                     <table class="table table-striped">

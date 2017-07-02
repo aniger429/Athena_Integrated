@@ -52,9 +52,10 @@ def count_total_tweet():
 
 
 def get_tweet_data(tweet_id):
-    data = (list(db.Tweet.find({'_id':ObjectId(tweet_id)}).limit(1)))
+    data = (list(db.Tweet.find({'_id': ObjectId(tweet_id)}).limit(1)))
     data[0]['tweet'] = data[0]['tweet'].split()
     return data[0]
+
 
 def get_everything():
     data = db.Tweet.find({}, {})

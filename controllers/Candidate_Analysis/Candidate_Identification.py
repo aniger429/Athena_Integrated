@@ -1,7 +1,7 @@
 from DBModels.KB_Names import *
 from DBModels.Tweet import *
 from controllers.analysis_controller.Pickle_Saver import *
-
+import pandas as pd
 
 def identify_candidate(tweet_list, cname="none"):
     print("cname")
@@ -18,12 +18,11 @@ def identify_candidate(tweet_list, cname="none"):
         for candidate in candidate_names:
             tweet_cp[candidate['candidate_name']] = next((tweet['tweet'].index(word) for word in tweet['tweet'] if any(name in word for name in candidate['kb_names'])), -1)
 
-              # tweet_cp[candidate['candidate_name']] = ([tweet['tweet'].index(word) for word in tweet['tweet'] if any(name in word for name in candidate['kb_names'])])
         if cname == "none":
             candidate_presence.append({'cand_ana': tweet_cp, 'tweet': tweet['tweet'], '_id': tweet['_id']})
         else:
             if tweet_cp[cname] != -1:
-                candidate_presence.append({'cand_ana':tweet_cp,'tweet':tweet['tweet'], '_id':tweet['_id']})
+                candidate_presence.append({'cand_ana': tweet_cp,'tweet':tweet['tweet'], '_id': tweet['_id']})
 
 
     save_obj(candidate_presence, "Candidate")
@@ -53,3 +52,28 @@ def identify_candidate_mentioned(tweet):
 
 
 
+def candidate_analysis_testing(num_tweets):
+
+    # retrieve all data in the database
+    tweets = get_all_tweets()
+    # perform candidate analysis on all tweets
+
+    results = identify_candidate(tweets, "none")
+    # create data list to hold the processed data
+    data_list = []
+
+    [data_list.append({'Tweet': ' '.join(r['tweet']),
+                       'Binay': r['cand_ana']['binay'],
+                       'Duterte': r['cand_ana']['duterte'],
+                       'Poe': r['cand_ana']['poe'],
+                       'Roxas': r['cand_ana']['roxas'],
+                       'Santiago': r['cand_ana']['santiago']}) for r in results[:num_tweets]]
+    # create a dataframe
+    data = pd.DataFrame(data_list, columns=['Tweet','Binay', 'Duterte', 'Poe', 'Roxas', 'Santiago'])
+    print("saving")
+    # save to excel
+    data.to_csv("/home/dudegrim/Documents/Testing/candidate_analysis_output.csv", sep=',',
+                columns= ['Tweet','Binay', 'Duterte', 'Poe', 'Roxas', 'Santiago'], index=None)
+
+
+# candidate_analysis_testing(5000)

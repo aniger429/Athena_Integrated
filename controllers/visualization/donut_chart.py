@@ -6,6 +6,7 @@ import pandas as pd
 
 from bokeh.charts import Bar, output_file, show
 from bokeh.sampledata.autompg import autompg as df
+from controllers.Candidate_Analysis.Candidate_Identification import *
 
 def load_chart():
     # # utilize utility to make it easy to get json/dict data converted to a dataframe
@@ -29,13 +30,11 @@ def load_chart():
     d = Bar(df, label='origin', values='mpg', agg='mean', stack='cyl',
             title="Avg MPG by ORIGIN, stacked by CYL", legend='top_right')
 
-    # show(p)
+    # show(d)
 
     return d
 
 def tweet_sentiment_per_candidate():
-    from controllers.Candidate_Analysis.Candidate_Identification import *
-
     # get all tweets
     tweets = get_all_tweets()
     # candidate analysis all tweets

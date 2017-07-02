@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 from flask import session
 
 from DBModels.Data import *
@@ -15,7 +15,8 @@ from controllers.download import *
 from collections import Counter
 from controllers.analysis_controller.topic_view_analysis import *
 from controllers.analysis_controller.analysis_manager import new_analysis
-from controllers.bokeh_viz.donut_chart import *
+from controllers.visualization.donut_chart import *
+from controllers.visualization.wordcloud_viz import word_cloud
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -105,7 +106,7 @@ def view_candidate_data():
     elif datasource == "topic":
         key = request.args.get('key')
         tweets = load_obj("Topics")[key]['topic_tweets']
-        print(tweets)
+        # print(tweets)
 
     identify_candidate(tweets, cname=cname)
     data = load_obj("Candidate")
@@ -123,11 +124,11 @@ def topic_analysis_manager():
     # source: candidate
     if datasource == "candidate":
         candidate_name = request.form['candidate_name']
-        return view_candidate(candidate_name)
+        return view_candidate(candidate_name, source="candidate")
     # source: sentiment
     elif datasource == "sentiment":
         sentiment = request.form['sentiment']
-        return view_sentiment(sentiment)
+        return view_sentiment(sentiment, source=sentiment)
 
 
 @app.route('/topic_tweets')
@@ -271,6 +272,19 @@ def download_data():
     return download()
 
 
+@app.route('/visualization', methods=['POST'])
+def visualizations():
+    viz_type = request.form['viz_type']
+
+    if viz_type == "wordcloud":
+        source = request.form['source']
+        # print(source)
+        source = "candidate"
+        tf_idf = load_obj("tf_idf")
+        word_cloud(source, tf_idf)
+        return render_template("analysis/Topic/view_tfidf.html", tf_idf=tf_idf)
+
+
 # Bokeh Visualizations
 @app.route('/test')
 def test_bokeh():
@@ -281,6 +295,7 @@ def test_bokeh():
     # Embed plot into HTML via Flask Render
     script, div = components(plot)
     return render_template("test.html", script=script, div=div)
+
 
 if __name__ == '__main__':
     app.run(

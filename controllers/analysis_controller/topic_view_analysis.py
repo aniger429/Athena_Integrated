@@ -24,6 +24,7 @@ def topic_analysis():
 def view_all():
     tweets = get_all_tweets()
     topic_for = "All Tweets"
+    print(topic_for)
     lda_parameters, tfidf_parameters = topic_analysis()
 
     print(lda_parameters)
@@ -37,10 +38,10 @@ def view_all():
     save_obj(final_list, "tf_idf")
 
     return render_template("analysis/Topic/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
-                           topic_analysis_for=topic_for)
+                           topic_analysis_for=topic_for, source="All Tweets")
 
 
-def view_candidate(candidate_name):
+def view_candidate(candidate_name, source):
     topic_for = candidate_name
 
     lda_parameters, tfidf_parameters = topic_analysis()
@@ -56,10 +57,10 @@ def view_candidate(candidate_name):
     save_obj(final_list, "tf_idf")
 
     return render_template("analysis/Topic/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
-                               topic_analysis_for=topic_for)
+                               topic_analysis_for=topic_for, source=candidate_name)
 
 
-def view_sentiment(sentiment):
+def view_sentiment(sentiment, source):
     topic_for = sentiment
     lda_parameters, tfidf_parameters = topic_analysis()
 
@@ -75,4 +76,4 @@ def view_sentiment(sentiment):
     save_obj(final_list, "tf_idf")
 
     return render_template("analysis/Topic/view_topic_analysis.html", tf_idf=final_list, topics_dict=lda,
-                           topic_analysis_for=topic_for)
+                           topic_analysis_for=topic_for, source=sentiment)

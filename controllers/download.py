@@ -92,6 +92,7 @@ def download():
         data = {'ngram':b, 'score':c}
         filename = "Data/Downloads/topic_ngrams.xlsx"
 
+
     elif which_data == "specific_username":
         username_id = request.form['username_id']
         userData = DBModels.Username.get_user_data(username_id)
@@ -115,7 +116,14 @@ def download():
         filename = "Data/Downloads/all_tweets.xlsx"
         data = {'Tweets': data_source}
 
+    # save data to file
     writeToFile(data, filename)
+
+    # redirect back to analysis page if the request to download came from an analysis result
+    if request.method == 'POST':
+        # login code here
+        return redirect(url_for('analysis'))
+
     return redirect(redirect_url())
 
 
