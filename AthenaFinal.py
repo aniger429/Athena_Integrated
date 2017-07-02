@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, make_response
+from flask import Flask, request, render_template, make_response, send_from_directory
 from flask import session
 
 from DBModels.Data import *
@@ -33,6 +33,7 @@ create_new_workspace(mainDB)
 
 # This is the path to the upload directory
 app.config['UPLOAD_FOLDER'] = 'Data/'
+app.config['MEDIA_FOLDER'] = 'media_folder/'
 # These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['csv', 'xls', 'xlsx'])
 app.secret_key = "super secret key"
@@ -278,11 +279,16 @@ def visualizations():
 
     if viz_type == "wordcloud":
         source = request.form['source']
-        # print(source)
-        source = "candidate"
+        print(source)
         tf_idf = load_obj("tf_idf")
         word_cloud(source, tf_idf)
         return render_template("analysis/Topic/view_tfidf.html", tf_idf=tf_idf)
+
+
+@app.route('/get_word_cloud')
+def get_word_cloud():
+    filename = "word_cloud.png"
+    return send_from_directory(app.config['MEDIA_FOLDER'], filename, as_attachment=True)
 
 
 # Bokeh Visualizations
