@@ -142,6 +142,24 @@ def process(data):
     KNN = train(X_train, Y_train, 3)
     DT = train(X_train, Y_train, 4)
     ME = train(X_train, Y_train, 5)
+
+    NBp = NB.predict(X_validation) # produce predictions
+    SVMp = SVM.predict(X_validation)
+    KNNp = KNN.predict(X_validation)
+    DTp = DT.predict(X_validation)
+    MEp = ME.predict(X_validation)
+
+    report = classification_report(Y_validation, NBp) # predictions versus actual ones. this will be printed out as a report.
+    report2 = classification_report(Y_validation, SVMp)
+    report3 = classification_report(Y_validation, KNNp)
+    report4 = classification_report(Y_validation, DTp)
+    report5 = classification_report(Y_validation, MEp)
+    
+    print(report)
+    print(report2)
+    print(report3)
+    print(report4)
+    print(report5)
     
     # test
     decideSentiment('I love bananas', NB)
