@@ -7,6 +7,7 @@ import pandas as pd
 from bokeh.charts import Bar, output_file, show
 from bokeh.sampledata.autompg import autompg as df
 from controllers.Candidate_Analysis.Candidate_Identification import *
+from bokeh.embed import components
 
 def load_chart():
     # # utilize utility to make it easy to get json/dict data converted to a dataframe
@@ -25,14 +26,16 @@ def load_chart():
     # d = Donut(df, label=['abbr', 'medal'], values='medal_count',
     #           text_font_size='12pt', hover_text='medal_count', plot_height=800, plot_width=800)
 
-    print(df)
 
-    d = Bar(df, label='origin', values='mpg', agg='mean', stack='cyl',
+
+
+    plot = Bar(df, label='origin', values='mpg', agg='mean', stack='cyl',
             title="Avg MPG by ORIGIN, stacked by CYL", legend='top_right')
 
-    # show(d)
+    # Embed plot into HTML via Flask Render
+    script, div = components(plot)
 
-    return d
+    return script, div
 
 def tweet_sentiment_per_candidate():
     # get all tweets

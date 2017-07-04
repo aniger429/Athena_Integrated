@@ -7,7 +7,9 @@ Using a mask you can generate wordclouds in arbitrary shapes.
 from os import path, pardir
 from PIL import Image
 import numpy as np
+import prettyplotlib as ppl
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import random
 
 from wordcloud import WordCloud, STOPWORDS
@@ -66,12 +68,12 @@ def which_color(word, font_size, position, orientation, random_state=None, **kwa
 def word_cloud(source, text):
     ngram_freq = dict((x, y) for x, y in text.items())
     SOURCE = source
-    print(SOURCE)
+
     #  loads the mask for the cloud shape to be used
     mask = which_masks()
 
     #  initialize the word cloud
-    wc = WordCloud(background_color="black", mask=mask, height=800, width=800, max_font_size=1000)
+    wc = WordCloud(background_color="black", mask=mask, height=700, width=500, max_font_size=1000)
 
     # generate word cloud
     # wc.generate(text)
@@ -79,8 +81,8 @@ def word_cloud(source, text):
     wc.recolor(color_func=which_color, random_state=3)
 
     # store to file
-    static_folder = path.join(directory, pardir, pardir, "media_folder")
-    wc.to_file(path.join(static_folder, "word_cloud.png"))
+    static_folder = path.join(directory, pardir, pardir, "static")
+    wc.to_file(path.join(static_folder, "word_cloud.png"), )
 
     # show
     # plt.figure(figsize=(7, 5), facecolor='k')

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block customCSS %}
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link href="{{ url_for('static', filename="css/viz/eventDrops.css") }}" rel="stylesheet"/>
+
+{% endblock %}
+
+{%block name%}
+Timeline
+{%endblock%}
+
+{% block content %}
+
+<div class="row">
+    <div id="chart_placeholder" class="col-md-12">
+
+    </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+    <script src="{{ url_for('static', filename="js/viz/d3.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/viz/eventDrops.js") }}"></script>
+    <script>
+
+    </script>
+{% endblock %}

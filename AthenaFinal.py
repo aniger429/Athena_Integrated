@@ -16,7 +16,6 @@ from collections import Counter
 from controllers.analysis_controller.topic_view_analysis import *
 from controllers.analysis_controller.analysis_manager import new_analysis
 from controllers.visualization.donut_chart import *
-from controllers.visualization.wordcloud_viz import word_cloud
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -277,12 +276,12 @@ def download_data():
 def visualizations():
     viz_type = request.form['viz_type']
 
-    if viz_type == "wordcloud":
-        source = request.form['source']
-        print(source)
-        tf_idf = load_obj("tf_idf")
-        word_cloud(source, tf_idf)
-        return render_template("analysis/Topic/view_tfidf.html", tf_idf=tf_idf)
+    # if viz_type == "wordcloud":
+    #     source = request.form['source']
+    #     print(source)
+    #     tf_idf = load_obj("tf_idf")
+    #     word_cloud(source, tf_idf)
+    #     return render_template("analysis/Topic/view_tfidf.html", tf_idf=tf_idf)
 
 
 @app.route('/get_word_cloud')
@@ -294,14 +293,7 @@ def get_word_cloud():
 # Bokeh Visualizations
 @app.route('/test')
 def test_bokeh():
-    from bokeh.embed import components
-    # Create the plot
-    plot = load_chart()
-
-    # Embed plot into HTML via Flask Render
-    script, div = components(plot)
-    return render_template("test.html", script=script, div=div)
-
+    return render_template('test.html')
 
 if __name__ == '__main__':
     app.run(

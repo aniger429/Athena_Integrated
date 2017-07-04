@@ -1,16 +1,13 @@
 import csv
-import scipy
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
 from collections import defaultdict
 import numpy as np
 from nltk.text import TextCollection
-from DBModels.Tweet import *
-from controllers.DataCleaning.Patterns import *
 import collections
 from operator import itemgetter
+from sklearn.manifold import TSNE
 
 tweetlist = []
 
@@ -86,11 +83,14 @@ num_iter refer to the number of topics you want it to produce and number of iter
 each document.
 """
 def topic_lda_tfidf(tweets, start_range,end_range, num_topics, num_iter, no_top_words=15):
-    tfidfvec = TfidfVectorizer(ngram_range=(start_range, end_range), min_df=0, use_idf=True, sublinear_tf=True, norm='l2',
+    tfidfvec = TfidfVectorizer(ngram_range=(start_range, end_range),
+                               min_df=0, use_idf=True,
+                               sublinear_tf=True,
+                               norm='l2',
                                smooth_idf=True)
     z = tfidfvec.fit_transform(tweets)
     lda = LatentDirichletAllocation(n_topics=num_topics, max_iter=num_iter,
-                                    learning_method='batch')
+                                    learning_method='online')
     # tweets.reshape(1, -1)
     lda.fit_transform(z)
     score = lda.score(z)
@@ -102,11 +102,33 @@ def topic_lda_tfidf(tweets, start_range,end_range, num_topics, num_iter, no_top_
     for topic_idx, topic in enumerate(lda.components_):
         words_list = list()
         for i in topic.argsort()[:-no_top_words - 1:-1]:
-            words_list.append({'word':feature_names[i],'score':topic[i]})
+            words_list.append({'word': feature_names[i], 'score': topic[i]})
 
         topics_dict[str(topic_idx+1)] = words_list
 
     return topics_dict
+
+
+def testing_pylda(tweets):
+    tf_vectorizer = CountVectorizer(strip_accents='unicode',
+                                   stop_words='english',
+                                   lowercase=True,
+                                   token_pattern=r'\b[a-zA-Z]{3,}\b',
+                                   max_df=0.5,
+                                   min_df=10)
+    # dtm_tf = tf_vectorizer.fit_transform(tweets)
+
+    tfidf_vectorizer = TfidfVectorizer(**tf_vectorizer.get_params())
+    dtm_tfidf = tfidf_vectorizer.fit_transform(tweets)
+
+    # for TF DTM
+    # lda_tf = LatentDirichletAllocation(n_topics=20, random_state=0)
+    # lda_tf.fit(dtm_tf)
+    # for TFIDF DTM
+    lda_tfidf = LatentDirichletAllocation(n_topics=10, random_state=0)
+    lda_tfidf.fit(dtm_tfidf)
+
+    return lda_tfidf, dtm_tfidf, tfidf_vectorizer
 
 
 """
@@ -136,27 +158,61 @@ def write_to_csv(fileName, tweet_list):
         for ngram, value in tweet_list.items():
             csvwriter.writerow([ngram, value])
 
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.decomposition import LatentDirichletAllocation
 
+# TSNE
+def topic_analysis_lda(tweets, start_range,end_range, num_topics, num_iter, no_top_words=15):
 
-def testing(tweets):
-    tf_vectorizer = CountVectorizer(strip_accents='unicode',
-                                   stop_words='english',
-                                   lowercase=True,
-                                   token_pattern=r'\b[a-zA-Z]{3,}\b',
-                                   max_df=0.5,
-                                   min_df=10)
-    # dtm_tf = tf_vectorizer.fit_transform(tweets)
+    tfidfvec = TfidfVectorizer(ngram_range=(start_range, end_range),
+                               min_df=5, use_idf=True,
+                               sublinear_tf=True,
+                               norm='l2',
+                               smooth_idf=True, stop_words='english')
+    cvz = tfidfvec.fit_transform(tweets)
+    # train an LDA model
+    lda_model = LatentDirichletAllocation(n_topics=num_topics, max_iter=num_iter,
+                                    learning_method='batch')
+    # tweets.reshape(1, -1)
+    lda_model.fit_transform(cvz)
+    score = lda_model.score(cvz)
 
-    tfidf_vectorizer = TfidfVectorizer(**tf_vectorizer.get_params())
-    dtm_tfidf = tfidf_vectorizer.fit_transform(tweets)
+    # no_top_words = 15
+    feature_names = tfidfvec.get_feature_names()
+    topics_dict = collections.OrderedDict()
 
-    # for TF DTM
-    # lda_tf = LatentDirichletAllocation(n_topics=20, random_state=0)
-    # lda_tf.fit(dtm_tf)
-    # for TFIDF DTM
-    lda_tfidf = LatentDirichletAllocation(n_topics=10, random_state=0)
-    lda_tfidf.fit(dtm_tfidf)
+    for topic_idx, topic in enumerate(lda_model.components_):
+        words_list = list()
+        for i in topic.argsort()[:-no_top_words - 1:-1]:
+            words_list.append({'word': feature_names[i], 'score': topic[i]})
 
-    return lda_tfidf, dtm_tfidf, tfidf_vectorizer
+        topics_dict[str(topic_idx + 1)] = words_list
+
+    # used for scatterplot
+    X_topics = lda_model.fit_transform(cvz)
+
+    # filter out unconfident assignments
+    threshold = 0.5
+    _idx = np.amax(X_topics, axis=1) > threshold  # idx of doc that above the threshold
+    X_topics = X_topics[_idx]
+
+    # a t-SNE model
+    # angle value close to 1 means sacrificing accuracy for speed
+    # pca initializtion usually leads to better results
+    tsne_model = TSNE(n_components=2, verbose=1, random_state=0, angle=.99, init='pca')
+
+    # 20-D -> 2-D
+    tsne_lda = tsne_model.fit_transform(X_topics)
+
+    _lda_keys = []
+    for i in range(X_topics.shape[0]):
+        _lda_keys += X_topics[i].argmax(),
+
+    # get top words
+    topic_summaries = []
+    topic_word = lda_model.components_  # all topic words
+    vocab = tfidfvec.get_feature_names()
+
+    for i, topic_dist in enumerate(topic_word):
+        topic_words = np.array(vocab)[np.argsort(topic_dist)][:-(no_top_words + 1):-1]  # get!
+        topic_summaries.append(' '.join(topic_words))  # append!
+
+    return topics_dict, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words

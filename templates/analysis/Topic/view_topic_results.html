@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% from 'analysis/macros.html' import collapsible_topic_config %}
+
+{% block customCSS %}
+
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <style>
+        .title.custom{
+            font-size: 30px;
+        }
+    </style>
+    <link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css"
+    rel="stylesheet" type="text/css">
+    <link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.css"
+    rel="stylesheet" type="text/css">
+{% endblock %}
+
+{%block name%}
+Topic Analysis: {{ topic_analysis_for }}
+{%endblock%}
+
+{% block content %}
+<div class="row">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#lda">LDA Results</a></li>
+        <li><a data-toggle="tab" href="#scatterplot">Scatterplot</a></li>
+        <li><a data-toggle="tab" href="#ngram">Top N-Grams</a></li>
+        <li><a data-toggle="tab" href="#wordcloud">Word Cloud</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="lda" class="tab-pane fade active">
+            <div class="row">
+                {% for key, value in topics_dict.items() %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title custom">{{ "Topic # " + (key) }}</h4>
+                            <p class="category custom">
+                                {{ value['topic_tweets'] | length }} Tweets
+                                </br>
+                                <a href="{{ url_for('view_tweets_for_topic', key=key) }}">View Tweet</a>
+                            </p>
+                        </div>
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th class="col-md-1">Number</th>
+                                    <th class="col-md-6">Word</th>
+                                    <th class="col-md-5">Score</th>
+                                </thead>
+                                <tbody>
+                                        {% for v in value['words'] %}
+                                        <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ v['word'] }}</td>
+                                            <td>{{ v['score'] }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="scatterplot" class="tab-pane fade">
+            {{ script|safe }}
+            {{ div|safe }}
+        </div>
+        <div id="ngram" class="tab-pane fade">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ "Top" }} {{ tf_idf | length }} {{ "Unigrams" }}</h4>
+{#                    <p class="category custom">0.99 - topic score</p>#}
+                    <form class="col-md-6" action="/download" method="post" enctype="multipart/form-data">
+                        <input type="text" name="download_data" value="download_topic_ngrams" hidden/>
+                        <input type="text" name="data_value" value={{ tf_idf }} hidden/>
+                        <input id="submit" type="submit" class="btn btn-info col-md-12" Title="Filename: topic_ngrams"
+                               Value="Download N-grams">
+                    </form>
+                    <form class="col-md-6" action="/visualization" method="post" enctype="multipart/form-data">
+                        <input type="text" name="viz_type" value="wordcloud" hidden/>
+                        <input type="text" name="source" value={{ source }} hidden/>
+                        <input id="submit" type="submit" class="btn btn-info col-md-12"
+                               Value="View World Cloud">
+                    </form>
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="ngram_table">
+                        <thead>
+                            <th class="col-md-1">Number</th>
+                            <th class="col-md-6">Word</th>
+                            <th class="col-md-5">Score</th>
+                        </thead>
+                        <tbody>
+                            {% for key, value in tf_idf.items() %}
+                                <tr>
+                                    <td class="col-md-1">{{ loop.index }}</td>
+                                    <td class="col-md-6">{{ key }}</td>
+                                    <td class="col-md-5">{{ value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="wordcloud" class="tab-pane fade">
+             <img src="{{ url_for('static', filename="word_cloud.png") }}" alt="Image Placeholder">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{%block before_body_end %}
+{%endblock%}
+
+{% block customJS %}
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#ngram_table').DataTable();
+        });
+    </script>
+{% endblock %}

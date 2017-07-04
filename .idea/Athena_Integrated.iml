@@ -21,8 +21,9 @@
         <option value="$MODULE_DIR$/templates/View Data" />
         <option value="$MODULE_DIR$/templates/macros" />
         <option value="$MODULE_DIR$/templates/analysis/Sentiment" />
-        <option value="$MODULE_DIR$/templates/bokeh_viz" />
+        <option value="$MODULE_DIR$/templates/viz" />
         <option value="$MODULE_DIR$/media_folder" />
+        <option value="$MODULE_DIR$/static" />
       </list>
     </option>
   </component>

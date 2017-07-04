@@ -3,6 +3,7 @@ from DBModels.Tweet import *
 from controllers.analysis_controller.Pickle_Saver import *
 import pandas as pd
 
+
 def identify_candidate(tweet_list, cname="none"):
     print("cname")
     print(cname)
@@ -57,23 +58,25 @@ def candidate_analysis_testing(num_tweets):
     # retrieve all data in the database
     tweets = get_all_tweets()
     # perform candidate analysis on all tweets
+    cand = ['binay', 'duterte', 'santiago', 'roxas', 'poe']
 
-    results = identify_candidate(tweets, "none")
-    # create data list to hold the processed data
-    data_list = []
+    for c in cand:
+        results = identify_candidate(tweets, c)
+        # create data list to hold the processed data
+        data_list = []
 
-    [data_list.append({'Tweet': ' '.join(r['tweet']),
-                       'Binay': r['cand_ana']['binay'],
-                       'Duterte': r['cand_ana']['duterte'],
-                       'Poe': r['cand_ana']['poe'],
-                       'Roxas': r['cand_ana']['roxas'],
-                       'Santiago': r['cand_ana']['santiago']}) for r in results[:num_tweets]]
-    # create a dataframe
-    data = pd.DataFrame(data_list, columns=['Tweet','Binay', 'Duterte', 'Poe', 'Roxas', 'Santiago'])
-    print("saving")
-    # save to excel
-    data.to_csv("/home/dudegrim/Documents/Testing/candidate_analysis_output.csv", sep=',',
-                columns= ['Tweet','Binay', 'Duterte', 'Poe', 'Roxas', 'Santiago'], index=None)
+        [data_list.append({'Tweet': ' '.join(r['tweet']),
+                           'Binay': r['cand_ana']['binay'],
+                           'Duterte': r['cand_ana']['duterte'],
+                           'Poe': r['cand_ana']['poe'],
+                           'Roxas': r['cand_ana']['roxas'],
+                           'Santiago': r['cand_ana']['santiago']}) for r in results]
+        # create a dataframe
+        data = pd.DataFrame(data_list, columns=['Tweet','Binay', 'Duterte', 'Poe', 'Roxas', 'Santiago'])
+        print("saving")
+        # save to excel
+        data.to_csv("/home/dudegrim/Documents/Testing/"+c+"_candidate_analysis_output.csv", sep=',',
+                    columns= ['Tweet','Binay', 'Duterte', 'Poe', 'Roxas', 'Santiago'], index=None)
 
 
 # candidate_analysis_testing(5000)

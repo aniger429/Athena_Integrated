@@ -208,7 +208,7 @@ hr {
     max-height: none;
     min-height: 100%;
     overflow: hidden;
-    width: 260px;
+    width: 230px;
     z-index: 4;
     box-shadow: inset -1px 0px 0px 0px #DDDDDD; }
   .sidebar .sidebar-background {
@@ -224,7 +224,7 @@ hr {
 
 .sidebar,
 .off-canvas-sidebar {
-  width: 260px;
+  width: 230px;
   display: block;
   font-weight: 200; }
   .sidebar .logo,
