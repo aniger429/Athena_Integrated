@@ -9,10 +9,17 @@
             font-size: 30px;
         }
     </style>
+
+    <link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css"
+    rel="stylesheet" type="text/css">
+    <link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.css"
+    rel="stylesheet" type="text/css">
 {% endblock %}
 
 {%block name%}
-Sentiment
+Sentiment Analysis: {{ sentiment_analysis_for }}
 {%endblock%}
 
 {% block content %}
@@ -32,22 +39,11 @@ Sentiment
 {% endfor %}
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">Sentiment Analysis</h4>
-                <p class="category custom">{{ sentiment_analysis_for }}</p>
-            </br>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#positive">Positive</a></li>
         <li><a data-toggle="tab" href="#neutral">Neutral</a></li>
         <li><a data-toggle="tab" href="#negative">Negative</a></li>
+        <li><a data-toggle="tab" href="#summary">Summary</a></li>
     </ul>
 
     <div class="tab-content">
@@ -97,6 +93,13 @@ Sentiment
                 </div>
             </div>
         {% endfor %}
+        <div id="summary" class="tab-pane fade">
+            <div class="col-md-offset-2">
+               {{ script|safe }}
+               {{ div|safe }}
+            </div>
+
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -105,6 +108,8 @@ Sentiment
 {%endblock%}
 
 {% block customJS %}
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.js"></script>
     <script>
         $(document).ready(function(){
             $('#positive_table').DataTable();

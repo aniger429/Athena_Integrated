@@ -40,11 +40,15 @@ def insert_new_tweet(data_to_add):
     db.Tweet.insert_many(data_to_add)
 
 
-def get_all_tweets():
-    client = MongoClient('mongodb://localhost:27017/Athena')
-    db = client.Athena
+def get_all_orig_tweets():
+    data = list(db.Tweet.find({}, {'_id': 1, 'orig_tweets': 1, 'tweet': 1}))
+    for d in data:
+        d['orig_tweets'] = d['orig_tweets'].split()
 
-    data = list(db.Tweet.find({},{'_id':1,'tweet':1}))
+    return data
+
+def get_all_tweets():
+    data = list(db.Tweet.find({}, {'_id': 1, 'tweet': 1}))
     for d in data:
         d['tweet'] = d['tweet'].split()
     return data

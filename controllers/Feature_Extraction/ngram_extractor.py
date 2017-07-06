@@ -14,11 +14,9 @@ def read_xlsx(filename):
 
 
 def get_ngrams(tweet_list):
-    gramDict = dict()
     unigram_list = []
     bigram_list = []
     trigram_list = []
-    final_list = []
 
     # tweet = p.clean(tweet)
     tweet_list = [pat.remove_usernames(tweet) for tweet in tweet_list]
@@ -38,18 +36,4 @@ def get_ngrams(tweet_list):
         bigram_list.append(bigram)
         trigram_list.append(trigram)
 
-        # gramDict['bigram'] = bigram
-        # gramDict['trigram'] = trigram
-        # final_list.append(copy.deepcopy(gramDict))
-        # gramDict.clear()
-
     return unigram_list, bigram_list, trigram_list
-
-
-# dum_data = get_tweets_only()
-# unigrams, bigrams, trigrams = get_ngrams(dum_data)
-# # df_output = pd.DataFrame.from_dict(output)
-# # df_output.to_excel("feprocessed.xlsx", index=False, header=['Unigram', 'Bigram', 'Trigram'])
-#
-# for uni in unigrams:
-#     print (uni)

@@ -22,23 +22,8 @@
 #
 # show(d)
 
-from bokeh.models import Label
-from bokeh.plotting import figure
-from bokeh.plotting import show
-
-words = [
-    ('hello', (10, 100), '12pt', 0.8),
-    ('how', (20, 10), '14pt', 0.8),
-    ('are', (100, 20), '16pt', 0.8),
-    ('you', (50, 30), '18pt', 0.8),
-    ('???', (100, 100), '18pt', 0.8),
-]
-
-fig = figure(plot_width=200, plot_height=200, title='test')
-
-for word, loc, size, alpha in words:
-    w = Label(x=loc[0], y=loc[1], x_units='screen', y_units='screen',
-              text=word, render_mode='css', text_alpha=alpha, text_font_size=size)
-    fig.add_layout(w)
-
-show(fig)
+from bokeh.charts import Donut, show
+import pandas as pd
+data = pd.Series([100, 500, 200], index=['Positive', 'Negative', 'Neutral'])
+pie_chart = Donut(data)
+show(pie_chart)

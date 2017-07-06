@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Athena_Integrated.iml" filepath="$PROJECT_DIR$/.idea/Athena_Integrated.iml" />
-      <module fileurl="file://$USER_HOME$/PycharmProjects/scratch/.idea/scratch.iml" filepath="$USER_HOME$/PycharmProjects/scratch/.idea/scratch.iml" />
     </modules>
   </component>
 </project>

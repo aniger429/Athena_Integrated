@@ -1,6 +1,5 @@
-from flask import request, redirect, url_for, render_template
+from flask import redirect, url_for
 from controllers.Candidate_Analysis.Candidate_Identification import *
-# from controllers.Topic_Analysis.Topic_Analysis import *
 from controllers.analysis_controller.topic_view_analysis import *
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
@@ -20,12 +19,14 @@ def new_analysis():
     if flevel == "candidate":
         print("flevel: candidate")
         candidate_name = request.form['candidate-name']
-        tweets = get_all_tweets()
+        # tweets = get_all_tweets()
+        tweets = get_all_orig_tweets()
+
         candidate_name_count, data = candidate_analysis(tweets, candidate_name)
 
         if slevel == "topic":
             print("slevel: topic")
-            return view_candidate(candidate_name, "candidate")
+            return view_candidate(candidate_name)
 
         elif slevel == "sentiment":
             print("slevel: sentiment")

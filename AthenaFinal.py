@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, make_response, send_from_directory
+from flask import Flask, send_from_directory
 from flask import session
 
 from DBModels.Data import *
@@ -6,22 +6,16 @@ from DBModels.KBFile import *
 from DBModels.MongoDB_Manager import *
 from DBModels.Username import *
 from controllers import uploadFile
-from controllers.Candidate_Analysis.Candidate_Identification import *
 from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
-from controllers.Sentiment_Analysis.Sentiment_Identification import *
-# from controllers.analysis_controller import new_analysis
 from controllers.download import *
-from collections import Counter
 from controllers.analysis_controller.topic_view_analysis import *
 from controllers.analysis_controller.analysis_manager import new_analysis
 from controllers.visualization.donut_chart import *
 
+
 # Initialize the Flask application
 app = Flask(__name__)
-
-# Connect to MongoDB and call the connection "athenaDB.
-# connect("mongodb://localhost:27017/Athena", alias="athenaDB")
 
 client = MongoClient('localhost', 27017)
 mainDB = "Athena"
@@ -41,7 +35,10 @@ app.secret_key = "super secret key"
 @app.route('/')
 def home():
     session.clear()
-    return render_template("dashboard.html", counter_data=[count_total_usernames(),count_total_tweet(),count_total_candidate(),count_total_data(),count_total_workspace()], counter_names = ["username","tweet","candidate","file","workspace"])
+    return render_template("dashboard.html", counter_data=[count_total_usernames(),count_total_tweet(),
+                                                           count_total_candidate(),count_total_data(),
+                                                           count_total_workspace()],
+                           counter_names=["username","tweet","candidate","file","workspace"])
 
 
 @app.route('/view_workspaces')
@@ -57,7 +54,9 @@ def view_all_usernames():
 @app.route('/user')
 def view_specific_user():
     user_id = request.args.get('user_id')
-    return render_template("View Data/view_user.html", userData=get_user_data(user_id), user_mentioned_tweet_list=get_user_mentioned_tweets(user_id), tweetDataList=get_user_tweet_data(user_id))
+    return render_template("View Data/view_user.html", userData=get_user_data(user_id),
+                           user_mentioned_tweet_list=get_user_mentioned_tweets(user_id),
+                           tweetDataList=get_user_tweet_data(user_id))
 
 
 @app.route('/view_tweets')
@@ -100,6 +99,7 @@ def view_candidate_data():
     datasource = request.args.get('datasource')
 
     tweets = get_all_tweets()
+    # tweets = get_all_orig_tweets()
 
     if datasource in ["positive", "neutral", "negative"]:
         tweets = load_obj("Sentiment")[datasource]
@@ -109,11 +109,12 @@ def view_candidate_data():
         # print(tweets)
 
     identify_candidate(tweets, cname=cname)
-    data = load_obj("Candidate")
+    data_tweets = load_obj("Candidate")
     candidate_name_count = Counter([tweet['tweet'][tweet['cand_ana'][cname]] for tweet in data])
 
-    return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count, candidate_data=get_specific_candidate_names(cname),
-                           candidate_tweets=data)
+    return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
+                           candidate_data=get_specific_candidate_names(cname),
+                           candidate_tweets=data_tweets)
 
 
 @app.route('/topic_analysis_manager', methods=['POST'])
@@ -124,11 +125,11 @@ def topic_analysis_manager():
     # source: candidate
     if datasource == "candidate":
         candidate_name = request.form['candidate_name']
-        return view_candidate(candidate_name, source="candidate")
+        return view_candidate(candidate_name)
     # source: sentiment
     elif datasource == "sentiment":
         sentiment = request.form['sentiment']
-        return view_sentiment(sentiment, source=sentiment)
+        return view_sentiment(sentiment)
 
 
 @app.route('/topic_tweets')
@@ -136,7 +137,8 @@ def view_tweets_for_topic():
     key = request.args.get('key')
     data = load_obj("Topics")
     candidates_mentioned = identify_candidate_mentioned(data[key]['topic_tweets'])
-    return render_template("analysis/Topic/view_topic_tweets.html", key=key, topic=data[key], candidates_mentioned=candidates_mentioned)
+    return render_template("analysis/Topic/view_topic_tweets.html", key=key, topic=data[key],
+                           candidates_mentioned=candidates_mentioned)
 
 
 @app.route('/sentiment')
@@ -161,12 +163,23 @@ def view_sentiment_analysis():
     neutral_tweets = {'tweets': neutral_tweets, 'candidate_mentioned': identify_candidate_mentioned(neutral_tweets)}
     negative_tweets = {'tweets': negative_tweets, 'candidate_mentioned': identify_candidate_mentioned(negative_tweets)}
 
-    return render_template("analysis/Sentiment/view_tweets_sentiment.html", tweet_list=[negative_tweets, positive_tweets, neutral_tweets], sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=sentiment_for)
+    data_series = pd.Series([len(positive_tweets['tweets']), len(neutral_tweets['tweets']),
+                             len(negative_tweets['tweets'])],
+                            index=['Positive', 'Negative', 'Neutral'])
+
+    script, div = donut_chart(data_series)
+
+    return render_template("analysis/Sentiment/view_tweets_sentiment.html",
+                           tweet_list=[negative_tweets, positive_tweets, neutral_tweets],
+                           sentiment_labels=['negative', 'neutral', 'positive'],
+                           sentiment_analysis_for=sentiment_for,
+                           script=script, div=div)
 
 
 @app.route('/analysis')
 def analysis():
-    return render_template("analysis.html", candidate_names=get_all_candidate_names(), workspace_list=get_all_workspace())
+    return render_template("analysis.html", candidate_names=get_all_candidate_names(),
+                           workspace_list=get_all_workspace())
 
 
 @app.route('/data_cleaning')
@@ -187,13 +200,8 @@ def clean_file(filename):
 
 @app.route('/knowledgebase')
 def knowledge_base():
-    return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(), kbFileList=get_all_kbfile(), duplicate=False)
-
-
-
-@app.route('/chart-view')
-def chart_view():
-    return render_template("chart-view.html")
+    return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(),
+                           kbFileList=get_all_kbfile(), duplicate=False)
 
 
 # Route that will process the file upload
@@ -206,7 +214,8 @@ def upload():
         directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'])
         return uploadFile.upload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
     else:
-        return render_template("datacleaning.html", dataFileList=get_all_file(), filename = file_name, duplicate = True)
+        return render_template("datacleaning.html", dataFileList=get_all_file(),
+                               filename=file_name, duplicate=True)
 
 
 # Route that will process the file upload
@@ -219,13 +228,15 @@ def kbupload():
         directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'], "KBFiles")
         return uploadFile.kbupload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
     else:
-        return render_template("knowledgebase.html", kbFileList=get_all_kbfile(), filename = file_name, duplicate = True)
+        return render_template("knowledgebase.html", kbFileList=get_all_kbfile(),
+                               filename=file_name, duplicate=True)
 
 
 @app.route('/kbupdate')
 def find_more_kb_names():
     find_more_names()
-    return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(), kbFileList=get_all_kbfile(), duplicate=False)
+    return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(),
+                           kbFileList=get_all_kbfile(), duplicate=False)
 
 
 @app.route('/analysis_config', methods=['POST'])
@@ -293,7 +304,15 @@ def get_word_cloud():
 # Bokeh Visualizations
 @app.route('/test')
 def test_bokeh():
-    return render_template('test.html')
+    # data = [{'name': "C1", 'population': [1,2,3]},
+    #         {'name': "C2", 'population': [4, 5, 9]}]
+    data = [
+               ('State','Under 5 Years','5 to 13 Years','14 to 17 Years','18 to 24 Years','25 to 44 Years',
+         '45 to 64 Years','65 Years and Over'),
+           ('AL',310504,552339,259034,450818,1231572,1215966,641667),
+    ('AK',52083,85640,42153,74257,198724,183159,50277)
+    ]
+    return render_template('test.html', data=data)
 
 if __name__ == '__main__':
     app.run(

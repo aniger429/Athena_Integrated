@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 client = MongoClient('mongodb://localhost:27017/Athena')
 db = client.Athena
 
+
 class Username(MongoModel):
     idUsername = fields.IntegerField(primary_key=True)
     username = fields.CharField(max_length=20)
@@ -19,7 +20,7 @@ class Username(MongoModel):
 
 
 def insert_new_username(username_dict):
-    db.Username.insert_many([{'username': key, "numTweets":value['numTweets'], "numMentions":value['numMentions']} for key, value in username_dict.items()])
+    db.Username.insert_many([{'username': key, "numTweets": value['numTweets'], "numMentions": value['numMentions']} for key, value in username_dict.items()])
 
 
 def bulk_update(username_dict):
@@ -31,7 +32,6 @@ def bulk_update(username_dict):
             }
         }
     )for key, value in username_dict.items()]
-
     bulk.execute()
 
 def get_all_username():

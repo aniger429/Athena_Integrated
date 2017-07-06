@@ -28,7 +28,7 @@ c_re = re.compile('(%s)' % '|'.join(dictionary.keys()))
 
 def read_csv(filename):
     return pd.read_csv(filename, encoding="utf8", keep_default_na=False, index_col=None,
-                       sep=",", skipinitialspace=True, chunksize=1000)  
+                       sep=",", skipinitialspace=True, chunksize=1000)
 
 
 def expand_contractions(text, c_re=c_re):

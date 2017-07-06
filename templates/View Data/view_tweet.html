@@ -48,7 +48,7 @@ Tweet
         <div class="card">
             <div class="header">
                 <h4 class="title custom">"
-                    {% for word in tweetData['tweet'] %}
+                    {% for word in tweetData['orig_tweets'].split(' ') %}
                         {% if word[:1] != '@' %}
                             {{ word }}
                         {% else %}
@@ -57,7 +57,7 @@ Tweet
                     {% endfor %}
 "
                 </h4>
-                <p class="category custom">Tweet</p>
+                <p class="category custom">Original Tweet</p>
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
@@ -67,8 +67,8 @@ Tweet
                     </thead>
                     <tbody>
                        <tr>
-                           <td>Original Tweet</td>
-                           <td>{{ tweetData['orig_tweets'] }}</td>
+                           <td>Cleaned Tweet</td>
+                           <td>{{ tweetData['tweet'] }}</td>
                        </tr>
                        <tr>
                            <td>Tweet ID</td>

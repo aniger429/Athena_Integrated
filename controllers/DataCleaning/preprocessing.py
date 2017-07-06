@@ -5,7 +5,7 @@ from DBModels.Username import *
 
 # this function returns a dictionary where the key is the username and the value is the username model class
 def create_init_username_df(ulist):
-    #All usernames from the column
+    # All usernames from the column
 
     u_dict = {}
     for uName, value in dict(Counter(ulist)).items():
@@ -30,20 +30,18 @@ def filterOutUsernames(usernameList):
 
 
 def process_usernames(data_source):
+
     # 1. Get all usernames from the username columns
     u_dict = create_init_username_df(data_source['Username'])
 
     tweet_data = data_source['Tweet']
     # 3. Iterate over all Tweet column
+
     username_pattern = re.compile("@[a-zA-Z0-9_]+")
     found_username_list = []
     [found_username_list.extend(m) for l in tweet_data for m in [username_pattern.findall(l)] if m]
     found_username_list = [username for username in found_username_list if len(username) < 17]
 
     u_dict = username_mentions(u_dict, found_username_list)
-
     bulk_update(u_dict)
     # print("Done processing the username")
-    return
-
-

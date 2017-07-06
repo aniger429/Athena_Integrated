@@ -9,7 +9,8 @@ from bokeh.sampledata.autompg import autompg as df
 from controllers.Candidate_Analysis.Candidate_Identification import *
 from bokeh.embed import components
 
-def load_chart():
+
+def donut_chart(data_series):
     # # utilize utility to make it easy to get json/dict data converted to a dataframe
     # df = df_from_json(data)
     #
@@ -27,15 +28,16 @@ def load_chart():
     #           text_font_size='12pt', hover_text='medal_count', plot_height=800, plot_width=800)
 
 
+    # plot = Bar(df, label='origin', values='mpg', agg='mean', stack='cyl',
+    #         title="Avg MPG by ORIGIN, stacked by CYL", legend='top_right')
 
-
-    plot = Bar(df, label='origin', values='mpg', agg='mean', stack='cyl',
-            title="Avg MPG by ORIGIN, stacked by CYL", legend='top_right')
+    pie_chart = Donut(data_series, plot_height=700, plot_width=800)
 
     # Embed plot into HTML via Flask Render
-    script, div = components(plot)
+    script, div = components(pie_chart)
 
     return script, div
+
 
 def tweet_sentiment_per_candidate():
     # get all tweets

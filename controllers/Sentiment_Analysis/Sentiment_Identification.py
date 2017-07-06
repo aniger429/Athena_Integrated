@@ -52,6 +52,11 @@ def compute_afinn_score(tweet):
 
         afinnSum += afinnScore
 
+    if 'POSEMOTE' in tweet:
+        afinnSum += 1
+    elif 'NEGEMOTE' in tweet:
+        afinnSum -= 1
+
     return afinnSum
 
 
@@ -83,23 +88,15 @@ def compute_sentiment(tweet):
     afinnScore = evaluate_score(compute_afinn_score(tweet))
     bingScore = evaluate_score(compute_bing_score(tweet))
 
-    """
-    sip = swn.senti_synsets(aa)
-    sipList = list(sip)
-    if len(sipList) > 0:
-        for i in range(0, len(sipList)):
-            pos += sipList[i].pos_score()
-            neg += sipList[i].neg_score()
-    """
     # print(' '.join(tweet)  + filScore + afinnScore + bingScore)
     final_score = Counter([bingScore, filScore, afinnScore]).most_common()[0]
 
     if final_score[1] == 1:
-        final =  "NEUTRAL"
+        final = "NEUTRAL"
     else:
         final = final_score[0]
 
-    return final
+    return final.lower()
 
 
 def compute_tweets_sentiment(tweet_list):
@@ -113,15 +110,15 @@ def compute_tweets_sentiment(tweet_list):
         else:
             senti = compute_sentiment(tweet['tweet'].split(' '))
 
-        if senti == "POSITIVE":
+        if senti == "positive":
             posi_tweets.append(tweet)
-        elif senti == "NEGATIVE":
+        elif senti == "negative":
             neg_tweets.append(tweet)
         else:
             neut_tweets.append(tweet)
 
-    obj = {'positive':posi_tweets, 'neutral':neut_tweets, 'negative':neg_tweets}
-    save_obj(obj,'Sentiment')
+    obj = {'positive': posi_tweets, 'neutral': neut_tweets, 'negative': neg_tweets}
+    save_obj(obj, 'Sentiment')
 
     return posi_tweets, neut_tweets, neg_tweets
 
@@ -135,14 +132,13 @@ def compute_senti_candidate_tweet(tweet_list):
         else:
             result = compute_sentiment(tweet['tweet'].split(' '))
 
-        if result == "POSITIVE":
-            senti = "positive"
-        elif result == "NEGATIVE":
-            senti = "negative"
-        else:
-            senti = "neutral"
-
-        final_tweet_list.append({'cand_ana': tweet['cand_ana'], 'tweet': tweet['tweet'], '_id': tweet['_id'],
-                                 'sentiment': senti})
+        tweet['sentiment'] = result
+        final_tweet_list.append(tweet)
 
     return final_tweet_list
+
+
+def test_senti_ana(tweet):
+    return compute_sentiment(tweet.split(' '))
+
+
