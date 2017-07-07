@@ -17,9 +17,7 @@ from controllers.visualization.donut_chart import *
 # Initialize the Flask application
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)
-mainDB = "Athena"
-db = client[mainDB]
+# db = MongoClient('localhost', 27017).Athena
 
 # create the main database
 create_new_workspace(mainDB)
@@ -28,7 +26,7 @@ create_new_workspace(mainDB)
 app.config['UPLOAD_FOLDER'] = 'Data/'
 app.config['MEDIA_FOLDER'] = 'media_folder/'
 # These are the extension that we are accepting to be uploaded
-app.config['ALLOWED_EXTENSIONS'] = set(['csv', 'xls', 'xlsx'])
+app.config['ALLOWED_EXTENSIONS'] = set(['csv'])
 app.secret_key = "super secret key"
 
 

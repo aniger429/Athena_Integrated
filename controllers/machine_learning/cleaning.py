@@ -144,31 +144,3 @@ def cleaning_file(fname):
     # df.to_excel("CleanedTweets.xlsx", index=False)
     print("done cleaning")
     insert_new_tweet(df.to_dict(orient='records'))
-
-
-
-def test(tweet):
-    # # Emoticons
-    # emoticons = [
-    #         ('__positive__', [':-)', ':)', '(:', '(-:',
-    #                           ':-D', ':D', 'X-D', 'XD', 'xD',
-    #                           '<3', ':\*', ';-)', ';)', ';-D', ';D', '(;', '(-;', ]),
-    #         ('__negative__', [':-(', ':(', '(:', '(-:', ':,(',
-    #                           ':\'(', ':"(', ':((', ])
-    #     ]
-    #
-    # emoticons_regex = [(repl, re.compile(regex_join(replace_parenth(regx)))) \
-    #                    for (repl, regx) in emoticons]
-    #
-    # for (repl, regx) in emoticons_regex:
-    #     tweet = re.sub(regx, ' ' + repl + ' ', tweet)
-    emoticons_str = r"""
-        (?:
-            [:=;] # Eyes
-            [oO\-]? # Nose (optional)
-            [D\)\]\(\]/\\OpP] # Mouth
-        )"""
-
-    emoticon_re = re.compile(r'^' + emoticons_str + '$', re.VERBOSE | re.IGNORECASE)
-    
-

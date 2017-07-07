@@ -1,25 +1,26 @@
 import re
-from controllers.DataCleaning import preprocessing
 from functools import reduce
 from DBModels.Username import *
-import os
-import itertools
-import time
-# import preprocessor as p
 from DBModels.Tweet import *
+import os
+from controllers.DataCleaning import preprocessing
 from controllers.DataCleaning import Patterns as pat
 from controllers.Feature_Extraction import ngram_extractor
 import pandas as pd
+from multiprocessing import Pool
+from functools import partial
+import numpy as np
+
+
+num_partitions = 6  # number of partitions to split dataframe
+num_cores = 6  # number of cores on your machine
 
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "stop_words")
 
-stopwords = pd.read_csv(file_path+"/eng-function-word.txt", header=None)
-stopwords = stopwords.append(pd.read_csv(file_path+"/fil-function-words.txt", header=None))
-stopwords = stopwords[0].tolist()
-stopwords = [x.lower() for x in stopwords]
-stopwords = [re.sub('\'|"| ', '', x) for x in stopwords]
-
+# loads stop words list from file
+stopwords = pd.read_csv(file_path+"/final_stop_words_list.csv", header=None, squeeze=True).tolist()
+# loads contractions from file
 contractions = pd.read_csv(file_path+"/contractions.csv", header=None, delimiter=',')
 dictionary = dict(zip(contractions[0].tolist(), contractions[1].tolist()))
 
@@ -28,7 +29,8 @@ c_re = re.compile('(%s)' % '|'.join(dictionary.keys()))
 
 def read_csv(filename):
     return pd.read_csv(filename, encoding="utf8", keep_default_na=False, index_col=None,
-                       sep=",", skipinitialspace=True, chunksize=1000)
+                       sep=",", skipinitialspace=True, chunksize=10000,
+                       usecols=['Id', 'Tweet', 'Username', 'Hashtags', 'Location', 'Favorites', 'Retweets'])
 
 
 def expand_contractions(text, c_re=c_re):
@@ -93,36 +95,10 @@ def init_data_cleaning(tweet, nameTuple):
 
     return tweet
 
-# # no username anonymization
-# def data_cleaning (tweet):
-#     tweet = pat.remove_from_tweet(tweet)
-#     # remove HTML characters
-#     tweet = re.sub("(&\S+;)",'', tweet)
-#     # converts the tweets to lowercase
-#     tweet = tweet.lower()
-#     # expand contradictions
-#     tweet = expand_contractions(tweet)
-#     # remove stopwords
-#     tweet = ' '.join([word for word in tweet.split() if word not in stopwords])
-#     # remove shortwords 1-2 characters
-#     shortword = re.compile(r'\W*\b\w{1,2}\b')
-#     tweet = shortword.sub('', tweet)
-#     # remove punctuation marks
-#     tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
-#
-#     # standardize words # collapse to 1 letter ex: cooool to col
-#     # tweet = ''.join(ch for ch, _ in itertools.groupby(tweet))
-#
-#     # standardize words # collapse to 2 letter ex: cooool to cool
-#     # tweet = re.sub(r'(.)\1+', r'\1\1', tweet)
-#
-#     # print("After:"+ tweet)
-#
-#     return tweet
 
+def anonymize_poster_username(username_list, username_dict):
+    # username_dict = get_all_username_dict()
 
-def anonymize_poster_username(username_list):
-    username_dict = get_all_username_dict()
     return [username_dict['@'+u] for u in username_list]
 
 
@@ -131,38 +107,62 @@ def process_hashtags(hashtag_list):
     return [pattern.split(hashtags) if hashtags is not '' else [] for hashtags in hashtag_list]
 
 
+def parallelize_dataframe(df, func, nameTuple, usernames):
+    df_split = np.array_split(df, num_partitions)
+    pool = Pool(num_cores)
+    func = partial(func, nameTuple, usernames)
+    df = pd.concat(pool.map(func, df_split))
+    pool.close()
+    pool.join()
+    return df
+
+
+def process_chunk(nameTuple, usernames, chunk):
+    print(5)
+    # chunk['tweet'] will hold the processed/cleaned tweet
+    # chunk['Tweet'] is original tweet
+    chunk['tweet'] = chunk.apply(lambda row: init_data_cleaning(row['Tweet'], nameTuple), axis=1)
+    # 1-3 grams for each tweet
+    chunk['unigrams'], chunk['bigrams'], chunk['trigrams'] = ngram_extractor.get_ngrams(chunk['tweet'])
+    # positive emoticon/negative emoticon count
+    chunk['posemotecount'] = chunk.apply(lambda row: row['tweet'].count('POSEMOTE'), axis=1)
+    chunk['negemotecount'] = chunk.apply(lambda row: row['tweet'].count('NEGEMOTE'), axis=1)
+    # anonymize poster username
+    chunk['Username'] = anonymize_poster_username(chunk['Username'], usernames)
+    # hashtag processing
+    chunk['hashtags'] = process_hashtags(chunk['Hashtags'])
+    # users mentioned
+    chunk['users_mentioned'] = get_usernames(chunk['tweet'])
+    # rename some column names
+    chunk.rename(index=str, columns={"Location": "location", "Retweets": "retweet", "Favorites": "favorite",
+                                     "Date Created": "date_created", "Id": 'idTweet',
+                                     "Tweet": "orig_tweets", "Username": 'idUsername'}, inplace=True)
+    return chunk
+
+
 def cleaning_file(file_name):
     print("Start Cleaning File")
     reader = read_csv(file_name)
 
     for ctr, chunk in enumerate(reader):
+        print(1)
         # add usernames to DB
         preprocessing.process_usernames(chunk)
         nameTuple = get_all_username_tup()
+        usernames = get_all_username_dict()
 
-        raw_tweets = chunk['Tweet']
-        cleaned_tweets = []
-        [cleaned_tweets.append(init_data_cleaning(t, nameTuple)) for t in raw_tweets]
-
-        unigrams, bigrams, trigrams = ngram_extractor.get_ngrams(cleaned_tweets)
-
-        # chunk['Tweet'] = chunk['Tweet'].apply(lambda x: preprocess(x))
-
-        posemotecount = [tweet.count('POSEMOTE') for tweet in cleaned_tweets]
-        negemotecount = [tweet.count('NEGEMOTE') for tweet in cleaned_tweets]
-
-        d = {'idTweet': chunk['Id'], 'idUsername': anonymize_poster_username(chunk['Username']),
-             'orig_tweets': raw_tweets, 'tweet': cleaned_tweets, 'date_created': chunk['Date Created'],
-             'location': chunk['Location'],'hashtags': process_hashtags(chunk['Hashtags']),
-             'favorite': chunk['Favorites'], 'retweet': chunk['Retweets'],
-             'posemote': posemotecount,  'negemote': negemotecount,
-             'users_mentioned': get_usernames(cleaned_tweets),
-             'unigram': unigrams, 'bigram': bigrams, 'trigram': trigrams}
-
-        df = pd.DataFrame(data=d, index=None)
+        print(2)
+        results = parallelize_dataframe(chunk, process_chunk, nameTuple, usernames)
+        print(3)
         # this removes empty tweets after cleaning
-        df.drop(df[df.tweet == ""].index, inplace=True)
+        results.drop(results[results.tweet == ""].index, inplace=True)
 
-        insert_new_tweet(df.to_dict(orient='records'))
+        insert_new_tweet(results.to_dict(orient='records'))
 
     print("Done Cleaning File")
+
+import time
+start = time.time()
+cleaning_file("/home/dudegrim/Documents/CSV8/Election-17.csv")
+end = time.time()
+print(end-start)

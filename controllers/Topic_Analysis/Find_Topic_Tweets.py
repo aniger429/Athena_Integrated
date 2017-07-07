@@ -1,6 +1,6 @@
 from fuzzywuzzy import fuzz
 from controllers.DataCleaning.Patterns import *
-from controllers.analysis_controller.Pickle_Saver import *
+from controllers.Pickles.Pickle_Saver import *
 
 
 def find_topic_tweets(topics_dict,tweets):

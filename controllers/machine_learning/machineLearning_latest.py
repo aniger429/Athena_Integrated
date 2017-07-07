@@ -5,19 +5,16 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
-import matplotlib.pyplot as plt
+from sklearn.ensemble import BaggingClassifier
 from sklearn import model_selection
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import accuracy_score
 
-from sklearn.utils import shuffle
 from controllers.machine_learning.cleaning import *
-from controllers.analysis_controller import Pickle_Saver as ps
+from controllers.Pickles.Pickle_Saver import *
 from controllers.DataCleaning import emojip as ep
-
-# save path for classifiers
-script_path = os.path.dirname(os.path.dirname(__file__))
-path = os.path.join(script_path, "analysis_controller", "Pickles", "ML_Classifier")
-
-# path = 'C:/Users/HKJ/Documents/GitHub/Athena_Integrated/controllers/analysis_controller/Pickles/'
+from sklearn.externals import joblib
+import time
 
 removeSp = re.compile(r'@(\w+)')
 posi_list = ep.pos_file_to_list() # get positive list from positive.txt
@@ -28,7 +25,6 @@ nega_list = ep.neg_file_to_list() # get negative list from negative.txt
 
 
 def preprocess(tweet):
-
     tweet = ep.pos(tweet, posi_list)  # replace all positive emojis (written in positive.txt) to 'POSITIVEEMOTICON'
     tweet = ep.neg(tweet, nega_list)  # replace all negative emojis (written in positive.txt) to 'NEGATIVEEMOTICON'
     tweet = data_cleaning(tweet) # data cleaning and so on.
@@ -37,24 +33,11 @@ def preprocess(tweet):
     return tweet
 
 
-print(preprocess("I love banana white frowning face"))
-
-def printouts(data):
-    # print out sentiments of input data (such as Election-xx)
-    for i in range(0, len(data)):
-        print(data['Sentiment'][i])
-
-    # print processed data (includes emoji processed ones)
-    # if emojis are processed, they are converted either as 'positiveemoticon' or as 'negativeemoticon'
-    for i in range(0, len(data)):
-        print(data['Tweet'][i])
-
-
 def read_file(file_name):
     # data = pd.read_excel(file_name, parse_cols='B,G')
     data_reader = pd.read_csv(file_name, encoding="utf8", keep_default_na=False, sep=",",
-                              skipinitialspace=True, chunksize=100, usecols=['Tweet', 'Sentiment'],
-                              nrows=1000)
+                              skipinitialspace=True, chunksize=10000, usecols=['Tweet', 'Sentiment'],
+                              nrows=100000)
     dataset = pd.DataFrame(columns=['Tweet', 'Sentiment'])
 
     for chunk in data_reader:
@@ -65,115 +48,77 @@ def read_file(file_name):
     return dataset
 
 
-def train(dataX, dataY, index):
+def train(dataX, dataY, classifier):
 
-    if (index == 1): # Naive Bayes
-        text_clf = Pipeline([('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
+    tfidf_vect = TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))
+
+    if classifier == "NB":  # Naive Bayes
+        text_clf = Pipeline([('vect', tfidf_vect),
                              ('clf', MultinomialNB())])
-    elif (index == 2): # SVM
+    elif classifier == "SVM":  # SVM
         text_clf = Pipeline([
-                             ('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
-                             ('clf', SGDClassifier())
+                             ('vect', tfidf_vect),
+                             ('clf', SGDClassifier(n_jobs=6))
                            ])
-    elif (index == 3): # KNN
-        text_clf = Pipeline([('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
-                             ('clf', KNeighborsClassifier())])
-    elif (index == 4): # Decision Tree
-        text_clf = Pipeline([('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
-                             ('clf', DecisionTreeClassifier())])
-    elif (index == 5): # Maximum Entropy
-        text_clf = Pipeline([('vect', TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))),
-                             ('clf', LogisticRegression())])
+    elif classifier == "KNN":  # KNN
+        bagging = BaggingClassifier(KNeighborsClassifier(n_neighbors=15, weights='distance'), max_samples=0.5,
+                                    max_features=0.5)
+
+        text_clf = Pipeline([('vect', tfidf_vect),
+                             ('clf', bagging)])
+    elif classifier == "DT":  # Decision Tree
+        text_clf = Pipeline([('vect', tfidf_vect),
+                             ('clf', DecisionTreeClassifier(class_weight='balanced'))])
+    else:  # Maximum Entropy
+        text_clf = Pipeline([('vect', tfidf_vect),
+                             ('clf', LogisticRegression(solver='sag', warm_start=True))])
+
     text_clf = text_clf.fit(dataX, dataY)
     
     return text_clf
 
 
-def process(data):
+def save_tclf(tclf, index):
+    # save path for classifiers
+    s_path = os.path.dirname(os.path.dirname(__file__))
+    path = os.path.join(s_path, "Pickles", "ML_Classifier")
+    joblib.dump(tclf, os.path.join(path, index+'.pkl'))
+
+
+def process(data, index):
     # load dataset
     seed = 7
-    X = data['Tweet']
-    Y = data['Sentiment']
-    #test/validation size
+    feature = data['Tweet']
+    label = data['Sentiment']
+    # test/validation size
     size = 0.2
-    X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, test_size=size, random_state=seed)
-    print(X_train.shape)
-    print(Y_train.shape)
-    print(X_validation.shape)
-    print(Y_validation.shape)
+    x_train, x_test, y_train, y_test = model_selection.train_test_split(feature, label,
+                                                                        test_size=size, random_state=seed)
 
-    # prepare models
-    models = []
-    models.append(('NB', train(data['Tweet'], data['Sentiment'], 1)))
-    models.append(('SVM', train(data['Tweet'], data['Sentiment'], 2)))
-    models.append(('KNN', train(data['Tweet'], data['Sentiment'], 3)))
-    models.append(('DT', train(data['Tweet'], data['Sentiment'], 4)))
-    models.append(('ME', train(data['Tweet'], data['Sentiment'], 5)))
+    print(x_train.shape)
+    print(y_train.shape)
+    print(x_test.shape)
+    print(y_test.shape)
 
-    # evaluate each model in turn
-    results = []
-    names = []
-    scoring = 'accuracy'
+    # train classifiers
+    tclf = train(x_train, y_train, 1)
 
-    # evaluate each model in turn
-    results = []
-    names = []
-    scoring = 'accuracy'
-    for name, model in models:
-        kfold = model_selection.KFold(n_splits=10, random_state=seed)
-        print(kfold)
-        cv_results = model_selection.cross_val_score(model, X_train, Y_train, cv=kfold)
-        results.append(cv_results)
-        names.append(name)
-        msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-        print(msg)
+    tclf_pred = tclf.predict(x_test)  # produce predictions
 
-    # boxplot algorithm comparison
-    fig = plt.figure()
-    fig.suptitle('Algorithm Comparison')
-    ax = fig.add_subplot(111)
-    plt.boxplot(results)
-    ax.set_xticklabels(names)
-    plt.show()
+    accuracy = accuracy_score(y_test, tclf_pred, normalize=False)
+    print("accuracy")
+    print(accuracy)
+    report = classification_report(y_test, tclf_pred)  # predictions versus actual ones. this will be printed out as a report.
 
-    #train classifiers
-    NB = train(X_train, Y_train, 1)
-    SVM = train(X_train, Y_train, 2)
-    KNN = train(X_train, Y_train, 3)
-    DT = train(X_train, Y_train, 4)
-    ME = train(X_train, Y_train, 5)
-
-    NBp = NB.predict(X_validation) # produce predictions
-    SVMp = SVM.predict(X_validation)
-    KNNp = KNN.predict(X_validation)
-    DTp = DT.predict(X_validation)
-    MEp = ME.predict(X_validation)
-
-    report = classification_report(Y_validation, NBp) # predictions versus actual ones. this will be printed out as a report.
-    report2 = classification_report(Y_validation, SVMp)
-    report3 = classification_report(Y_validation, KNNp)
-    report4 = classification_report(Y_validation, DTp)
-    report5 = classification_report(Y_validation, MEp)
-    
     print(report)
-    print(report2)
-    print(report3)
-    print(report4)
-    print(report5)
-    
-    # test
-    decideSentiment('I love bananas', NB)
-    decideSentiment('I love bananas', SVM)
-    decideSentiment('I love bananas', KNN)
-    decideSentiment('I love bananas', DT)
-    decideSentiment('I love bananas', ME)
+    print("confusion matrix")
+    # Compute confusion matrix
+    cnf_matrix = confusion_matrix(y_test, tclf_pred)
+
+    print(cnf_matrix)
 
     # save trained classifiers
-    ps.write_pickle(path + '/NB', NB)
-    ps.write_pickle(path + '/SVM', SVM)
-    ps.write_pickle(path + '/KNN', KNN)
-    ps.write_pickle(path + '/DT', DT)
-    ps.write_pickle(path + '/ME', ME)
+    save_tclf(tclf, index)
 
 
 def decideSentiment(tweet, text_clf):  # use this function for sentiment
@@ -186,7 +131,8 @@ def decideSentiment(tweet, text_clf):  # use this function for sentiment
     return predict
 
 
-def main():
+def main(classifier):
+    print(classifier)
     data = pd.DataFrame()
 
     data = read_file('/home/dudegrim/Documents/Training/positive_tweets.csv')
@@ -194,20 +140,13 @@ def main():
     data = data.append(read_file('/home/dudegrim/Documents/Training/neutral_tweets.csv'), ignore_index=True)
     data = data.sample(frac=1).reset_index(drop=True)
 
-    # printouts(data)
-    process(data)
+    process(data, classifier)
 
-    
-# main()
-#
-#
-# NBc = ps.read_pickle(path + '/NB', 'NB')
-# SVMc = ps.read_pickle(path + '/SVM', 'SVM')
-# KNNc = ps.read_pickle(path + '/KNN', 'KNN')
-# DTc = ps.read_pickle(path + '/DT', 'DT')
-# MEc = ps.read_pickle(path + '/ME', 'ME')
-#
-#
-# # example.
-# decideSentiment('I love bananas', SVMc)
-#
+
+start = time.time()
+main("KNN")
+end = time.time()
+print(end - start)
+
+
+

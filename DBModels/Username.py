@@ -4,8 +4,7 @@ from pymongo import MongoClient
 import pymongo
 from bson.objectid import ObjectId
 
-client = MongoClient('mongodb://localhost:27017/Athena')
-db = client.Athena
+db = MongoClient('mongodb://localhost:27017/Athena').Athena
 
 
 class Username(MongoModel):
@@ -74,7 +73,7 @@ def count_total_usernames():
 
 
 def get_all_usernames():
-    return db.Username.find({}).sort([("numTweets",pymongo.ASCENDING), ("numMentions",pymongo.ASCENDING)])
+    return db.Username.find({}).sort([("numTweets", pymongo.ASCENDING), ("numMentions", pymongo.ASCENDING)])
 
 
 def get_user_data(user_id):

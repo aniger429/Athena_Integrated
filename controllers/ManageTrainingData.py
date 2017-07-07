@@ -11,7 +11,7 @@ def writeToFile(data, filename):
 
 def read_csv(filename):
     return pd.read_csv(filename, encoding="utf8", keep_default_na=False, index_col=None, sep=",",
-                       skipinitialspace = True, chunksize=10000, usecols=columns)
+                       skipinitialspace=True, chunksize=10000, usecols=columns)
 
 
 def write_csv(filename, tweets):
@@ -60,7 +60,7 @@ def test(filename):
     print("done")
 
 # 0-3 done
-for r in range(0,5,1):
+for r in range(0,10,1):
     print(r)
     directory = "/home/dudegrim/Documents/CSV8/Election-"+str(r)+".csv"
     test(directory)

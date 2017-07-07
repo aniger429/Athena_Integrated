@@ -1,6 +1,6 @@
 from afinn import Afinn
 import nltk
-from controllers.analysis_controller.Pickle_Saver import *
+from controllers.Pickles.Pickle_Saver import *
 from collections import Counter
 
 script_path = os.path.dirname(os.path.dirname(__file__))
