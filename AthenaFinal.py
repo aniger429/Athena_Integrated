@@ -26,7 +26,7 @@ create_new_workspace(mainDB)
 app.config['UPLOAD_FOLDER'] = 'Data/'
 app.config['MEDIA_FOLDER'] = 'media_folder/'
 # These are the extension that we are accepting to be uploaded
-app.config['ALLOWED_EXTENSIONS'] = set(['csv'])
+app.config['ALLOWED_EXTENSIONS'] = set(['csv', 'xls', 'xlsx'])
 app.secret_key = "super secret key"
 
 
@@ -221,11 +221,14 @@ def upload():
 def kbupload():
     file = request.files['file']
     file_name = file.filename
+    print (file_name)
     if check_if_kbfile_exists(file_name) is False:
+        print("false")
         script_path = os.path.dirname(__file__)
         directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'], "KBFiles")
         return uploadFile.kbupload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
     else:
+        print("help!")
         return render_template("knowledgebase.html", kbFileList=get_all_kbfile(),
                                filename=file_name, duplicate=True)
 

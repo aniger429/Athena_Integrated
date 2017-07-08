@@ -96,19 +96,11 @@ def get_user_mentioned_tweets(user_id):
 
 def get_all_unigrams():
     final = []
-    [final.extend(uni['unigram']) for uni in list(db.Tweet.find({},{"unigram":1,"_id":0}))]
+    [final.extend(uni['unigrams']) for uni in list(db.Tweet.find({}, {"unigrams": 1,"_id": 0}))]
     return final
 
 
 def populate_new_workspace(tweets_dict):
-    # db.Tweet.insert_many(
-    #     [{'idPrimary': t['_id'], "idTweet": t['idTweet'], "idUsername": t['idUsername'],"tweet": t['tweet'],
-    #       "date_created": t['date_created'],"hashtags": t['hashtags'],"location": t['location'],
-    #       "favorite": t['favorite'],"retweet": t['retweet'],"users_mentioned": t['users_mentioned'],
-    #       "unigram": t['unigram'],"bigram": t['bigram'],"trigram": t['trigram'],} for t in
-    #      tweets_dict])
-
-    # db.cloneCollection('localhost:27017', 'Athena.Tweet')
     db.cloneCollection('localhost:27017', 'Athena.Tweet',
                        {'active': 'true'})
 
@@ -121,7 +113,7 @@ def into_new_db(candidate_presence):
 
 
 def get_candidate_tweets(candidate_name):
-    data = list(db.Tweet.find({"cand_ana."+candidate_name: {'$ne': -1}},{'tweet':1, 'cand_ana':1}))
+    data = list(db.Tweet.find({"cand_ana."+candidate_name: {'$ne': -1}}, {'tweet': 1, 'cand_ana': 1}))
     return data
 
 

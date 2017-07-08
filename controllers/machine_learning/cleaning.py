@@ -1,28 +1,28 @@
 import re
-from controllers.DataCleaning import preprocessing
-from functools import reduce
-from DBModels.Username import *
 import os
-import time
-# import preprocessor as p
-from DBModels.Tweet import *
 from controllers.DataCleaning import Patterns as pat
-from controllers.Feature_Extraction import ngram_extractor
 import pandas as pd
+from multiprocessing import Pool
+import numpy as np
+from controllers.DataCleaning import emojip as ep
+
+num_partitions = 6  # number of partitions to split dataframe
+num_cores = 6  # number of cores on your machine
 
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "stop_words")
 
-stopwords = pd.read_csv(file_path+"/eng-function-word.txt", header=None)
-stopwords = stopwords.append(pd.read_csv(file_path+"/fil-function-words.txt", header=None))
-stopwords = stopwords[0].tolist()
-stopwords = [x.lower() for x in stopwords]
-stopwords = [re.sub('\'|"| ', '', x) for x in stopwords]
-
+# loads stop words list from file
+stopwords = pd.read_csv(file_path+"/final_stop_words_list.csv", header=None, squeeze=True).tolist()
+# loads contractions from file
 contractions = pd.read_csv(file_path+"/contractions.csv", header=None, delimiter=',')
 dictionary = dict(zip(contractions[0].tolist(), contractions[1].tolist()))
 
 c_re = re.compile('(%s)' % '|'.join(dictionary.keys()))
+
+removeSp = re.compile(r'@(\w+)')
+posi_list = ep.pos_file_to_list()  # get positive list from positive.txt
+nega_list = ep.neg_file_to_list()  # get negative list from negative.txt
 
 
 def read_xlsx(filename):
@@ -35,112 +35,68 @@ def expand_contractions(text, c_re=c_re):
     return c_re.sub(replace, text)
 
 
-def get_usernames(tweet_list):
-    pattern = re.compile("@[a-zA-Z0-9]+")
-    found_username_list = []
-
-    for l in tweet_list:
-        temp = []
-        for m in [pattern.findall(l)]:
-            temp.extend(m)
-        found_username_list.append(temp)
-
-    return found_username_list
-
-
-def data_cleaning (tweet, nameTuple):
-    # print ("Before:"+ tweet)
-    # data anonymization
-    tweet = reduce(lambda a, kv: a.replace(*kv), nameTuple, tweet)
-    # removes URL, hashtags, and Reserved words
-    # tweet = p.clean(tweet)
-    tweet = pat.remove_from_tweet(tweet)
-    # remove HTML characters
-    tweet = re.sub("(&\S+;)",'', tweet)
-    # converts the tweets to lowercase
-    tweet = tweet.lower()
-    # expand contradictions
-    tweet = expand_contractions(tweet)
-    # remove stopwords
-    tweet = ' '.join([word for word in tweet.split() if word not in stopwords])
-    # remove shortwords 1-2 characters
-    shortword = re.compile(r'\W*\b\w{1,2}\b')
-    tweet = shortword.sub('', tweet)
-    # remove punctuation marks
-    tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
-
-    # remove control characters
-    tweet = lambda s: "".join(i for i in s if 31 < ord(i) < 127)
-
-    # standardize words # collapse to 1 letter ex: cooool to col
-    # tweet = ''.join(ch for ch, _ in itertools.groupby(tweet))
-
-    # standardize words # collapse to 2 letter ex: cooool to cool
-    # tweet = re.sub(r'(.)\1+', r'\1\1', tweet)
-
-    # print("After:"+ tweet)
+def emoji_processing(tweet):
+    tweet = ep.pos(tweet, posi_list)  # replace all positive emojis (written in positive.txt) to 'POSITIVEEMOTICON'
+    tweet = ep.neg(tweet, nega_list)  # replace all negative emojis (written in positive.txt) to 'NEGATIVEEMOTICON'
+    tweet = data_cleaning(tweet)  # data cleaning and so on.
+    tweet = removeSp.sub('', tweet)
 
     return tweet
+
 
 # Data Cleaning used by Sentiment Analysis (Machine Learning)
-def data_cleaning (tweet):
+def data_cleaning(tweet):
     # removes Username, URL, Reserved Words
     tweet = pat.remove_from_tweet_sentiment(tweet)
-    # remove HTML characters
-    tweet = re.sub("(&\S+;)",'', tweet)
     # converts the tweets to lowercase
     tweet = tweet.lower()
     # expand contradictions
     tweet = expand_contractions(tweet)
-    # remove stopwords
-    tweet = ' '.join([word for word in tweet.split() if word not in stopwords])
-    # remove shortwords 1-2 characters
-    shortword = re.compile(r'\W*\b\w{1,2}\b')
 
-    # TODO: handle emoticon processing here
+    split_tweet = tweet.split(' ')
+    split_tweet = filter(None, split_tweet)
 
-    tweet = shortword.sub('', tweet)
+    # standardize words collapse to 2 letter ex: cooool to cool
+    tweet = ' '.join([(re.sub(r'(.)\1+', r'\1\1', word)) if word[0] != '@' else word for word in split_tweet])
+
+    # processes emoticons
+    # positive
+    tweet = re.sub("[:;8=x][-oc]*[>D)}P\]3]+", "POSEMOTE", tweet)
+    tweet = re.sub("[<({\[]+[-o]*[:;8=x]", "POSEMOTE", tweet)
+
+    tweet = re.sub("[:;8=x][-oc]*[<({\[]+", "NEGEMOTE", tweet)
+    tweet = re.sub("[>D)}\]]+[-o]*[:;8=x]", "NEGEMOTE", tweet)
+
     # remove punctuation marks
-    # tweet = re.sub("(!|#|\$|%|\^|&|\*|\(|\)|\?|\.|,|\"|'|\+|=|\||\/|-|_|:|;|\"|—|–|’|`|”|…|‘|“|”)", '', tweet)
-    tweet = re.sub('\W+',' ', tweet)
-    # print("After:"+ tweet)
+    tweet = re.sub('[^A-Za-z0-9@ ]+', ' ', tweet)
 
+    split_tweet = tweet.split(' ')
+
+    # remove stopwords
+    split_tweet = [word for word in split_tweet if word not in stopwords]
+
+    # remove shortwords 1-2 characters
+    split_tweet = [word for word in split_tweet if len(word) > 1]
+
+    # remove extra spaces between words
+    tweet = ' '.join(split_tweet)
     return tweet
 
 
-def anonymize_poster_username(username_list):
-    username_dict = get_all_username_dict()
-    return [username_dict['@'+u] for u in username_list]
+def clean(chunk):
+    chunk['Tweet'] = chunk['Tweet'].apply(lambda x: data_cleaning(x))
+    return chunk
 
 
-def write_csv(filename, cleanedTweets):
-    # out = csv.writer(open("/home/dudegrim/Documents/"+filename, "w"), delimiter='\r')
-    # out.writerow(cleanedTweets)
-    script_path = os.path.dirname(__file__)
-    directoryPath = os.path.join(script_path, filename)
-    cleanedTweets.to_excel(excel_writer="/home/dudegrim/Documents/"+filename, index=False, header=None, encoding="utf-8")
+def parallelize_dataframe(df, func):
+    df_split = np.array_split(df, num_partitions)
+    pool = Pool(num_cores)
+    df = pd.concat(pool.map(func, df_split))
+    pool.close()
+    pool.join()
+    return df
 
 
-def process_hashtags(hashtag_list):
-    pattern = re.compile("^\s+|\s*,\s*|\s+$")
-    return [pattern.split(hashtags) if hashtags is not '' else [] for hashtags in hashtag_list]
-
-
-def cleaning_file(fname):
-    data_source = read_xlsx(fname)
-    # add usernames to DB
-    preprocessing.process_usernames(data_source)
-    nameTuple = get_all_username_tup()
-
-    raw_tweets = data_source['Tweet']
-    cleaned_tweets = []
-    [cleaned_tweets.append(data_cleaning(t, nameTuple)) for t in raw_tweets]
-
-    unigrams, bigrams, trigrams = ngram_extractor.get_ngrams(cleaned_tweets)
-
-    d = {'idTweet': data_source['Id'], 'idUsername': anonymize_poster_username(data_source['Username']),'tweet': cleaned_tweets, 'date_created': data_source['Date Created'], 'location':data_source['Location'], 'hashtags': process_hashtags(data_source['Hashtags']), 'favorite':data_source['Favorites'], 'retweet':data_source['Retweets'], 'users_mentioned':get_usernames(cleaned_tweets), 'unigram':unigrams, 'bigram':bigrams, 'trigram':trigrams}
-
-    df = pd.DataFrame(data=d, index=None)
-    # df.to_excel("CleanedTweets.xlsx", index=False)
-    print("done cleaning")
-    insert_new_tweet(df.to_dict(orient='records'))
+def clean_tweets_multiprocess(chunk):
+    results = parallelize_dataframe(chunk, clean)
+    return results

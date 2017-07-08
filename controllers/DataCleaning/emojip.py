@@ -1,18 +1,20 @@
 import unicodedata as uni
 import pandas as pd
+from os import path
 # as of unicodedata version 8.0.0
+
+script_path = path.dirname(path.dirname(__file__))
+txt_path = path.join(script_path, 'DataCleaning')
 
 
 def pos_file_to_list():
-    posiFile = pd.read_csv("../DataCleaning/positive.txt", header=None)
-    #posiFile = pd.read_csv('C:/Users/HKJ/Documents/GitHub/Athena_Integrated/controllers/DataCleaning/positive.txt', header=None)
+    posiFile = pd.read_csv(txt_path+"/positive.txt", header=None)
     posi_list = posiFile[0].tolist()
     return posi_list
 
 
 def neg_file_to_list():
-    nega_file = pd.read_csv("../DataCleaning/negative.txt", header=None)
-    #nega_file = pd.read_csv('C:/Users/HKJ/Documents/GitHub/Athena_Integrated/controllers/DataCleaning/negative.txt', header=None)
+    nega_file = pd.read_csv(txt_path+"/negative.txt", header=None)
     nega_list = nega_file[0].tolist()
     return nega_list
 

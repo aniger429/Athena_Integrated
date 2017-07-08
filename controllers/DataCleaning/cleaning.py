@@ -160,9 +160,3 @@ def cleaning_file(file_name):
         insert_new_tweet(results.to_dict(orient='records'))
 
     print("Done Cleaning File")
-
-import time
-start = time.time()
-cleaning_file("/home/dudegrim/Documents/CSV8/Election-17.csv")
-end = time.time()
-print(end-start)

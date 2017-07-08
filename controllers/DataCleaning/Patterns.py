@@ -19,24 +19,21 @@ NUMBERS_PATTERN = re.compile(r"(^|\s)(\-?\d+(?:\.\d)*|\d+)")
 
 
 def remove_from_tweet(tweet):
-    # tweet = emoji.demojize(tweet)
     tweet = URL_PATTERN.sub('', tweet)
-    tweet = HASHTAG_PATTERN.sub('', tweet)
     tweet = RESERVED_WORDS_PATTERN.sub('', tweet)
-    # tweet = EMOJIS_PATTERN.sub('', tweet)
-    # tweet = SMILEYS_PATTERN.sub('', tweet)
     tweet = NUMBERS_PATTERN.sub('', tweet)
-    tweet = HTML_PATTERN.sub('',tweet)
+    tweet = HTML_PATTERN.sub('', tweet)
 
     return tweet
 
 
 # This is the function used by the machine learning algorithm
 def remove_from_tweet_sentiment(tweet):
+    tweet = MENTION_PATTERN.sub('', tweet)
     tweet = URL_PATTERN.sub('', tweet)
     tweet = RESERVED_WORDS_PATTERN.sub('', tweet)
-    tweet = MENTION_PATTERN.sub('', tweet)
-
+    tweet = HTML_PATTERN.sub('', tweet)
+    tweet = NUMBERS_PATTERN.sub('', tweet)
     return tweet
 
 

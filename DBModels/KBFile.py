@@ -19,7 +19,7 @@ class KB_File(MongoModel):
 
 
 def check_if_kbfile_exists(filename):
-    fileCount = db.KB_File.find({"filename":filename}).count()
+    fileCount = db.KB_File.find({"filename": filename}).count()
     if fileCount == 0:
         return False
     else:

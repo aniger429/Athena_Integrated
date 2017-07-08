@@ -44,12 +44,8 @@ def test(filename):
     neutral_tweets = data.loc[data['Sentiment'] == "Neutral"]
     negative_tweets = data.loc[data['Sentiment'] == "Negative"]
 
-    print("saving")
-
     write_csv("/home/dudegrim/Documents/Training/positive_tweets.csv", positive_tweets)
     write_csv("/home/dudegrim/Documents/Training/neutral_tweets.csv", neutral_tweets)
-
-    print("almost")
     write_csv("/home/dudegrim/Documents/Training/negative_tweets.csv", negative_tweets)
 
     data_count = pd.DataFrame({'Positive': len(positive_tweets), 'Neutral': len(neutral_tweets),
@@ -60,7 +56,7 @@ def test(filename):
     print("done")
 
 # 0-3 done
-for r in range(0,10,1):
+for r in range(0, 15, 1):
     print(r)
     directory = "/home/dudegrim/Documents/CSV8/Election-"+str(r)+".csv"
     test(directory)
