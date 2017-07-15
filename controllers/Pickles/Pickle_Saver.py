@@ -24,19 +24,19 @@ def read_pickle(file_path, filename):
 
 
 def save_obj(obj, name):
-    file_path = os.path.join(script_path, "analysis_controller", "Pickles", name)
-    write_pickle(file_path,obj)
+    file_path = os.path.join(script_path, "Pickles", name)
+    write_pickle(file_path, obj)
 
-    # #     save tweets
-    # if name == "Candidate":
-    #     tweets = [{'tweet': d['tweet'], '_id': d['_id']} for d in obj]
-    #     file_tweet_path = os.path.join(script_path, "analysis_controller", "Pickles", "Tweets")
-    #     write_pickle(file_tweet_path, tweets)
+    #     save tweets
+    if name == "Candidate":
+        tweets = [{'tweet': d['tweet'], '_id': d['_id']} for d in obj]
+        file_tweet_path = os.path.join(script_path, "Pickles", "Tweets")
+        write_pickle(file_tweet_path, tweets)
 
-    # writeToFile(obj, file_path)
+    write_pickle(file_path, obj)
 
 
 def load_obj(name):
-    file_path = os.path.join(script_path, "analysis_controller", "Pickles", name)
+    file_path = os.path.join(script_path, "Pickles", name)
     with open(file_path + '.pkl', 'rb') as f:
         return pickle.load(f)

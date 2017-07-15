@@ -2,8 +2,8 @@ from controllers.Sentiment_Analysis.Sentiment_Identification import *
 from controllers.machine_learning.cleaning import *
 import pandas as pd
 import time
-import joblib
-# compute_tweets_sentiment()
+
+
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 import matplotlib.pyplot as plt
 import itertools
@@ -112,20 +112,29 @@ def show_results(clf_pred, label_test, index):
 
 
 def testing(index):
+    print(index)
     df1 = pd.read_csv('/home/dudegrim/Documents/Testing/SA/test_tweets.csv', usecols=['Tweet', 'Sentiment'])
-    clf = classifiers(index)
+    # clf = classifiers(index)
 
-    data_test = list(df1['Tweet'])
-    label_test = list(df1['Sentiment'])
-
-    # calculate accuracy
-    clf_pred = clf.predict(data_test)  # produce predictions
-
-    # show results
-    show_results(clf_pred, label_test, index)
-
+    # data_test = list(df1['Tweet'])
+    # label_test = list(df1['Sentiment'])
+    #
+    # # calculate accuracy
+    # # clf_pred = clf.predict(data_test)  # produce predictions
+    #
+    # # df1['Tweet'] = df1['Tweet'].apply(lambda x: x.split(' '))
+    #
+    # results = sa_parallelize_dataframe(df1, sa_testing)
+    #
+    # print(results)
+    #
+    # # show results
+    # show_results(list(results['Results']), label_test, index)
+    print(len(df1[df1['Sentiment'] == "Positive"]))
+    print(len(df1[df1['Sentiment'] == "Neutral"]))
+    print(len(df1[df1['Sentiment'] == "Negative"]))
 
 start = time.time()
-testing('NB')
+testing('LB')
 end = time.time()
 print(end - start)

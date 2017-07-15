@@ -19,14 +19,14 @@ def identify_candidate(tweet_list, cname="none"):
         tweet_cp = {}
         # for each candidate
         for candidate in candidate_names:
-            tweet_cp[candidate['candidate_name']] = next((tweet['orig_tweets'].index(word)
-                                                          for word in tweet['orig_tweets'] if any(name in word.lower()
+            tweet_cp[candidate['candidate_name']] = next((tweet['tweet'].index(word)
+                                                          for word in tweet['tweet'] if any(name in word.lower()
                                                                                                   for name in candidate['kb_names'])), -1)
         if cname == "none":
-            candidate_presence.append({'cand_ana': tweet_cp, 'tweets': tweet['orig_tweets'], '_id': tweet['_id']})
+            candidate_presence.append({'cand_ana': tweet_cp, 'tweet': tweet['tweet'], '_id': tweet['_id']})
         else:
             if tweet_cp[cname] != -1:
-                candidate_presence.append({'cand_ana': tweet_cp, 'tweets': tweet['orig_tweets'], '_id': tweet['_id']})
+                candidate_presence.append({'cand_ana': tweet_cp, 'tweet': tweet['tweet'], '_id': tweet['_id']})
 
 
     save_obj(candidate_presence, "Candidate")

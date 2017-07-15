@@ -2,6 +2,12 @@ from afinn import Afinn
 import nltk
 from controllers.Pickles.Pickle_Saver import *
 from collections import Counter
+from multiprocessing import Pool
+import numpy as np
+
+num_partitions = 6  # number of partitions to split dataframe
+num_cores = 6  # number of cores on your machine
+
 
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "Lexicon_Files")
@@ -19,7 +25,8 @@ fil_dict = fil_words.to_dict(orient='index')
 
 
 def compute_filscore(tweet):
-    return sum([fil_dict.get(word, {}).get('positivity',0) - fil_dict.get(word, {}).get('negativity',0) for word in tweet])
+    return sum([fil_dict.get(word, {}).get('positivity', 0) - fil_dict.get(word, {}).get('negativity', 0)
+                for word in tweet])
 
 
 def evaluate_score(score):
@@ -140,5 +147,20 @@ def compute_senti_candidate_tweet(tweet_list):
 
 def test_senti_ana(tweet):
     return compute_sentiment(tweet.split(' '))
+
+
+def sa_testing(df1):
+    print(1)
+    df1['Results'] = df1['Tweet'].apply(lambda x: compute_sentiment(x.split(' ')).title())
+    return df1
+
+
+def sa_parallelize_dataframe(df, func):
+    df_split = np.array_split(df, num_partitions)
+    pool = Pool(num_cores)
+    df = pd.concat(pool.map(func, df_split))
+    pool.close()
+    pool.join()
+    return df
 
 

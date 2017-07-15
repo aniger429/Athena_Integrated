@@ -7,6 +7,9 @@ from controllers.Sentiment_Analysis.Sentiment_Identification import *
 def candidate_analysis(tweets, candidate_name):
     identify_candidate(tweets, candidate_name)
     data = load_obj("Candidate")
+    print("shit")
+    print(data)
+    print("more")
     candidate_name_count = Counter([tweet['tweet'][tweet['cand_ana'][candidate_name]] for tweet in data])
     return candidate_name_count, data
 

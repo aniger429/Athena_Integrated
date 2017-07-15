@@ -9,7 +9,6 @@ from sklearn import model_selection
 from sklearn.metrics import classification_report, confusion_matrix,accuracy_score
 from controllers.machine_learning.cleaning import *
 from controllers.Pickles.Pickle_Saver import *
-from sklearn.externals import joblib
 import time
 
 import matplotlib.pyplot as plt
@@ -182,7 +181,10 @@ def main(classifier):
     # print(3)
     # df1 = df1.append(read_file('/home/dudegrim/Documents/Training/neutral_tweets.csv'), ignore_index=True)
     # print(4)
-    # df1 = df1.sample(frac=1).reset_index(drop=True)
+
+    # shuffles the data
+    df1 = df1.sample(frac=1).reset_index(drop=True)
+
     # print(5)
     # df1.to_csv('/home/dudegrim/Documents/Training/final_tweets.csv')
 
@@ -192,10 +194,10 @@ def main(classifier):
     process(df1, classifier)
 
 
-start = time.time()
-main("NB")
-end = time.time()
-print(end - start)
+# start = time.time()
+# main("ME")
+# end = time.time()
+# print(end - start)
 
 
 

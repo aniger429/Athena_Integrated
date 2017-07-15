@@ -34,9 +34,8 @@ app.secret_key = "super secret key"
 def home():
     session.clear()
     return render_template("dashboard.html", counter_data=[count_total_usernames(),count_total_tweet(),
-                                                           count_total_candidate(),count_total_data(),
-                                                           count_total_workspace()],
-                           counter_names=["username","tweet","candidate","file","workspace"])
+                                                           count_total_candidate(),count_total_data()],
+                           counter_names=["username", "tweet", "candidate", "file"])
 
 
 @app.route('/view_workspaces')
