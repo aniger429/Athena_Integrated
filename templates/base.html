@@ -90,7 +90,7 @@
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
-                    <a class="sidebar-menu-button" data-toggle="sidebar-collapse" href="#">
+                    <a class="{%block upload_active%}{%endblock%}sidebar-menu-button" data-toggle="sidebar-collapse" href="#">
                         <i class="ti-folder"></i>
                         <p>Upload Data</p>
                     </a>
@@ -123,12 +123,12 @@
                         <p>View All Usernames</p>
                     </a>
                 </li>
-                <li class="{%block vaw_active%}{%endblock%}">
-                    <a href="{{url_for('view_all_workspaces')}}">
-                        <i class="ti-briefcase"></i>
-                        <p>View Workspaces</p>
-                    </a>
-                </li>
+{#                <li class="{%block vaw_active%}{%endblock%}">#}
+{#                    <a href="{{url_for('view_all_workspaces')}}">#}
+{#                        <i class="ti-briefcase"></i>#}
+{#                        <p>View Workspaces</p>#}
+{#                    </a>#}
+{#                </li>#}
                 <li class="{%block analysis_active%}{%endblock%}">
                     <a href="{{url_for('analysis')}}">
                         <i class="ti-pie-chart"></i>

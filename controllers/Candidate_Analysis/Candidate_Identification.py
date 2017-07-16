@@ -6,33 +6,41 @@ import pandas as pd
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
 
-def identify_candidate(tweet_list, cname="none"):
+def get_mention_index(tweet, candidate_names):
+    # returns the position of the names used for the candidate in the tweet,
+    # if candidate was not mentioned -1 is returned
+
+    index = next((tweet.index(word) for word in tweet if any(name in word
+                                                             for name in candidate_names)), -1)
+    return index
+
+
+def identify_candidate(tweet_df, cname="none"):
     print("cname")
     print(cname)
     # gets all the known candidate names in the database
-    candidate_names = get_all_kb_names()
-    # stores a dictionary, key: tweet_id, value: dictionary of tweet_cp
-    candidate_presence = []
+    candidate_data = get_all_kb_names()
+    candidate_names = []
 
-    for tweet in tweet_list:
-        # key: candidate name, value: position of candidate name in a tweet, -1 for none
-        tweet_cp = {}
-        # for each candidate
-        for candidate in candidate_names:
-            tweet_cp[candidate['candidate_name']] = next((tweet['tweet'].index(word)
-                                                          for word in tweet['tweet'] if any(name in word.lower()
-                                                                                                  for name in candidate['kb_names'])), -1)
-        if cname == "none":
-            candidate_presence.append({'cand_ana': tweet_cp, 'tweet': tweet['tweet'], '_id': tweet['_id']})
-        else:
-            if tweet_cp[cname] != -1:
-                candidate_presence.append({'cand_ana': tweet_cp, 'tweet': tweet['tweet'], '_id': tweet['_id']})
+    # convert all tweets to list of words
+    tweet_df['orig_tweets'] = tweet_df.apply(lambda row: row['orig_tweets'].lower().split(' '), axis=1)
 
+    # creates a new column per candidate and stores the index of word mentioned for the candidate
+    for candidate in candidate_data:
+        if candidate['candidate_name'] == cname:
+            candidate_names = candidate['kb_names']
 
-    save_obj(candidate_presence, "Candidate")
+        tweet_df[candidate['candidate_name']] = tweet_df.apply(lambda row: get_mention_index(row['orig_tweets'],
+                                                                           candidate['kb_names']), axis=1)
+    # drop all the rows that did not mention cname
+    if cname != "none":
+        tweet_df = tweet_df[(tweet_df[cname] != -1)]
+
+    # save tweet dataframe to pickles
+    save_dataframe(tweet_df, "Candidate")
+
     # into_new_db(candidate_presence)
-
-    return candidate_presence
+    return
 
 
 def filter_tweet_on_candidate(cname, tweet_list):

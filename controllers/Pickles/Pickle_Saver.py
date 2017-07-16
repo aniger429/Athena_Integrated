@@ -16,23 +16,19 @@ def writeToFile(data, filename):
     df.to_csv(filename+".csv", index=False)
 
 
-def read_pickle(file_path, filename):
-    with open(file_path + '.pkl', 'rb') as f:
-        cl = pickle.load(f)
-        f.close()
-    return cl
+def save_dataframe(df, name):
+    file_path = os.path.join(script_path, "Pickles", name)
+    df.to_pickle(file_path)
+    return
+
+
+def load_pickled_dataframe(name):
+    file_path = os.path.join(script_path, "Pickles", name)
+    return pd.read_pickle(file_path)
 
 
 def save_obj(obj, name):
     file_path = os.path.join(script_path, "Pickles", name)
-    write_pickle(file_path, obj)
-
-    #     save tweets
-    if name == "Candidate":
-        tweets = [{'tweet': d['tweet'], '_id': d['_id']} for d in obj]
-        file_tweet_path = os.path.join(script_path, "Pickles", "Tweets")
-        write_pickle(file_tweet_path, tweets)
-
     write_pickle(file_path, obj)
 
 

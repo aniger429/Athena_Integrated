@@ -45,7 +45,8 @@ def view_all_workspaces():
 
 @app.route('/view_usernames')
 def view_all_usernames():
-    return render_template("View Data/view_usernames.html", usernameList=get_all_usernames())
+    return render_template("View Data/view_usernames.html", usernameList=get_all_usernames(100),
+                           total_usernames=count_total_usernames())
 
 
 @app.route('/user')
@@ -58,7 +59,8 @@ def view_specific_user():
 
 @app.route('/view_tweets')
 def view_all_tweets():
-    return render_template("View Data/view_tweets.html", tweetFileList=get_all_tweets())
+    return render_template("View Data/view_tweets.html", tweetFileList=get_all_orig_tweets(1000),
+                           total_tweet=count_total_tweet())
 
 
 @app.route('/tweet')
@@ -220,14 +222,11 @@ def upload():
 def kbupload():
     file = request.files['file']
     file_name = file.filename
-    print (file_name)
     if check_if_kbfile_exists(file_name) is False:
-        print("false")
         script_path = os.path.dirname(__file__)
         directoryPath = os.path.join(script_path, app.config['UPLOAD_FOLDER'], "KBFiles")
         return uploadFile.kbupload(directoryPath, app.config['ALLOWED_EXTENSIONS'])
     else:
-        print("help!")
         return render_template("knowledgebase.html", kbFileList=get_all_kbfile(),
                                filename=file_name, duplicate=True)
 
@@ -273,8 +272,6 @@ def analysis_config():
 
 @app.route('/new_analysis', methods=['POST'])
 def new_ana():
-    print("here!")
-    # return new_analysis.new_analysis()
     return new_analysis()
 
 

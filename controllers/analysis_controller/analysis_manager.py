@@ -5,12 +5,15 @@ from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
 
 def candidate_analysis(tweets, candidate_name):
+    #  do candidate analysis on the tweets
     identify_candidate(tweets, candidate_name)
-    data = load_obj("Candidate")
-    print("shit")
-    print(data)
-    print("more")
-    candidate_name_count = Counter([tweet['tweet'][tweet['cand_ana'][candidate_name]] for tweet in data])
+    # load cand
+    data = load_pickled_dataframe("Candidate")
+
+    data['name'] = data.apply(lambda row: (row['orig_tweets'][row[candidate_name]]), axis=1)
+
+    candidate_name_count = Counter(list(data['name']))
+
     return candidate_name_count, data
 
 
@@ -22,9 +25,7 @@ def new_analysis():
     if flevel == "candidate":
         print("flevel: candidate")
         candidate_name = request.form['candidate-name']
-        # tweets = get_all_tweets()
         tweets = get_all_orig_tweets()
-
         candidate_name_count, data = candidate_analysis(tweets, candidate_name)
 
         if slevel == "topic":

@@ -52,10 +52,15 @@ def get_usernames(tweet_list):
     return found_username_list
 
 
+def anonymized_tweet(tweet, nameTuple):
+    # data anonymization
+    return reduce(lambda a, kv: a.replace(*kv), nameTuple, tweet)
+
+
 def init_data_cleaning(tweet, nameTuple):
     # print ("Before:" + tweet)
     # data anonymization
-    tweet = reduce(lambda a, kv: a.replace(*kv), nameTuple, tweet)
+    tweet = anonymized_tweet(tweet, nameTuple)
     # removes URL, hashtags, HTML, and Reserved words
     tweet = pat.remove_from_tweet(tweet)
     # converts the tweets to lowercase
@@ -118,9 +123,7 @@ def parallelize_dataframe(df, func, nameTuple, usernames):
 
 
 def process_chunk(nameTuple, usernames, chunk):
-    print(5)
     # chunk['tweet'] will hold the processed/cleaned tweet
-    # chunk['Tweet'] is original tweet
     chunk['tweet'] = chunk.apply(lambda row: init_data_cleaning(row['Tweet'], nameTuple), axis=1)
     # 1-3 grams for each tweet
     chunk['unigrams'], chunk['bigrams'], chunk['trigrams'] = ngram_extractor.get_ngrams(chunk['tweet'])
@@ -133,6 +136,8 @@ def process_chunk(nameTuple, usernames, chunk):
     chunk['hashtags'] = process_hashtags(chunk['Hashtags'])
     # users mentioned
     chunk['users_mentioned'] = get_usernames(chunk['tweet'])
+    # anonymized original tweet
+    chunk['Tweet'] = chunk.apply(lambda row: anonymized_tweet(row['Tweet'], nameTuple), axis=1)
     # rename some column names
     chunk.rename(index=str, columns={"Location": "location", "Retweets": "retweet", "Favorites": "favorite",
                                      "Date Created": "date_created", "Id": 'idTweet',
@@ -145,15 +150,13 @@ def cleaning_file(file_name):
     reader = read_csv(file_name)
 
     for ctr, chunk in enumerate(reader):
-        print(1)
         # add usernames to DB
         preprocessing.process_usernames(chunk)
         nameTuple = get_all_username_tup()
         usernames = get_all_username_dict()
 
-        print(2)
         results = parallelize_dataframe(chunk, process_chunk, nameTuple, usernames)
-        print(3)
+
         # this removes empty tweets after cleaning
         results.drop(results[results.tweet == ""].index, inplace=True)
 

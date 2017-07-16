@@ -12,14 +12,15 @@ class Username(MongoModel):
     username = fields.CharField(max_length=20)
     numTweets = fields.IntegerField(default=False)
     numMentions = fields.IntegerField()
+    username_lower = fields.CharField(max_length=20)
 
     class Meta:
         write_concern = WriteConcern(j=True)
-        # connection_alias = 'athenaDB'
 
 
 def insert_new_username(username_dict):
-    db.Username.insert_many([{'username': key, "numTweets": value['numTweets'], "numMentions": value['numMentions']} for key, value in username_dict.items()])
+    db.Username.insert_many([{'username': key, "numTweets": value['numTweets'], "numMentions": value['numMentions'],
+                              "username_lower": key.lower()} for key, value in username_dict.items()])
 
 
 def bulk_update(username_dict):
@@ -28,13 +29,16 @@ def bulk_update(username_dict):
         {
             '$inc': {
                 'numTweets': value['numTweets'], 'numMentions': value['numMentions']
-            }
+            },
+            '$set': {'username_lower': key.lower()}
         }
     )for key, value in username_dict.items()]
     bulk.execute()
 
+
 def get_all_username():
     return db.Username.find()
+
 
 def get_dict_list_usernames():
     usernames = db.Username.find()
@@ -72,10 +76,12 @@ def count_total_usernames():
     return db.Username.count()
 
 
-def get_all_usernames():
-    return db.Username.find({}).sort([("numTweets", pymongo.ASCENDING), ("numMentions", pymongo.ASCENDING)])
+def get_all_usernames(num_results):
+    return db.Username.find({}, sort=([("numTweets", pymongo.ASCENDING), ("numMentions", pymongo.ASCENDING)]),
+                            limit=num_results)
 
 
 def get_user_data(user_id):
     data = (list(db.Username.find({'_id': ObjectId(user_id)}).limit(1)))
+    # data = (list(db.Username.find({'username_lower': '@'+user_id}).limit(1)))
     return data[0]

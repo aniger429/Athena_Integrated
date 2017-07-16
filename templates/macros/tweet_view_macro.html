@@ -11,14 +11,14 @@
                     <th class="col-md-10">Tweet</th>
                     <th class="col-md-1">View Tweet</th>
                 </thead>
-                    {% if tweetDataList == [] %}
+                    {% if tweetDataList.empty %}
                         <tr><td colspan="3">No Tweets {{ type }}</td></tr>
                     {% else %}
-                        {% for tweet in tweetDataList %}
+                        {% for key, tweet in tweetDataList.iterrows() %}
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>
-                                    {% for word in tweet['tweet'] %}
+                                    {% for word in tweet['orig_tweets'] %}
                                         {% if word[:1] != '@' %}
                                             {{ word }}
                                         {% else %}

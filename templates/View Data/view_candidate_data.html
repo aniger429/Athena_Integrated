@@ -127,11 +127,11 @@ Tweet
                     {% endif %}
                     </thead>
                     <tbody>
-                        {% if candidate_tweets == [] %}
-                            <tr><td>No Tweets</td><td>to</td><td>show</td></tr>
+                        {% if candidate_tweets.empty %}
+                            <tr><td colspan="5">No tweets to show</td></tr>
                         {% else %}
-                            {% for tweet in candidate_tweets %}
-                                {% set t = tweet['tweet'] %}
+                            {% for key, tweet in candidate_tweets.iterrows() %}
+                                {% set t = tweet['orig_tweets'] %}
                                  {% if withsenti == True  %}
                                      {% if tweet['sentiment'] == "positive" %}
                                         <tr class="success">
@@ -145,7 +145,7 @@ Tweet
                                  {% endif %}
                                     <td>{{ loop.index }}</td>
                                     <td style="text-align: right">
-                                        {% for word in t[0:tweet['cand_ana'][candidate_name]] %}
+                                        {% for word in t[0:tweet[candidate_name]] %}
                                             {% if word[:1] != '@' %}
                                                 {{ word }}
                                             {% else %}
@@ -154,10 +154,10 @@ Tweet
                                          {% endfor %}
                                     </td>
                                     <td>
-                                        {{ t[tweet['cand_ana'][candidate_name]] }}
+                                        {{ t[tweet[candidate_name]] }}
                                     </td>
                                     <td style="text-align: left">
-                                        {% for word in t[tweet['cand_ana'][candidate_name]+1:]  %}
+                                        {% for word in t[tweet[candidate_name]+1:]  %}
                                             {% if word[:1] != '@' %}
                                                 {{ word }}
                                             {% else %}

@@ -14,8 +14,8 @@ active
     <div class="col-md-12">
         <div class="card">
             <div class="header">
-                <h4 class="title">Usernames in the Database</h4>
-                <p class="category">Here are all the Usernames</p>
+                <h4 class="title custom">View Usernames</h4>
+                <p class="category custom">Showing {{ usernameList.count() }} out of {{ total_usernames }} usernames</p>
                 <form action="/download" method="post" enctype="multipart/form-data">
                     <input type="text" name="download_data" value="all_usernames" hidden/>
                     <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download Usernames">

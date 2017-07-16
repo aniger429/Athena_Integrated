@@ -3,9 +3,10 @@
     <!--  Paper Dashboard core CSS    -->
     <link href="{{ url_for('static', filename="css/customized.css") }}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename="css/fileinput.min.css") }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
-        .close.moveRight {
-            right: -10px;
+        .title.custom {
+            font-size: 25px;
         }
     </style>
 {%  endblock %}
@@ -20,6 +21,7 @@ active
 
 {% block content %}
 <div class="row">
+
     {% if duplicate == True%}
         <div class="alert alert-danger alert-dismissible show" role="alert">
           <button type="button" class="close moveRight" data-dismiss="alert" aria-label="Close">
@@ -30,7 +32,7 @@ active
     {% endif %}
 
     <div class="panel panel-default" >
-      <div class="panel-heading">Upload Data</div>
+      <div class="panel-heading title custom">Upload Data</div>
       <div class="panel-body">
           <form action="upload" method="post" enctype="multipart/form-data">
             <input id="file-0" type="file" class="file" name="file"
@@ -40,19 +42,19 @@ active
           </form>
       </div>
     </div>
+
+
     <div class="card col-md-12">
         <div class="header">
-            <h4 class="title">Election Data</h4>
-            <p class="category">Here are all the election data uploaded</p>
+            <h4 class="title custom">Election Data Uploaded</h4>
+{#            <p class="category">Here are all the election data uploaded</p>#}
         </div>
         <div class="content table-responsive table-full-width">
             <table class="table table-striped">
                 <thead>
                     <th class="col-md-6">Filename</th>
                     <th class="col-md-3">Date Uploaded</th>
-                    <th class="col-md-1">Remarks</th>
-                    <th class="col-md-1">Download</th>
-                    <th class="col-md-1">Delete</th>
+                    <th class="col-md-1">Action</th>
                 </thead>
                 <tbody>
                     {% for dataFile in dataFileList %}
@@ -70,18 +72,16 @@ active
                                 </a>
                             {% endif %}
                         </td>
-
-
-                        <td>
-                            <a class="btn btn-info" href="#" disabled="true">
-                              <i class="ti-file"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <a class="btn btn-danger" href="#" disabled="true">
-                              <i class="ti-trash"></i> Delete
-                            </a>
-                        </td>
+{#                        <td>#}
+{#                            <a class="btn btn-info" href="#" disabled="true">#}
+{#                              <i class="ti-file"></i>#}
+{#                            </a>#}
+{#                        </td>#}
+{#                        <td>#}
+{#                            <a class="btn btn-danger" href="#" disabled="true">#}
+{#                              <i class="ti-trash"></i> Delete#}
+{#                            </a>#}
+{#                        </td>#}
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -97,7 +97,7 @@ active
     <script src="{{ url_for('static',filename='js/fileinput.min.js') }}"></script>
     <script>
         $("#file-0").fileinput({
-            'allowedFileExtensions': ['csv', 'xls', 'xlsx'],
+            'allowedFileExtensions': ['csv'],
             'showPreview':false
         });
     </script>

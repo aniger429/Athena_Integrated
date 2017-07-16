@@ -1,7 +1,7 @@
 from pymongo.write_concern import WriteConcern
 from pymodm import MongoModel, fields
 from bson.objectid import ObjectId
-
+from pandas import DataFrame
 
 from pymongo import MongoClient
 client = MongoClient('mongodb://localhost:27017/Athena')
@@ -40,17 +40,25 @@ def insert_new_tweet(data_to_add):
     db.Tweet.insert_many(data_to_add)
 
 
-def get_all_orig_tweets():
-    data = list(db.Tweet.find({}, {'_id': 1, 'orig_tweets': 1, 'tweet': 1}))
-    for d in data:
-        d['orig_tweets'] = d['orig_tweets'].split()
+def get_all_orig_tweets(num_results=-1):
 
-    return data
+    if num_results == -1:
+        df = DataFrame(list(db.Tweet.find({}, {'_id': 1, 'orig_tweets': 1, 'tweet': 1})))
+    else:
+        df = DataFrame(list(db.Tweet.find({}, {'_id': 1, 'orig_tweets': 1, 'tweet': 1}))).head(num_results)
 
-def get_all_tweets():
+    return df
+
+
+def get_all_tweets(num_results=-1):
     data = list(db.Tweet.find({}, {'_id': 1, 'tweet': 1}))
-    for d in data:
-        d['tweet'] = d['tweet'].split()
+
+    if num_results == -1:
+        for d in data:
+            d['tweet'] = d['tweet'].split()
+    else:
+        for d in data[:num_results]:
+            d['tweet'] = d['tweet'].split()
     return data
 
 
@@ -78,25 +86,33 @@ def get_tweets_with_id():
     data = list(db.Tweet.find({}, {'_id': 1, 'tweet': 1}))
     return data
 
+
 # returns all the tweets posted by the user_id
 def get_user_tweet_data(user_id):
-    data = list(db.Tweet.find({'idUsername': "@"+user_id},{'_id':1,'tweet':1}))
-    for d in data:
-        d['tweet'] = d['tweet'].split()
-    return data
+    # data = list(db.Tweet.find({'idUsername': "@"+user_id}, {'_id': 1, 'tweet': 1}))
+    # for d in data:
+    #     d['tweet'] = d['tweet'].split()
+
+    df = DataFrame(list(db.Tweet.find({'username_lower': "@"+user_id.lower()}, {'_id': 1, 'orig_tweets': 1})))
+    if not df.empty:
+        df['orig_tweets'] = df.apply(lambda row: row['orig_tweets'].split(' '), axis=1)
+
+    print(df)
+    return df
 
 
 # returns all the tweets a user_id was mentioned
 def get_user_mentioned_tweets(user_id):
-    data = list(db.Tweet.find({"users_mentioned": {"$in": ["@"+user_id]}},{'_id':1,'tweet':1}))
-    for d in data:
-        d['tweet'] = d['tweet'].split()
-    return data
+    df = DataFrame(list(db.Tweet.find({"users_mentioned": {"$in": ["@"+user_id]}}, {'_id': 1, 'orig_tweets': 1})))
+    if not df.empty:
+        df['orig_tweets'] = df.apply(lambda row: row['orig_tweets'].split(' '), axis=1)
+    print(df)
+    return df
 
 
 def get_all_unigrams():
     final = []
-    [final.extend(uni['unigrams']) for uni in list(db.Tweet.find({}, {"unigrams": 1,"_id": 0}))]
+    [final.extend(uni['unigrams']) for uni in list(db.Tweet.find({}, {"unigrams": 1, "_id": 0}))]
     return final
 
 

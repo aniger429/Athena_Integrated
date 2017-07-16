@@ -7,16 +7,15 @@ from controllers.KnowledgeBaseCreation import *
 import pandas as pd
 
 
-
-def read_xlsx(filename):
-    return pd.read_excel(filename, encoding='utf-8', keep_default_na=False)
+def read_csv(filename):
+    return pd.read_csv(filename, encoding="utf8", keep_default_na=False, index_col=None,
+                       sep=",", skipinitialspace=True,)
 
 
 # For a given file, return whether it's an allowed type or not
 def allowed_file(filename, ALLOWED_EXTENSIONS):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
 
 
 def upload(directoryPath, ALLOWED_EXTENSIONS):
@@ -47,7 +46,7 @@ def kbupload(directoryPath, ALLOWED_EXTENSIONS):
         file.save(dirPath)
         insert_new_kbfile(filename)
 
-        data_source = read_xlsx(dirPath)
+        data_source = read_csv(dirPath)
 
         cnames = list(data_source)
 
