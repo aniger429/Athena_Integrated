@@ -106,53 +106,10 @@ def compute_sentiment(tweet):
     return final.lower()
 
 
-def compute_tweets_sentiment(tweet_list):
-    neg_tweets = []
-    posi_tweets = []
-    neut_tweets = []
+def process_sentiment(tweet_list):
+    tweet_list['sentiment'] = tweet_list['tweet'].apply(lambda x: compute_sentiment(x.split(' ')).title())
 
-    for tweet in tweet_list:
-        if isinstance(tweet['tweet'], list):
-            senti = compute_sentiment(tweet['tweet'])
-        else:
-            senti = compute_sentiment(tweet['tweet'].split(' '))
-
-        if senti == "positive":
-            posi_tweets.append(tweet)
-        elif senti == "negative":
-            neg_tweets.append(tweet)
-        else:
-            neut_tweets.append(tweet)
-
-    obj = {'positive': posi_tweets, 'neutral': neut_tweets, 'negative': neg_tweets}
-    save_obj(obj, 'Sentiment')
-
-    return posi_tweets, neut_tweets, neg_tweets
-
-
-def compute_senti_candidate_tweet(tweet_list):
-    final_tweet_list = []
-
-    for tweet in tweet_list:
-        if isinstance(tweet['tweet'], list):
-            result = compute_sentiment(tweet['tweet'])
-        else:
-            result = compute_sentiment(tweet['tweet'].split(' '))
-
-        tweet['sentiment'] = result
-        final_tweet_list.append(tweet)
-
-    return final_tweet_list
-
-
-def test_senti_ana(tweet):
-    return compute_sentiment(tweet.split(' '))
-
-
-def sa_testing(df1):
-    print(1)
-    df1['Results'] = df1['Tweet'].apply(lambda x: compute_sentiment(x.split(' ')).title())
-    return df1
+    return tweet_list
 
 
 def sa_parallelize_dataframe(df, func):
@@ -162,5 +119,21 @@ def sa_parallelize_dataframe(df, func):
     pool.close()
     pool.join()
     return df
+
+
+def compute_tweets_sentiment(tweet_list):
+    tweet_list = sa_parallelize_dataframe(tweet_list, process_sentiment)
+
+    posi_tweets = tweet_list[tweet_list['sentiment'] == "Positive"]
+    neut_tweets = tweet_list[tweet_list['sentiment'] == "Neutral"]
+    neg_tweets = tweet_list[tweet_list['sentiment'] == "Negative"]
+
+    columns = ['orig_tweets', '_id', 'tweet', 'sentiment']
+    # Select the ones you want
+    save_dataframe(posi_tweets.loc[:, columns], 'negative')
+    save_dataframe(neut_tweets.loc[:, columns], 'positive')
+    save_dataframe(neg_tweets.loc[:, columns], 'neutral')
+
+    return posi_tweets, neut_tweets, neg_tweets
 
 

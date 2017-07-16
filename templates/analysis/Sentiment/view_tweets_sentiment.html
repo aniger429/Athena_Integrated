@@ -52,13 +52,13 @@ Sentiment Analysis: {{ sentiment_analysis_for }}
                 <div class="card">
                     <div class="header">
                         <h4 class="title custom">{{ sentiment_labels[c] | capitalize }} Tweets</h4>
-                        <p class="category custom">{{ tweet_list[c]['tweets'] | length  }} Tweets</p>
+                        <p class="category custom">{{ tweet_list[c]['tweets']['orig_tweets'].count() }} Tweets</p>
 
                         <div class="row">
                             <div class="col-md-9">
                                 Candidates Mentioned:
                                 {% for cand in tweet_list[c]['candidate_mentioned'] %}
-                                    <a class="username" href="{{ url_for('view_candidate_data',candidate_name=cand, datasource=sentiment_labels[c]) }}">{{ cand | capitalize }}</a>
+                                    <a class="username" href="{{ url_for('view_candidate_data', candidate_name=cand, datasource=sentiment_labels[c]) }}">{{ cand | capitalize }}</a>
                                 {% endfor %}
                             </div>
                             <button href="#{{ sentiment_labels[c] }}_collapse_topic" class="btn btn-info btn-md col-md-3 pull-right" data-toggle="collapse" style="margin: 10px">Determine Topics</button>
@@ -72,15 +72,15 @@ Sentiment Analysis: {{ sentiment_analysis_for }}
                                 <th class="col-md-1">View Tweet</th>
                             </thead>
                             <tbody>
-                            {% for tweet in tweet_list[c]['tweets'] %}
+                            {% for key, tweet in tweet_list[c]['tweets'].iterrows() %}
                                  <tr>
                                     <td class="col-md-1">{{ loop.index }}</td>
                                     <td class="col-md-10">
-                                        {% for word in tweet['tweet'] %}
+                                        {% for word in tweet['orig_tweets'] %}
                                             {% if word[:1] != '@' %}
                                                 {{ word }}
                                             {% else %}
-                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>{{ word }}</i></a>
+                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>@USER</i></a>
                                             {% endif %}
                                         {% endfor %}
                                     </td>

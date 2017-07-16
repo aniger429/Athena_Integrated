@@ -101,15 +101,12 @@ def view_candidate_data():
     # tweets = get_all_orig_tweets()
 
     if datasource in ["positive", "neutral", "negative"]:
-        tweets = load_obj("Sentiment")[datasource]
+        tweets = load_pickled_dataframe(datasource)
     elif datasource == "topic":
         key = request.args.get('key')
         tweets = load_obj("Topics")[key]['topic_tweets']
-        # print(tweets)
 
-    identify_candidate(tweets, cname=cname)
-    data_tweets = load_obj("Candidate")
-    candidate_name_count = Counter([tweet['tweet'][tweet['cand_ana'][cname]] for tweet in data])
+    candidate_name_count, data_tweets = candidate_analysis(tweets, cname)
 
     return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
                            candidate_data=get_specific_candidate_names(cname),
@@ -142,7 +139,7 @@ def view_tweets_for_topic():
 
 @app.route('/sentiment')
 def view_sentiment_analysis():
-    tweets = get_all_tweets()
+    tweets = get_all_orig_tweets()
     datasource = request.args.get('datasource')
     sentiment_for = "All"
 
@@ -153,8 +150,8 @@ def view_sentiment_analysis():
 
     elif datasource == "Candidate":
         candidate_name = request.args.get('candidate_name')
-        tweets = load_obj("Candidate")
-        sentiment_for="Candidate: "+candidate_name
+        tweets = load_pickled_dataframe("Candidate")
+        sentiment_for = "Candidate: " + candidate_name
 
     positive_tweets, neutral_tweets, negative_tweets = compute_tweets_sentiment(tweets)
 
@@ -164,9 +161,11 @@ def view_sentiment_analysis():
 
     data_series = pd.Series([len(positive_tweets['tweets']), len(neutral_tweets['tweets']),
                              len(negative_tweets['tweets'])],
-                            index=['Positive', 'Negative', 'Neutral'])
+                            index=['Neutral', 'Positive', 'Negative'])
 
     script, div = donut_chart(data_series)
+
+
 
     return render_template("analysis/Sentiment/view_tweets_sentiment.html",
                            tweet_list=[negative_tweets, positive_tweets, neutral_tweets],

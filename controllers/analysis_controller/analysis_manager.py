@@ -4,19 +4,6 @@ from controllers.analysis_controller.topic_view_analysis import *
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
 
-def candidate_analysis(tweets, candidate_name):
-    #  do candidate analysis on the tweets
-    identify_candidate(tweets, candidate_name)
-    # load cand
-    data = load_pickled_dataframe("Candidate")
-
-    data['name'] = data.apply(lambda row: (row['orig_tweets'][row[candidate_name]]), axis=1)
-
-    candidate_name_count = Counter(list(data['name']))
-
-    return candidate_name_count, data
-
-
 def new_analysis():
     flevel, slevel, tlevel = request.form['steps'].split("-")
     print("here" + flevel)
