@@ -17,22 +17,22 @@ def writeToFile(data, filename):
 
 
 def save_dataframe(df, name):
-    file_path = os.path.join(script_path, "Pickles", "Data", name, ".pkl")
+    file_path = os.path.join(script_path, "Pickles", "Data", name+".pkl")
     df.to_pickle(file_path)
     return
 
 
 def load_pickled_dataframe(name):
-    file_path = os.path.join(script_path, "Pickles", "Data", name, ".pkl")
+    file_path = os.path.join(script_path, "Pickles", "Data", name+".pkl")
     return pd.read_pickle(file_path)
 
 
-def save_obj(obj, name):
-    file_path = os.path.join(script_path, "Pickles", "Data", name, ".pkl")
-    write_pickle(file_path, obj)
-
-
+# def save_obj(obj, name):
+#     file_path = os.path.join(script_path, "Pickles", name)
+#     write_pickle(file_path, obj)
+#
+#
 def load_obj(name):
-    file_path = os.path.join(script_path, "Pickles", "Data", name, ".pkl")
+    file_path = os.path.join(script_path, "Pickles", name)
     with open(file_path + '.pkl', 'rb') as f:
         return pickle.load(f)

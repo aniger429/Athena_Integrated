@@ -45,13 +45,6 @@ def get_usernames(tweet_list):
     # found_username_list = []
 
     return pattern.findall(tweet_list)
-    # for l in tweet_list:
-    #     temp = []
-    #     for m in [pattern.findall(l)]:
-    #         temp.extend(m)
-    #     found_username_list.append(temp)
-
-    # return found_username_list
 
 
 def anonymized_tweet(tweet, nameTuple):

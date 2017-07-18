@@ -40,10 +40,10 @@ Sentiment Analysis: {{ sentiment_analysis_for }}
 
 <div class="row">
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#positive">Positive</a></li>
+        <li><a data-toggle="tab" href="#positive">Positive</a></li>
         <li><a data-toggle="tab" href="#neutral">Neutral</a></li>
         <li><a data-toggle="tab" href="#negative">Negative</a></li>
-        <li><a data-toggle="tab" href="#summary">Summary</a></li>
+        <li class="active"><a data-toggle="tab" href="#summary">Summary</a></li>
     </ul>
 
     <div class="tab-content">
@@ -93,7 +93,7 @@ Sentiment Analysis: {{ sentiment_analysis_for }}
                 </div>
             </div>
         {% endfor %}
-        <div id="summary" class="tab-pane fade">
+        <div id="summary" class="tab-pane fade in active">
             <div class="col-md-offset-2">
                {{ script|safe }}
                {{ div|safe }}

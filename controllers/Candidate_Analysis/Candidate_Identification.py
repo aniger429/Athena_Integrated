@@ -37,6 +37,10 @@ def parallelize_dataframe(df, func, candidate_data):
     return df
 
 
+def lower_split_tweet(tweet):
+    return tweet.lower().split(' ')
+
+
 def identify_candidate(tweet_df, cname="none"):
     # gets all the known candidate names in the database
     candidate_data = get_all_kb_names()
@@ -45,7 +49,7 @@ def identify_candidate(tweet_df, cname="none"):
     if isinstance(tweet_df['orig_tweets'].iloc[0], list):
         tweet_df['orig_tweets'] = tweet_df.apply(lambda row: row['orig_tweets'], axis=1)
     else:
-        tweet_df['orig_tweets'] = tweet_df.apply(lambda row: row['orig_tweets'].lower().split(' '), axis=1)
+        tweet_df['orig_tweets'] = tweet_df.apply(lambda row: lower_split_tweet(row['orig_tweets']), axis=1)
 
     # creates a new column per candidate and stores the index of word mentioned for the candidate
     tweet_df = parallelize_dataframe(tweet_df, process_df, candidate_data)

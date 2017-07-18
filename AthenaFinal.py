@@ -281,13 +281,6 @@ def download_data():
 def visualizations():
     viz_type = request.form['viz_type']
 
-    # if viz_type == "wordcloud":
-    #     source = request.form['source']
-    #     print(source)
-    #     tf_idf = load_obj("tf_idf")
-    #     word_cloud(source, tf_idf)
-    #     return render_template("analysis/Topic/view_tfidf.html", tf_idf=tf_idf)
-
 
 @app.route('/get_word_cloud')
 def get_word_cloud():

@@ -34,7 +34,7 @@ def new_analysis():
                                        withsenti=True, senti_count=senti_count)
 
             if viz_selected == "stacked bar chart":
-                final_tweets = compute_senti_candidate_tweet(data)
+                final_tweets = compute_tweets_sentiment(data)
 
                 senti_count = Counter(tweet['sentiment'] for tweet in final_tweets if tweet.get('sentiment'))
 

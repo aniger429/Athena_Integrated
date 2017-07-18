@@ -3,7 +3,10 @@ import nltk
 from controllers.Pickles.Pickle_Saver import *
 from collections import Counter
 from multiprocessing import Pool
+from functools import partial
 import numpy as np
+import pickle
+
 
 num_partitions = 6  # number of partitions to split dataframe
 num_cores = 6  # number of cores on your machine
@@ -106,10 +109,23 @@ def compute_sentiment(tweet):
     return final.lower()
 
 
-def process_sentiment(tweet_list):
+def lexicon_sentiment(tweet_list):
     tweet_list['sentiment'] = tweet_list['tweet'].apply(lambda x: compute_sentiment(x.split(' ')).title())
 
     return tweet_list
+
+
+def lscv_sentiment(tweet_list):
+    # path for classifiers
+    s_path = os.path.dirname(os.path.dirname(__file__))
+    path = os.path.join(s_path, "Pickles", "ML_Classifier")
+
+    # load pickled classififer
+    with open(os.path.join(path, 'LSVC.pkl'), 'rb') as fid:
+        lscv_clf = pickle.load(fid)
+
+    # predict sentiment of tweet
+    return lscv_clf.predict(tweet_list)
 
 
 def sa_parallelize_dataframe(df, func):
@@ -122,8 +138,11 @@ def sa_parallelize_dataframe(df, func):
 
 
 def compute_tweets_sentiment(tweet_list):
-    tweet_list = sa_parallelize_dataframe(tweet_list, process_sentiment)
+    # Lexicon Based
+    # tweet_list = sa_parallelize_dataframe(tweet_list, lexicon_sentiment)
 
+    # Machine Learning - LSVC
+    tweet_list['sentiment'] = lscv_sentiment(tweet_list['tweet'])
     posi_tweets = tweet_list[tweet_list['sentiment'] == "Positive"]
     neut_tweets = tweet_list[tweet_list['sentiment'] == "Neutral"]
     neg_tweets = tweet_list[tweet_list['sentiment'] == "Negative"]
