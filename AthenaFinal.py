@@ -165,8 +165,6 @@ def view_sentiment_analysis():
 
     script, div = donut_chart(data_series)
 
-
-
     return render_template("analysis/Sentiment/view_tweets_sentiment.html",
                            tweet_list=[negative_tweets, positive_tweets, neutral_tweets],
                            sentiment_labels=['negative', 'neutral', 'positive'],

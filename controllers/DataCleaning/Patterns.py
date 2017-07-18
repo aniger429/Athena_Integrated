@@ -23,6 +23,7 @@ def remove_from_tweet(tweet):
     tweet = RESERVED_WORDS_PATTERN.sub('', tweet)
     tweet = NUMBERS_PATTERN.sub('', tweet)
     tweet = HTML_PATTERN.sub('', tweet)
+    tweet = MENTION_PATTERN.sub('', tweet)
 
     return tweet
 

@@ -30,7 +30,8 @@ c_re = re.compile('(%s)' % '|'.join(dictionary.keys()))
 def read_csv(filename):
     return pd.read_csv(filename, encoding="utf8", keep_default_na=False, index_col=None,
                        sep=",", skipinitialspace=True, chunksize=10000,
-                       usecols=['Id', 'Tweet', 'Username', 'Hashtags', 'Location', 'Favorites', 'Retweets'])
+                       usecols=['Id', 'Tweet', 'Username', 'Hashtags', 'Location', 'Favorites', 'Retweets',
+                                'Date Created'])
 
 
 def expand_contractions(text, c_re=c_re):
@@ -41,15 +42,16 @@ def expand_contractions(text, c_re=c_re):
 
 def get_usernames(tweet_list):
     pattern = re.compile("@[a-zA-Z0-9]+")
-    found_username_list = []
+    # found_username_list = []
 
-    for l in tweet_list:
-        temp = []
-        for m in [pattern.findall(l)]:
-            temp.extend(m)
-        found_username_list.append(temp)
+    return pattern.findall(tweet_list)
+    # for l in tweet_list:
+    #     temp = []
+    #     for m in [pattern.findall(l)]:
+    #         temp.extend(m)
+    #     found_username_list.append(temp)
 
-    return found_username_list
+    # return found_username_list
 
 
 def anonymized_tweet(tweet, nameTuple):
@@ -60,7 +62,7 @@ def anonymized_tweet(tweet, nameTuple):
 def init_data_cleaning(tweet, nameTuple):
     # print ("Before:" + tweet)
     # data anonymization
-    tweet = anonymized_tweet(tweet, nameTuple)
+    # tweet = anonymized_tweet(tweet, nameTuple)
     # removes URL, hashtags, HTML, and Reserved words
     tweet = pat.remove_from_tweet(tweet)
     # converts the tweets to lowercase
@@ -102,8 +104,6 @@ def init_data_cleaning(tweet, nameTuple):
 
 
 def anonymize_poster_username(username_list, username_dict):
-    # username_dict = get_all_username_dict()
-
     return [username_dict['@'+u] for u in username_list]
 
 
@@ -112,53 +112,56 @@ def process_hashtags(hashtag_list):
     return [pattern.split(hashtags) if hashtags is not '' else [] for hashtags in hashtag_list]
 
 
-def parallelize_dataframe(df, func, nameTuple, usernames):
+def parallelize_dataframe(df, func, name_tuple, usernames):
     df_split = np.array_split(df, num_partitions)
     pool = Pool(num_cores)
-    func = partial(func, nameTuple, usernames)
+    func = partial(func, name_tuple, usernames)
     df = pd.concat(pool.map(func, df_split))
     pool.close()
     pool.join()
     return df
 
 
-def process_chunk(nameTuple, usernames, chunk):
+def process_chunk(name_tuple, usernames, chunk):
     # chunk['tweet'] will hold the processed/cleaned tweet
-    chunk['tweet'] = chunk.apply(lambda row: init_data_cleaning(row['Tweet'], nameTuple), axis=1)
+    chunk['tweet'] = chunk.apply(lambda row: init_data_cleaning(row['Tweet'], name_tuple), axis=1)
     # 1-3 grams for each tweet
-    chunk['unigrams'], chunk['bigrams'], chunk['trigrams'] = ngram_extractor.get_ngrams(chunk['tweet'])
+    chunk['unigram'], chunk['bigram'], chunk['trigram'] = ngram_extractor.get_ngrams(chunk['tweet'])
     # positive emoticon/negative emoticon count
-    chunk['posemotecount'] = chunk.apply(lambda row: row['tweet'].count('POSEMOTE'), axis=1)
-    chunk['negemotecount'] = chunk.apply(lambda row: row['tweet'].count('NEGEMOTE'), axis=1)
+    chunk['posemote'] = chunk.apply(lambda row: row['tweet'].count('POSEMOTE'), axis=1)
+    chunk['negemote'] = chunk.apply(lambda row: row['tweet'].count('NEGEMOTE'), axis=1)
     # anonymize poster username
     chunk['Username'] = anonymize_poster_username(chunk['Username'], usernames)
     # hashtag processing
     chunk['hashtags'] = process_hashtags(chunk['Hashtags'])
-    # users mentioned
-    chunk['users_mentioned'] = get_usernames(chunk['tweet'])
     # anonymized original tweet
-    chunk['Tweet'] = chunk.apply(lambda row: anonymized_tweet(row['Tweet'], nameTuple), axis=1)
-    # rename some column names
-    chunk.rename(index=str, columns={"Location": "location", "Retweets": "retweet", "Favorites": "favorite",
-                                     "Date Created": "date_created", "Id": 'idTweet',
-                                     "Tweet": "orig_tweets", "Username": 'idUsername'}, inplace=True)
+    chunk['Tweet'] = chunk.apply(lambda row: anonymized_tweet(row['Tweet'], name_tuple), axis=1)
+    # users mentioned
+    chunk['users_mentioned'] = chunk.apply(lambda row: get_usernames(row['Tweet']), axis=1)
+
     return chunk
 
 
 def cleaning_file(file_name):
     print("Start Cleaning File")
     reader = read_csv(file_name)
+    results = pd.DataFrame()
 
     for ctr, chunk in enumerate(reader):
         # add usernames to DB
         preprocessing.process_usernames(chunk)
-        nameTuple = get_all_username_tup()
+        name_tuple = get_all_username_tup()
         usernames = get_all_username_dict()
 
-        results = parallelize_dataframe(chunk, process_chunk, nameTuple, usernames)
+        results = parallelize_dataframe(chunk, process_chunk, name_tuple, usernames)
 
         # this removes empty tweets after cleaning
         results.drop(results[results.tweet == ""].index, inplace=True)
+
+        # rename some column names
+        results.rename(index=str, columns={"Location": "location", "Retweets": "retweet", "Favorites": "favorite",
+                                         "Date Created": "date_created", "Id": 'idTweet',
+                                         "Tweet": "orig_tweets", "Username": 'idUsername'}, inplace=True)
 
         insert_new_tweet(results.to_dict(orient='records'))
 

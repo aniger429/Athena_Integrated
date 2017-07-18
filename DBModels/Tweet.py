@@ -27,7 +27,6 @@ class Tweet(MongoModel):
     bigram = fields.ListField()
     trigram = fields.ListField()
 
-
     cand_ana = fields.ListField()
 
 
@@ -89,15 +88,10 @@ def get_tweets_with_id():
 
 # returns all the tweets posted by the user_id
 def get_user_tweet_data(user_id):
-    # data = list(db.Tweet.find({'idUsername': "@"+user_id}, {'_id': 1, 'tweet': 1}))
-    # for d in data:
-    #     d['tweet'] = d['tweet'].split()
-
-    df = DataFrame(list(db.Tweet.find({'username_lower': "@"+user_id.lower()}, {'_id': 1, 'orig_tweets': 1})))
+    df = DataFrame(list(db.Tweet.find({'idUsername': "@"+user_id}, {'_id': 1, 'orig_tweets': 1})))
     if not df.empty:
         df['orig_tweets'] = df.apply(lambda row: row['orig_tweets'].split(' '), axis=1)
 
-    print(df)
     return df
 
 
@@ -106,7 +100,6 @@ def get_user_mentioned_tweets(user_id):
     df = DataFrame(list(db.Tweet.find({"users_mentioned": {"$in": ["@"+user_id]}}, {'_id': 1, 'orig_tweets': 1})))
     if not df.empty:
         df['orig_tweets'] = df.apply(lambda row: row['orig_tweets'].split(' '), axis=1)
-    print(df)
     return df
 
 
