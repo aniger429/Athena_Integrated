@@ -25,12 +25,17 @@ def new_analysis():
             viz_selected = request.form['viz_selected']
 
             if viz_selected == "Concordancer with Sentiment":
-                final_tweets = compute_senti_candidate_tweet(data)
+                posi_tweets, neut_tweets, neg_tweets = compute_tweets_sentiment(data)
 
-                senti_count = Counter(tweet['sentiment'] for tweet in final_tweets if tweet.get('sentiment'))
+                final_tweets = posi_tweets.append(neut_tweets)
+                final_tweets = final_tweets.append(neg_tweets)
+                final_tweets = final_tweets.sample(frac=1).reset_index(drop=True)
+
+                senti_count = {'positive': len(posi_tweets), 'neutral': len(neut_tweets), 'negative': len(neg_tweets)}
 
                 return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
-                                       candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets,
+                                       candidate_data=get_specific_candidate_names(candidate_name),
+                                       candidate_tweets=final_tweets,
                                        withsenti=True, senti_count=senti_count)
 
             if viz_selected == "stacked bar chart":

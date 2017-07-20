@@ -46,9 +46,9 @@ Tweet
     <div class="row">
         {% for s in sentiments %}
             <div class="col-md-4">
-            {% set percentage = (senti_count[s] / total_count) | round(3, 'common') %}
+            {% set percentage = ((senti_count[s] / total_count) * 100.00) | round(3, 'common') %}
 
-             {{ card_header_longtitle([senti_count[s],":",percentage, "%"], s  + " tweets") }}
+             {{ card_header_longtitle([percentage, "%"], senti_count[s] ~ " " ~ s  ~ " tweets") }}
             </div>
         {% endfor %}
     </div>
@@ -58,7 +58,7 @@ Tweet
         <div class="card">
             <div class="header">
                 <h4 class="title custom">{{ candidate_data['candidate_name'] | capitalize }}</h4>
-                <p class="category custom">Here are all the names</p>
+                <p class="category custom">Names Used</p>
                 <br/><br/>
 
                  <form action="/download" method="post" enctype="multipart/form-data">
@@ -133,9 +133,9 @@ Tweet
                             {% for key, tweet in candidate_tweets.iterrows() %}
                                 {% set t = tweet['orig_tweets'] %}
                                  {% if withsenti == True  %}
-                                     {% if tweet['sentiment'] == "positive" %}
+                                     {% if tweet['sentiment'] == "Positive" %}
                                         <tr class="success">
-                                     {% elif tweet['sentiment'] == "negative"%}
+                                     {% elif tweet['sentiment'] == "Negative"%}
                                         <tr class="danger">
                                      {% else %}
                                         <tr class="active">

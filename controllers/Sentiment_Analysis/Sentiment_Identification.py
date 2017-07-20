@@ -149,9 +149,9 @@ def compute_tweets_sentiment(tweet_list):
 
     columns = ['orig_tweets', '_id', 'tweet', 'sentiment']
     # Select the ones you want
-    save_dataframe(posi_tweets.loc[:, columns], 'negative')
-    save_dataframe(neut_tweets.loc[:, columns], 'positive')
-    save_dataframe(neg_tweets.loc[:, columns], 'neutral')
+    save_dataframe(posi_tweets.loc[:, columns], 'positive')
+    save_dataframe(neut_tweets.loc[:, columns], 'neutral')
+    save_dataframe(neg_tweets.loc[:, columns], 'negative')
 
     return posi_tweets, neut_tweets, neg_tweets
 
