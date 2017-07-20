@@ -301,6 +301,12 @@ def test_bokeh():
     ]
     return render_template('test.html', data=data)
 
+
+@app.route('/scatter')
+def test_scatter():
+    return render_template('analysis/Topic/view_scatterplot.html')
+
+
 if __name__ == '__main__':
     app.run(
         debug=True

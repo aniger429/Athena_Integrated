@@ -4,6 +4,7 @@ from controllers.Topic_Analysis.Topic_Analysis import *
 from controllers.visualization.scatterplot import *
 from DBModels.Tweet import *
 from controllers.visualization.wordcloud_viz import word_cloud
+from controllers.Pickles.Pickle_Saver import *
 
 
 def topic_analysis():
@@ -39,17 +40,26 @@ def view_all():
                                                                                             lda_parameters['topic'],
                                                                                             lda_parameters['iter'],
                                                                                             lda_parameters['word'])
+    print("tsne lda")
+    print(tsne_lda)
+    print("x topics")
+    print(X_topics)
+    print("lda model")
+    print(lda_model)
+    print("lda model")
+    print(tfidfvec)
 
     word_cloud("all", final_list)
 
     script, div = scatter_plot(tweets_only, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words)
+
     find_topic_tweets(topics_dict, tweets)
     save_obj(final_list, "tf_idf")
 
     return render_template("analysis/Topic/view_topic_results.html",
                            tf_idf=final_list, topics_dict=topics_dict,
-                           topic_analysis_for=topic_for, source="All Tweets",
-                           script=script, div=div)
+                           topic_analysis_for=topic_for, source="All Tweets")
+                           # script=script, div=div)
 
 
 def view_candidate(candidate_name):

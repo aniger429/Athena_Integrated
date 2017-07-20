@@ -27,11 +27,11 @@ def load_pickled_dataframe(name):
     return pd.read_pickle(file_path)
 
 
-# def save_obj(obj, name):
-#     file_path = os.path.join(script_path, "Pickles", name)
-#     write_pickle(file_path, obj)
-#
-#
+def save_obj(obj, name):
+    file_path = os.path.join(script_path, "Pickles", name)
+    write_pickle(file_path, obj)
+
+
 def load_obj(name):
     file_path = os.path.join(script_path, "Pickles", name)
     with open(file_path + '.pkl', 'rb') as f:
