@@ -17,6 +17,8 @@ def scatter_plot(tweets, X_topics, tsne_lda, lda_model, cvectorizer, n_top_words
     for i in range(X_topics.shape[0]):
         _lda_keys += X_topics[i].argmax(),
 
+    print(_lda_keys)
+
     # get top words
     topic_summaries = []
     topic_word = lda_model.components_  # all topic words
@@ -25,6 +27,8 @@ def scatter_plot(tweets, X_topics, tsne_lda, lda_model, cvectorizer, n_top_words
     for i, topic_dist in enumerate(topic_word):
         topic_words = np.array(vocab)[np.argsort(topic_dist)][:-(n_top_words + 1):-1]  # get!
         topic_summaries.append(' '.join(topic_words))  # append!
+
+    print(topic_summaries)
 
     # plot
     title = 'Tweets LDA viz'

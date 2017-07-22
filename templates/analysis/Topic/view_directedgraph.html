@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% block customCSS %}
+
+    <link href="{{ url_for('static', filename="nvd3/nvd3.min.css") }}" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+    <script src="{{ url_for('static', filename="nvd3/nvd3.min.js") }}"></script>
+
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+        text {
+            font: 18px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        svg {
+            margin: 0;
+            padding: 0;
+            height: 650px;
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{%block name%}
+Directed Graph
+{%endblock%}
+{% block content %}
+    <svg width="960" height="650"></svg>
+{% endblock %}
+{% block customJS %}
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+    var nodes =
+        [
+      { id: "main", group: 0, label: "", level: 1 },
+      { id: "1", group: 1, label: "Topic 1", level: 2 },
+      { id: "1_1"   , group: 1, label: "Dogs"   , level: 3 },
+      { id: "1_2"   , group: 1, label: "Cats"   , level: 3 },
+      { id: "2"   , group: 1, label: "Topic 2"  , level: 2 },
+      { id: "2_1"   , group: 1, label: "Elk"    , level: 3 },
+      { id: "2_2", group: 2, label: "Insects", level: 3 },
+      { id: "3"   , group: 2, label: "Topic 3"   , level: 2 },
+      { id: "3_1"   , group: 2, label: "Bees"   , level: 3 },
+      { id: "4"  , group: 3, label: "Topic 4"   , level: 2 },
+      { id: "4_1"  , group: 3, label: "Carp"   , level: 3 },
+      { id: "4_2"  , group: 3, label: "Pikes"  , level: 3 }
+    ];
+
+    var links = [
+        { target: "main", source: "1" , strength: 0.7 },
+         { target: "main", source: "2" , strength: 0.7 },
+         { target: "main", source: "3" , strength: 0.7 },
+        { target: "main", source: "4" , strength: 0.7 },
+      { target: "1", source: "1_1" , strength: 0.7 },
+      { target: "1", source: "1_2" , strength: 0.7 },
+      { target: "2", source: "2_1" , strength: 0.7 },
+      { target: "2", source: "2_2" , strength: 0.7 },
+      { target: "3", source: "3_1" , strength: 0.7 },
+      { target: "3", source: "2_1" , strength: 0.7 },
+      { target: "4"  , source: "4_1", strength: 0.7 },
+      { target: "4"  , source: "4_2", strength: 0.7 }
+    ];
+
+function getNeighbors(node) {
+  return links.reduce(function (neighbors, link) {
+      if (link.target.id === node.id) {
+        neighbors.push(link.source.id)
+      } else if (link.source.id === node.id) {
+        neighbors.push(link.target.id)
+      }
+      return neighbors
+    },
+    [node.id]
+  )
+}
+
+function isNeighborLink(node, link) {
+  return link.target.id === node.id || link.source.id === node.id
+}
+
+
+function getNodeColor(node, neighbors) {
+  if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+      if (node.level === 1)
+        return 'red';
+      else if (node.level === 2)
+         return 'blue';
+      else
+          return 'black';
+
+{#    return node.level === 1 ? 'blue' : 'green'#}
+  }
+  if (node.level === 1)
+      return 'red';
+  else if (node.level === 2)
+      return 'blue';
+
+  return 'gray';
+}
+
+
+function getLinkColor(node, link) {
+  return isNeighborLink(node, link) ? 'green' : '#E5E5E5'
+}
+
+function getTextColor(node, neighbors) {
+  return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
+}
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+var min_zoom = 0.1;
+var max_zoom = 7;
+var zoom = d3.behavior.zoom().scaleExtent([min_zoom,max_zoom])
+
+var svg = d3.select('svg');
+svg.attr('width', width).attr('height', height);
+
+// simulation setup with all forces
+var linkForce = d3
+  .forceLink()
+  .id(function (link) { return link.id })
+  .strength(function (link) { return link.strength });
+
+var simulation = d3
+  .forceSimulation()
+  .force('link', linkForce)
+  .force('charge', d3.forceManyBody().strength(-120))
+  .force('center', d3.forceCenter(width / 3, height / 3));
+
+    var dragDrop = d3.drag().on('start', function (node) {
+      node.fx = node.x;
+      node.fy = node.y
+    }).on('drag', function (node) {
+      simulation.alphaTarget(0.7).restart();
+      node.fx = d3.event.x;
+      node.fy = d3.event.y
+    }).on('end', function (node) {
+      if (!d3.event.active) {
+        simulation.alphaTarget(0)
+      }
+      node.fx = null;
+      node.fy = null
+    });
+
+function selectNode(selectedNode) {
+  var neighbors = getNeighbors(selectedNode);
+
+  // we modify the styles to highlight selected nodes
+  nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) });
+  textElements.attr('fill', function (node) { return getTextColor(node, neighbors) });
+  linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+
+}
+
+var linkElements = svg.append("g")
+  .attr("class", "links")
+  .selectAll("line")
+  .data(links)
+  .enter().append("line")
+    .attr("stroke-width", 2)
+    .attr("stroke", "rgba(50, 50, 50, 0.2)");
+
+var nodeElements = svg.append("g")
+  .attr("class", "nodes")
+  .selectAll("rect")
+  .data(nodes)
+  .enter().append("rect")
+{#    .attr("r", 10)#}
+    .attr("height", 15)
+    .attr("width", 15)
+    .attr("fill", getNodeColor)
+    .call(dragDrop)
+    .on('click', selectNode);
+
+    var textElements = svg.append("g")
+      .attr("class", "texts")
+      .selectAll("text")
+      .data(nodes)
+      .enter().append("text")
+        .text(function (node) { return  node.label })
+          .attr("font-size", 18)
+          .attr("dx", 15)
+        .attr("dy", 4);
+
+    simulation.nodes(nodes).on('tick', function() {
+      nodeElements
+{#        .attr('cx', function (node) { return node.x })#}
+{#        .attr('cy', function (node) { return node.y });#}
+         .attr("x", function(d) { return d.x; })
+         .attr("y", function(d) { return d.y; });
+      textElements
+        .attr('x', function (node) { return node.x })
+        .attr('y', function (node) { return node.y });
+      linkElements
+        .attr('x1', function (link) { return link.source.x })
+        .attr('y1', function (link) { return link.source.y })
+        .attr('x2', function (link) { return link.target.x })
+        .attr('y2', function (link) { return link.target.y })
+    });
+    simulation.force("link").links(links)
+</script>
+{% endblock %}

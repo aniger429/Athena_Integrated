@@ -1,0 +1,26 @@
+{ "graph": [],
+  "links": [
+    {"source": 0, "target": 1},
+    {"source": 0, "target": 2},
+    {"source": 0, "target": 3},
+    {"source": 1, "target": 4},
+    {"source": 1, "target": 5},
+    {"source": 2, "target": 6},
+    {"source": 2, "target": 7},
+    {"source": 3, "target": 8},
+    {"source": 3, "target": 4}
+  ],
+  "nodes": [
+    {"size": 100, "score": 0, "id": "Topics", "type": "triangle-up"},
+    {"size": 50, "score": 0.5, "id": "Topic 1", "type": "square"},
+    {"size": 50, "score": 0.5, "id": "Topic 2", "type": "square"},
+    {"size": 50, "score": 0.5, "id": "Topic 3", "type": "square"},
+    {"size": 10, "score": 1, "id": "Word 1", "type": "circle"},
+    {"size": 10 , "score": 1, "id": "Word 2", "type": "circle"},
+    {"size": 10 , "score": 1, "id": "Word 3", "type": "circle"},
+    {"size": 10 , "score": 1, "id": "Word 4", "type": "circle"},
+    {"size": 10 , "score": 1, "id": "Word 5", "type": "circle"}
+    ],
+  "directed": false,
+  "multigraph": false
+}

@@ -25,13 +25,27 @@ Topic Analysis: {{ topic_analysis_for }}
 <div class="row">
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#lda">LDA Results</a></li>
-        <li><a data-toggle="tab" href="#scatterplot">Scatterplot</a></li>
+{#        <li><a data-toggle="tab" href="#scatterplot">Scatterplot</a></li>#}
         <li><a data-toggle="tab" href="#ngram">Top N-Grams</a></li>
-        <li><a data-toggle="tab" href="#wordcloud">Word Cloud</a></li>
+{#        <li><a data-toggle="tab" href="#wordcloud">Word Cloud</a></li>#}
     </ul>
 
     <div class="tab-content">
-        <div id="lda" class="tab-pane fade active">
+        <div id="lda" class="tab-pane fade in active">
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="/download" method="post" enctype="multipart/form-data">
+                        <input type="text" name="download_data" value="download_topic_lda_results" hidden/>
+                        <input id="submit" type="submit" class="btn btn-info col-md-3 pull-right" Title="Filename: topic_lda_words"
+                               Value="Download LDA Results">
+                    </form>
+                    <form action="/view_graph" method="get" enctype="multipart/form-data">
+                        <input id="submit" type="submit" class="btn btn-warning col-md-3 pull-right"
+                               Value="View Graph">
+                    </form>
+                </div>
+            </div>
+            <br/>
             <div class="row">
                 {% for key, value in topics_dict.items() %}
                 <div class="col-md-4">
@@ -56,7 +70,7 @@ Topic Analysis: {{ topic_analysis_for }}
                                         <tr>
                                             <td>{{ loop.index }}</td>
                                             <td>{{ v['word'] }}</td>
-                                            <td>{{ v['score'] }}</td>
+                                            <td>{{ v['score'] | round(10, 'ceil')}}</td>
                                         </tr>
                                         {% endfor %}
                                 </tbody>
@@ -69,15 +83,16 @@ Topic Analysis: {{ topic_analysis_for }}
             </div>
         </div>
 
-        <div id="scatterplot" class="tab-pane fade">
-            {{ script|safe }}
-            {{ div|safe }}
-        </div>
+{#        <div id="scatterplot" class="tab-pane fade">#}
+{#            {{ script|safe }}#}
+{#            {{ div|safe }}#}
+{#        </div>#}
         <div id="ngram" class="tab-pane fade">
             <div class="card">
                 <div class="header">
                     <h4 class="title custom">{{ "Top" }} {{ tf_idf | length }} {{ "Unigrams" }}</h4>
 {#                    <p class="category custom">0.99 - topic score</p>#}
+                    <br/>
                     <form class="col-md-6" action="/download" method="post" enctype="multipart/form-data">
                         <input type="text" name="download_data" value="download_topic_ngrams" hidden/>
                         <input type="text" name="data_value" value={{ tf_idf }} hidden/>
@@ -111,9 +126,9 @@ Topic Analysis: {{ topic_analysis_for }}
                 </div>
             </div>
         </div>
-        <div id="wordcloud" class="tab-pane fade">
-             <img src="{{ url_for('static', filename="word_cloud.png") }}" alt="Image Placeholder">
-        </div>
+{#        <div id="wordcloud" class="tab-pane fade">#}
+{#             <img src="{{ url_for('static', filename="word_cloud.png") }}" alt="Image Placeholder">#}
+{#        </div>#}
     </div>
 </div>
 {% endblock %}

@@ -34,24 +34,15 @@ def view_all():
     tweets_only = [remove_usernames(t['tweet']) for t in tweets]
     final_list = tfidf_vectorizer(tweets_only, tfidf_parameters['min-gram'], tfidf_parameters['max-gram'])
 
-    topics_dict, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words = topic_analysis_lda(tweets_only,
-                                                                                            lda_parameters['min-gram'],
-                                                                                            lda_parameters['max-gram'],
-                                                                                            lda_parameters['topic'],
-                                                                                            lda_parameters['iter'],
-                                                                                            lda_parameters['word'])
-    print("tsne lda")
-    print(tsne_lda)
-    print("x topics")
-    print(X_topics)
-    print("lda model")
-    print(lda_model)
-    print("lda model")
-    print(tfidfvec)
+    topics_dict = topic_analysis_lda(tweets_only,
+                                     lda_parameters['min-gram'],
+                                     lda_parameters['max-gram'],
+                                     lda_parameters['topic'],
+                                     lda_parameters['iter'],
+                                     lda_parameters['word'])
 
     word_cloud("all", final_list)
-
-    script, div = scatter_plot(tweets_only, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words)
+    # script, div = scatter_plot(tweets_only, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words)
 
     find_topic_tweets(topics_dict, tweets)
     save_obj(final_list, "tf_idf")

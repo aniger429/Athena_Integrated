@@ -302,9 +302,13 @@ def test_bokeh():
     return render_template('test.html', data=data)
 
 
-@app.route('/scatter')
-def test_scatter():
-    return render_template('analysis/Topic/view_scatterplot.html')
+@app.route('/view_graph', methods=['GET'])
+def view_graph():
+    import json
+    script_path = os.path.dirname(__file__)
+    json_url = os.path.join(script_path, "controllers", "Topic_Analysis", "graphs.json")
+    jsondata = json.load(open(json_url))
+    return render_template('analysis/Topic/view_scatterplot.html', jsondata=jsondata)
 
 
 if __name__ == '__main__':

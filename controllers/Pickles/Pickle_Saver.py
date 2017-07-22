@@ -36,3 +36,4 @@ def load_obj(name):
     file_path = os.path.join(script_path, "Pickles", name)
     with open(file_path + '.pkl', 'rb') as f:
         return pickle.load(f)
+
