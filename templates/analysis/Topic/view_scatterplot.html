@@ -82,9 +82,10 @@
                 <li><span id="topic"></span>Topics</li>
                 <li><span id="word"></span>Words</li>
             </ul>
-{#            <button id='saveButton'>Export my D3 visualization to PNG</button>#}
+            <button id='saveButton'>Export my D3 visualization to PNG</button>
         </div>
         <svg id="mycanvas" width="960" height="650"></svg>
+		<canvas width="960px" height="650px" />
     </div>
 
 {% endblock %}
@@ -512,6 +513,37 @@
             return !isNaN(parseFloat(n)) && isFinite(n);
         }
 
+		
+d3.select("#saveButton").on("click", function(){
+var svg = document.querySelector( "svg" );
+var svgData = new XMLSerializer().serializeToString( svg );
+
+var canvas = document.createElement( "canvas" );
+var svgSize = svg.getBoundingClientRect();
+canvas.width = svgSize.width;
+canvas.height = svgSize.height;
+var ctx = canvas.getContext( "2d" );
+
+var img = document.createElement( "img" );
+img.setAttribute( "src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData))));
+
+img.onload = function() {
+    ctx.drawImage( img, 0, 0 );
+    
+	URL = canvas.toDataURL("image/png");
+	  var pngimg = '<img src="'+URL+'">'; 
+  	  d3.select("#pngURL").html(pngimg);
+	  var a = document.createElement("a");
+	  a.download = "sample.png";
+	  a.href = URL;
+	  a.click();
+};
+
+
+
+  
+  
+});
     </script>
 
 
