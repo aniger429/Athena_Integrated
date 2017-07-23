@@ -37,6 +37,7 @@ def get_all_kb_names():
     data = list(db.KB_Names.find({},{"_id":0, "_cls":0}))
     return data
 
+
 def count_total_candidate():
     return db.KB_Names.find({}).count()
 
@@ -44,6 +45,7 @@ def count_total_candidate():
 def get_specific_candidate_names(cname):
     data = list(db.KB_Names.find({'candidate_name':cname}, {"_id": 0, "_cls": 0}))
     return data[0]
+
 
 # returns all the names of the candidates in the db
 def get_all_candidate_names():
@@ -53,6 +55,7 @@ def get_all_candidate_names():
 # add new names for candidate
 def new_kb_names(names, candidate):
     return db.KB_Names.update({"candidate_name": candidate}, {"$pushAll": {'kb_names': names}})
+
 
 # deletes all candidate names in the list
 def delete_kb_names(names, candidate):
