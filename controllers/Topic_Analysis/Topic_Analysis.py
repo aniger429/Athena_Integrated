@@ -200,7 +200,7 @@ def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_
 
         topics_dict[str(topic_idx + 1)] = words_list
 
-
+    print(topics_dict)
     # insert JSON file processing
     # save file to graphs.json
 
