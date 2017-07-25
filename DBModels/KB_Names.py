@@ -34,7 +34,7 @@ def kb_names_update(kb_names_dict):
 
 
 def get_all_kb_names():
-    data = list(db.KB_Names.find({},{"_id":0, "_cls":0}))
+    data = list(db.KB_Names.find({}, {"_id": 0, "_cls": 0}))
     return data
 
 

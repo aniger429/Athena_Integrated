@@ -8,7 +8,8 @@ from nltk.text import TextCollection
 import collections
 from operator import itemgetter
 from sklearn.manifold import TSNE
-
+import simplejson as json
+import os
 tweetlist = []
 
 """
@@ -174,7 +175,6 @@ def write_to_csv(fileName, tweet_list):
             csvwriter.writerow([ngram, value])
 
 
-
 def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_top_words=15):
     tfidfvec = TfidfVectorizer(ngram_range=(start_range, end_range),
                                min_df=5, use_idf=True,
@@ -200,7 +200,103 @@ def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_
 
         topics_dict[str(topic_idx + 1)] = words_list
 
-    print(topics_dict)
+    # insert JSON file processing
+    json_string = {}  # This is the final json string to be written on a json file
+    links = []  # The list that will contain all the links
+    nodes = []  # The list that will contan all the nodes
+
+    topic_cnt = 0  # Index pertaining to the topic number of a certain node
+    topic_node = False  # Boolean that is responsible for telling if a certain index is a topic node
+    destination_num = 2  # Pertains to the destination index. Starts at 2 because node 0 = root node,
+    # 1 = topic node 1, node 2 is the start of word nodes
+    dict_count = 0  # Index to iterate the topic_dict
+    count = 0  # Counter for the number of words to initialize
+    node_cnt = 0  # Index to pertain to the current number of topic nodes initialized
+
+    # First node initialization
+    node = {"size": 100, "score": 0, "id": "Topics", "type": "triangle-up"}
+    nodes.append(node)
+    words_dict = {}
+
+    # Initializes all topic nodes and connects all topic nodes to the root node
+    for r in range(0, num_topics):
+        nodes.append({'size': 50, 'score': 0.5, 'id': 'Topic ' + str(r + 1), 'type': 'square'})
+        links.append({'source': 0, 'target': r})
+
+    for key, value in topics_dict.items():
+        for val in value:
+            target = words_dict.get(val['word'])
+            if target is None:
+                target = len(words_dict) + num_topics + 1
+                words_dict[val['word']] = target
+                nodes.append({'size': 10, 'score': 1, 'id': val['word'], 'type': 'circle'})
+
+            links.append({'source': int(key), 'target': target})
+
+    # for ind in range(1, (num_topics * no_top_words) + num_topics):
+    #
+    #     if topic_node is True or ind == 1:
+    #         node = {}
+    #         link = {}
+    #         topic_cnt += 1
+    #         node["size"] = 50
+    #         node["score"] = 0.5
+    #         node["id"] = "Topic" + str(topic_cnt)
+    #         node["type"] = "square"
+    #         node["value"] = "Topic" + str(topic_cnt)
+    #
+    #         link["source"] = 0
+    #         link["target"] = ind
+    #
+    #         links.append(link)
+    #         nodes.append(node)
+    #
+    #         destination_num = ind + 1
+
+            # Initializes all word nodes and their corresponding links
+    #         if node_cnt < num_topics and dict_count < num_topics:
+    #             dict_count += 1
+    #             while count < no_top_words:
+    #                 node = {}
+    #                 link = {}
+    #                 # Getting the topic words from the dictionary
+    #                 word = list(topics_dict[str(dict_count)])[count]['word']
+    #                 # Getting the score of each topic word for each topic from the dictionary
+    #                 score = round(list(topics_dict[str(dict_count)])[count]['score'], 2)
+    #                 # link["source"] = ind
+    #                 link["target"] = destination_num
+    #                 links.append(link)
+    #                 node["size"] = 10
+    #                 node["score"] = score
+    #                 node["id"] = str(word)
+    #                 node["type"] = "circle"
+    #                 nodes.append(node)
+    #                 count += 1
+    #                 destination_num += 1
+    #             count = 0
+    #
+    #         node_cnt += 1
+    #         topic_node = False
+    #
+    #     # Used to identify if the next index is a topic node. If the current node is divisible by 16 then it means that
+    #     # it's the last word node for the current topic. It follows that the next node should be a topic node
+    #     # of the next topic
+    #     if ind % (no_top_words + 1) == 0:
+    #         print("Index" + str(ind))
+    #         topic_node = True
+    #
+    # Adding the nodes and links to the json string
+    json_string["links"] = links
+    json_string["nodes"] = nodes
+    json_string["graphs"] = []
+
+    script_path = os.path.dirname(__file__)
+    json_url = os.path.join(script_path, os.path.pardir, "graphs.json")
+
+    with open(json_url, 'w') as tst:
+        json.dump(json_string, tst, sort_keys=True)
+
+
     # insert JSON file processing
     # save file to graphs.json
 

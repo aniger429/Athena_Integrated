@@ -121,7 +121,7 @@
             .range([8, 24]);
 
         var force = d3.layout.force()
-            .linkDistance(60)
+            .linkDistance(150)
             .charge(-300)
             .size([w, h]);
 
@@ -179,7 +179,7 @@
             .style("stroke", function (d) {
                 if (isNumber(d.score) && d.score >= 0) return color(d.score);
                 else return default_link_color;
-            })
+            });
 
 
         var node = g.selectAll(".node")
@@ -187,7 +187,7 @@
             .enter().append("g")
             .attr("class", "node")
 
-            .call(force.drag)
+            .call(force.drag);
 
 
         node.on("dblclick.zoom", function (d) {

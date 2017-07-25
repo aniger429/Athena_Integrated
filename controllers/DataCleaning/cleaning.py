@@ -52,7 +52,7 @@ def anonymized_tweet(tweet, nameTuple):
     return reduce(lambda a, kv: a.replace(*kv), nameTuple, tweet)
 
 
-def init_data_cleaning(tweet, nameTuple):
+def init_data_cleaning(tweet):
     # print ("Before:" + tweet)
     # data anonymization
     # tweet = anonymized_tweet(tweet, nameTuple)
@@ -117,7 +117,7 @@ def parallelize_dataframe(df, func, name_tuple, usernames):
 
 def process_chunk(name_tuple, usernames, chunk):
     # chunk['tweet'] will hold the processed/cleaned tweet
-    chunk['tweet'] = chunk.apply(lambda row: init_data_cleaning(row['Tweet'], name_tuple), axis=1)
+    chunk['tweet'] = chunk.apply(lambda row: init_data_cleaning(row['Tweet']), axis=1)
     # 1-3 grams for each tweet
     chunk['unigram'], chunk['bigram'], chunk['trigram'] = ngram_extractor.get_ngrams(chunk['tweet'])
     # positive emoticon/negative emoticon count

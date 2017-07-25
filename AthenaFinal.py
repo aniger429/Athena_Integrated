@@ -306,7 +306,7 @@ def test_bokeh():
 def view_graph():
     import json
     script_path = os.path.dirname(__file__)
-    json_url = os.path.join(script_path, "controllers", "Topic_Analysis", "graphs.json")
+    json_url = os.path.join(script_path, "controllers", "graphs.json")
     jsondata = json.load(open(json_url))
     return render_template('analysis/Topic/view_scatterplot.html', jsondata=jsondata)
 
