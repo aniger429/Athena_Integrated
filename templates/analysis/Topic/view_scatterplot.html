@@ -523,7 +523,8 @@ var svgSize = svg.getBoundingClientRect();
 canvas.width = svgSize.width;
 canvas.height = svgSize.height;
 var ctx = canvas.getContext( "2d" );
-
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 var img = document.createElement( "img" );
 img.setAttribute( "src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData))));
 
