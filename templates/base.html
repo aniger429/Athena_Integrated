@@ -111,6 +111,34 @@
                         </li>
                     </ul>
                 </li>
+                <li class="{%block lexicon_active%}{%endblock%}">
+                    <a href="{{url_for('view_lexicon')}}">
+                        <i class="ti-book"></i>
+                        <p>Sentiment Lexicons</p>
+                    </a>
+                </li>
+{#                <li class="sidebar-menu-item">#}
+{#                    <a class="{%block lexicon_active%}{%endblock%}sidebar-menu-button" data-toggle="sidebar-collapse" href="#">#}
+{#                        <i class="ti-book"></i>#}
+{#                        <p>Sentiment Lexicons</p>#}
+{#                    </a>#}
+{##}
+{#                    <ul class="nav sidebar-submenu">#}
+{#                        <li class="sidebar-menu-item">#}
+{#                            <a href="{{url_for('view_lexicon')}}">#}
+{#                                <i class="fa fa-folder fa-lg fa-fw  custom-submenu"></i>#}
+{#                                English#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="sidebar-menu-item custom-submenu">#}
+{#                            <a href="{{url_for('knowledge_base')}}">#}
+{#                                <i class="fa fa-database fa-lg fa-fw custom-submenu"></i>#}
+{#                                <p class="custom-submenu">Knowledge Base</p>#}
+{#                                Filipino#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </li>#}
                 <li class="{%block vat_active%}{%endblock%}">
                     <a href="{{url_for('view_all_tweets')}}">
                         <i class="ti-twitter"></i>

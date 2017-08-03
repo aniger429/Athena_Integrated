@@ -231,61 +231,6 @@ def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_
                 words_dict[val['word']] = target
                 nodes.append({'size': 10, 'score': 1, 'id': val['word'], 'type': 'circle'})
 
-            links.append({'source': int(key), 'target': target})
-
-    # for ind in range(1, (num_topics * no_top_words) + num_topics):
-    #
-    #     if topic_node is True or ind == 1:
-    #         node = {}
-    #         link = {}
-    #         topic_cnt += 1
-    #         node["size"] = 50
-    #         node["score"] = 0.5
-    #         node["id"] = "Topic" + str(topic_cnt)
-    #         node["type"] = "square"
-    #         node["value"] = "Topic" + str(topic_cnt)
-    #
-    #         link["source"] = 0
-    #         link["target"] = ind
-    #
-    #         links.append(link)
-    #         nodes.append(node)
-    #
-    #         destination_num = ind + 1
-
-            # Initializes all word nodes and their corresponding links
-    #         if node_cnt < num_topics and dict_count < num_topics:
-    #             dict_count += 1
-    #             while count < no_top_words:
-    #                 node = {}
-    #                 link = {}
-    #                 # Getting the topic words from the dictionary
-    #                 word = list(topics_dict[str(dict_count)])[count]['word']
-    #                 # Getting the score of each topic word for each topic from the dictionary
-    #                 score = round(list(topics_dict[str(dict_count)])[count]['score'], 2)
-    #                 # link["source"] = ind
-    #                 link["target"] = destination_num
-    #                 links.append(link)
-    #                 node["size"] = 10
-    #                 node["score"] = score
-    #                 node["id"] = str(word)
-    #                 node["type"] = "circle"
-    #                 nodes.append(node)
-    #                 count += 1
-    #                 destination_num += 1
-    #             count = 0
-    #
-    #         node_cnt += 1
-    #         topic_node = False
-    #
-    #     # Used to identify if the next index is a topic node. If the current node is divisible by 16 then it means that
-    #     # it's the last word node for the current topic. It follows that the next node should be a topic node
-    #     # of the next topic
-    #     if ind % (no_top_words + 1) == 0:
-    #         print("Index" + str(ind))
-    #         topic_node = True
-    #
-    # Adding the nodes and links to the json string
     json_string["links"] = links
     json_string["nodes"] = nodes
     json_string["graphs"] = []
@@ -295,43 +240,5 @@ def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_
 
     with open(json_url, 'w') as tst:
         json.dump(json_string, tst, sort_keys=True)
-
-
-    # insert JSON file processing
-    # save file to graphs.json
-
-    # # used for scatterplot
-    # X_topics = lda_model.fit_transform(cvz)
-    #
-    # # filter out unconfident assignments
-    # threshold = 0.5
-    # _idx = np.amax(X_topics, axis=1) > threshold  # idx of doc that above the threshold
-    # X_topics = X_topics[_idx]
-    #
-    # # a t-SNE model
-    # # angle value close to 1 means sacrificing accuracy for speed
-    # # pca initializtion usually leads to better results
-    # tsne_model = TSNE(n_components=2, verbose=1, random_state=0, angle=.99, init='pca')
-    #
-    # # 20-D -> 2-D
-    # tsne_lda = tsne_model.fit_transform(X_topics)
-    #
-    # _lda_keys = []
-    # for i in range(X_topics.shape[0]):
-    #     _lda_keys += X_topics[i].argmax(),
-    #
-    # # get top words
-    # topic_summaries = []
-    # topic_word = lda_model.components_  # all topic words
-    # vocab = tfidfvec.get_feature_names()
-    #
-    # for i, topic_dist in enumerate(topic_word):
-    #     topic_words = np.array(vocab)[np.argsort(topic_dist)][:-(no_top_words + 1):-1]  # get!
-    #     topic_summaries.append(' '.join(topic_words))  # append!
-
-    # return topics_dict, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words
-
-
-
 
     return topics_dict

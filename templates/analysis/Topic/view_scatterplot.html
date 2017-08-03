@@ -145,8 +145,7 @@
         var height = "650px";
 
 
-        var graph =
-        {{ jsondata|tojson|safe }}
+        var graph = {{ jsondata|tojson|safe }}
 
         var linkedByIndex = {};
         graph.links.forEach(function (d) {

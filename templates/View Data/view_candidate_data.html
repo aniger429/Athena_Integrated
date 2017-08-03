@@ -58,34 +58,38 @@ Tweet
         <div class="card">
             <div class="header">
                 <h4 class="title custom">{{ candidate_data['candidate_name'] | capitalize }}</h4>
-                <p class="category custom">Names Used</p>
+                <p class="category custom">{{ candidate_data['kb_names'] | count}} Names Used</p>
                 <br/><br/>
 
                  <form action="/download" method="post" enctype="multipart/form-data">
-                    <input type="text" name="download_data" value="all_candidate_names" hidden/>
-                    <input id="submit" type="submit" class="btn btn-info col-md-3 pull-right" Value="Download Names">
+                    <input type="text" name="download_data" value="specific_candidate_names" hidden/>
+                    <input type="text" name="cand_name" value="{{ candidate_name }}" hidden/>
+                    <input id="submit" type="submit" class="btn btn-info col-md-3 pull-right"
+                           Value="Download Names">
                 </form>
             </div>
             <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
+                <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable1">
                     <thead>
-                        <th class="col-md-3">Name</th>
+                        <th class="col-md-2">Name</th>
                         <th class="col-md-1">Count</th>
-                        <th class="col-md-3">Name</th>
+                        <th class="col-md-2">Name</th>
                         <th class="col-md-1">Count</th>
-                        <th class="col-md-3">Name</th>
+                        <th class="col-md-2">Name</th>
+                        <th class="col-md-1">Count</th>
+                        <th class="col-md-2">Name</th>
                         <th class="col-md-1">Count</th>
                     </thead>
                     <tbody>
-                        {% for cname_row in candidate_data['kb_names'] | batch(3, '&nbsp;') %}
+                        {% for cname_row in candidate_data['kb_names'] | batch(4, '&nbsp;') %}
                             <tr>
                                 {% for cname in cname_row %}
                                     {% if cname != '&nbsp;' %}
-                                        <td>{{ cname }}</td>
-                                        <td>{{ candidate_name_count[cname] }}</td>
+                                        <td class="col-md-2">{{ cname }}</td>
+                                        <td class="col-md-1">{{ candidate_name_count[cname] }}</td>
                                     {% else %}
-                                        <td></td>
-                                        <td></td>
+                                        <td class="col-md-2"></td>
+                                        <td class="col-md-1"></td>
                                     {% endif %}
                                 {% endfor %}
                             </tr>
@@ -183,6 +187,7 @@ Tweet
     <script>
         $(document).ready(function(){
             $('#myTable').DataTable();
+            $('#myTable1').DataTable();
         });
         $('#tags').tagsinput({
           confirmKeys: [13, 188, 9],

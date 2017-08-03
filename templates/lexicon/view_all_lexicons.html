@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block customCSS %}
+    <!--  Paper Dashboard core CSS    -->
+    <link href="{{ url_for('static', filename="css/customized.css") }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename="css/bootstrap_custom.css") }}" rel="stylesheet"/>
+    <style>
+        .title.custom {
+            font-size: 25px;
+        }
+        .category.custom{
+            font-size:20px;
+        }
+
+    </style>
+{%  endblock %}
+
+{%block name%}
+Lexicon Base
+{%endblock%}
+{% block lexicon_active %}
+    active
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <form action="/populate_lexicons" method="post" enctype="multipart/form-data">
+        <input id="submit" type="submit" class="btn btn-info pull-right" Value="Populate Lexicon">
+    </form>
+</div>
+<div class="row">
+{#            <form action="/download" method="post" enctype="multipart/form-data">#}
+{#                <input type="text" name="download_data" value="all_kb_names" hidden/>#}
+{#                <input id="submit" type="submit" class="btn btn-info pull-right" Value="Download All Candidate Names">#}
+{#            </form>#}
+ {% for key, lex in all_lexicon.iterrows() %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">{{ lex['language'] | capitalize }} ~ {{ lex['sentiment'] | capitalize }}</h4>
+                <p class="category custom">{{ lex['words'] | length }} words</p>
+                <hr/>
+                <a class="username_link" href="{{ url_for('view_lexicon_words', sentiment=lex['sentiment'], language=lex['language'])}}">
+                    <p style="text-align: center"><i>View Words</i></p>
+                </a>
+            </div>
+            </br>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
+
+{% block customJS %}
+{% endblock %}

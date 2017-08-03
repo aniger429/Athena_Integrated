@@ -5,6 +5,7 @@ from controllers.visualization.scatterplot import *
 from DBModels.Tweet import *
 from controllers.visualization.wordcloud_viz import word_cloud
 from controllers.Pickles.Pickle_Saver import *
+import base64
 
 
 def topic_analysis():
@@ -27,11 +28,11 @@ def topic_analysis():
 
 
 def view_all():
-    tweets = get_all_tweets()
+    tweets = get_all_orig_tweets()
     topic_for = "All Tweets"
     lda_parameters, tfidf_parameters = topic_analysis()
 
-    tweets_only = [remove_usernames(t['tweet']) for t in tweets]
+    tweets_only = list(tweets['tweet'])
     final_list = tfidf_vectorizer(tweets_only, tfidf_parameters['min-gram'], tfidf_parameters['max-gram'])
 
     topics_dict = topic_analysis_lda(tweets_only,
@@ -41,7 +42,9 @@ def view_all():
                                      lda_parameters['iter'],
                                      lda_parameters['word'])
 
-    word_cloud("all", final_list)
+    word_cloud_path = word_cloud("all", final_list)
+    wc_img = base64.b64encode(open(word_cloud_path, "rb").read())
+
     # script, div = scatter_plot(tweets_only, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words)
 
     find_topic_tweets(topics_dict, tweets)
@@ -49,8 +52,7 @@ def view_all():
 
     return render_template("analysis/Topic/view_topic_results.html",
                            tf_idf=final_list, topics_dict=topics_dict,
-                           topic_analysis_for=topic_for, source="All Tweets")
-                           # script=script, div=div)
+                           topic_analysis_for=topic_for, source="All Tweets", wc_img=wc_img.decode('utf8'))
 
 
 def view_candidate(candidate_name):
@@ -58,56 +60,50 @@ def view_candidate(candidate_name):
     topic_for = candidate_name
     lda_parameters, tfidf_parameters = topic_analysis()
 
-    tweets = load_obj("Candidate")
+    tweets = load_pickled_dataframe("Candidate")
     topic_for = candidate_name
-
-    tweets_only = [remove_usernames(t['tweet']) for t in tweets]
+    tweets_only = list(tweets['tweet'])
     final_list = tfidf_vectorizer(tweets_only, tfidf_parameters['min-gram'], tfidf_parameters['max-gram'])
 
-    topics_dict, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words = topic_analysis_lda(tweets_only,
-                                                                                            lda_parameters['min-gram'],
-                                                                                            lda_parameters['max-gram'],
-                                                                                            lda_parameters['topic'],
-                                                                                            lda_parameters['iter'],
-                                                                                            lda_parameters['word'])
+    topics_dict = topic_analysis_lda(tweets_only,
+                                     lda_parameters['min-gram'],
+                                     lda_parameters['max-gram'],
+                                     lda_parameters['topic'],
+                                     lda_parameters['iter'],
+                                     lda_parameters['word'])
 
-    word_cloud("candidate", final_list)
-
-    script, div = scatter_plot(tweets_only, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words)
+    word_cloud_path = word_cloud("candidate", final_list)
+    wc_img = base64.b64encode(open(word_cloud_path, "rb").read())
 
     find_topic_tweets(topics_dict, tweets)
     save_obj(final_list, "tf_idf")
 
     return render_template("analysis/Topic/view_topic_results.html", tf_idf=final_list, topics_dict=topics_dict,
-                           topic_analysis_for=topic_for, source=candidate_name,
-                           script=script, div=div)
+                           topic_analysis_for=topic_for, source=candidate_name, wc_img=wc_img.decode('utf8'))
 
 
 def view_sentiment(sentiment):
     topic_for = sentiment
     lda_parameters, tfidf_parameters = topic_analysis()
 
-    print(sentiment)
-    data = load_obj("Sentiment")
-    tweets = data[sentiment]
-
-    print(tweets)
+    tweets = load_pickled_dataframe(sentiment)
     topic_for = sentiment
 
-    tweets_only = [remove_usernames(t['tweet']) for t in tweets]
+    tweets_only = list(tweets['tweet'])
     final_list = tfidf_vectorizer(tweets_only, tfidf_parameters['min-gram'], tfidf_parameters['max-gram'])
-    topics_dict, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words = topic_analysis_lda(tweets_only,
-                                                                                            lda_parameters['min-gram'],
-                                                                                            lda_parameters['max-gram'],
-                                                                                            lda_parameters['topic'],
-                                                                                            lda_parameters['iter'],
-                                                                                            lda_parameters['word'])
-    word_cloud(sentiment, final_list)
 
-    script, div = scatter_plot(tweets_only, X_topics, tsne_lda, lda_model, tfidfvec, no_top_words)
+    topics_dict = topic_analysis_lda(tweets_only,
+                                     lda_parameters['min-gram'],
+                                     lda_parameters['max-gram'],
+                                     lda_parameters['topic'],
+                                     lda_parameters['iter'],
+                                     lda_parameters['word'])
+
+    word_cloud_path = word_cloud(sentiment, final_list)
+    wc_img = base64.b64encode(open(word_cloud_path, "rb").read())
+
     find_topic_tweets(topics_dict, tweets)
     save_obj(final_list, "tf_idf")
 
     return render_template("analysis/Topic/view_topic_results.html", tf_idf=final_list, topics_dict=topics_dict,
-                           topic_analysis_for=topic_for, source=sentiment,
-                           script=script, div=div)
+                           topic_analysis_for=topic_for, source=sentiment, wc_img=wc_img.decode('utf8'))

@@ -5,6 +5,7 @@ from DBModels.Data import *
 from DBModels.KBFile import *
 from DBModels.MongoDB_Manager import *
 from DBModels.Username import *
+from DBModels.Lexicon import *
 from controllers import uploadFile
 from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
@@ -12,10 +13,11 @@ from controllers.download import *
 from controllers.analysis_controller.topic_view_analysis import *
 from controllers.analysis_controller.analysis_manager import new_analysis
 from controllers.visualization.donut_chart import *
-
+from controllers.init_athena import *
 
 # Initialize the Flask application
 app = Flask(__name__)
+# app.jinja_env.filters['b64d'] = lambda u: b64encode(u).decode()
 
 # db = MongoClient('localhost', 27017).Athena
 
@@ -132,7 +134,8 @@ def topic_analysis_manager():
 def view_tweets_for_topic():
     key = request.args.get('key')
     data = load_obj("Topics")
-    candidates_mentioned = identify_candidate_mentioned(data[key]['topic_tweets'])
+    tweet_df = data[key]['topic_tweets']
+    candidates_mentioned = identify_candidate_mentioned(tweet_df)
     return render_template("analysis/Topic/view_topic_tweets.html", key=key, topic=data[key],
                            candidates_mentioned=candidates_mentioned)
 
@@ -198,6 +201,42 @@ def clean_file(filename):
 def knowledge_base():
     return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(),
                            kbFileList=get_all_kbfile(), duplicate=False)
+
+
+@app.route('/populate_lexicons', methods=['POST'])
+def populate_lexicons():
+    # populate the lexicon base
+    populate_lexicon()
+    return redirect(redirect_url())
+
+
+@app.route('/view_lexicon')
+def view_lexicon():
+    return render_template("lexicon/view_all_lexicons.html", all_lexicon=get_all_lexicon())
+
+@app.route('/view_lexicon_words', methods=['GET'])
+def view_lexicon_words():
+    language = request.args.get('language')
+    sentiment = request.args.get('sentiment')
+    return render_template("lexicon/lexicon_base.html", sentiment_words=get_all_words(language, sentiment), sentiment=sentiment, language=language)
+
+
+@app.route('/delete_lexicon_word', methods=['POST'])
+def delete_lexicon_word():
+    language = request.form['language']
+    sentiment = request.form['sentiment']
+    names = request.form.getlist('names[]')
+    delete_lexicon_words(names, language, sentiment)
+    return redirect(redirect_url())
+
+
+@app.route('/add_lexicon_words', methods=['POST'])
+def add_lexicon_words():
+    language = request.form['language']
+    sentiment = request.form['sentiment']
+    names = request.form['add_names'].split(",")
+    new_lexicon_words(names, language, sentiment)
+    return redirect(redirect_url())
 
 
 # Route that will process the file upload

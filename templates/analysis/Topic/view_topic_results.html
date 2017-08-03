@@ -27,7 +27,7 @@ Topic Analysis: {{ topic_analysis_for }}
         <li class="active"><a data-toggle="tab" href="#lda">LDA Results</a></li>
 {#        <li><a data-toggle="tab" href="#scatterplot">Scatterplot</a></li>#}
         <li><a data-toggle="tab" href="#ngram">Top N-Grams</a></li>
-{#        <li><a data-toggle="tab" href="#wordcloud">Word Cloud</a></li>#}
+        <li><a data-toggle="tab" href="#wordcloud">Word Cloud</a></li>
     </ul>
 
     <div class="tab-content">
@@ -126,9 +126,9 @@ Topic Analysis: {{ topic_analysis_for }}
                 </div>
             </div>
         </div>
-{#        <div id="wordcloud" class="tab-pane fade">#}
-{#             <img src="{{ url_for('static', filename="word_cloud.png") }}" alt="Image Placeholder">#}
-{#        </div>#}
+        <div id="wordcloud" class="tab-pane fade">
+             <img src="data:image/png;base64,{{ wc_img }}" alt="Image Placeholder">
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -20,6 +20,7 @@ import pandas as pd
 directory = path.dirname(__file__)
 SOURCE = ""
 
+
 def read_xlsx(filename):
     return pd.read_excel(filename, encoding='utf-8', keep_default_na=False)
 
@@ -51,7 +52,7 @@ def which_masks():
 
 
 def color_func(word, font_size, position, orientation, random_state=None, **kwargs):
-    return tuple(Reds_9.colors[random.randint(2,8)])
+    return tuple(Reds_9.colors[random.randint(2, 8)])
 
 
 def which_color(word, font_size, position, orientation, random_state=None, **kwargs):
@@ -80,20 +81,11 @@ def word_cloud(source, text):
     wc.generate_from_frequencies(frequencies=ngram_freq)
     wc.recolor(color_func=which_color, random_state=3)
 
+
     # store to file
-    static_folder = path.join(directory, pardir, pardir, "static")
+    static_folder = path.join(directory, pardir)
     wc.to_file(path.join(static_folder, "word_cloud.png"), )
 
-    # show
-    # plt.figure(figsize=(7, 5), facecolor='k')
-    # plt.imshow(wc, interpolation='bilinear')
-    # plt.axis("off")
-    # plt.tight_layout(pad=0)
-    # plt.annotate("BANANA", xy=(0, -.025), xycoords='axes fraction', fontsize=20, color='white')
-    # plt.show()
-
-# word_cloud()
-
-
+    return path.join(static_folder, "word_cloud.png")
 
 

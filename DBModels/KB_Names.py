@@ -43,7 +43,7 @@ def count_total_candidate():
 
 
 def get_specific_candidate_names(cname):
-    data = list(db.KB_Names.find({'candidate_name':cname}, {"_id": 0, "_cls": 0}))
+    data = list(db.KB_Names.find({'candidate_name': cname}, {"_id": 0, "_cls": 0}))
     return data[0]
 
 

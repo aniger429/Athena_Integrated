@@ -2,6 +2,7 @@ import pandas as pd
 from flask import request, redirect, url_for, render_template
 import DBModels
 import controllers
+from controllers.Pickles.Pickle_Saver import *
 # import openpyxl
 
 
@@ -35,8 +36,9 @@ def download():
         filename = "Data/Downloads/all_usernames.xlsx"
 
     elif which_data == "specific_candidate_names":
-        data = DBModels.KB_Names.get_all_kb_names()
-        filename = "Data/Downloads/all_candidate_names.xlsx"
+        candidate = request.form['cand_name']
+        data = DBModels.KB_Names.get_specific_candidate_names(candidate)
+        filename = "Data/Downloads/candidate_names_"+candidate+".xlsx"
 
     elif which_data == "all_kb_names":
         kb_names = DBModels.KB_Names.get_all_kb_names()
@@ -51,13 +53,13 @@ def download():
         return redirect(redirect_url())
 
     elif which_data == "download_tweets_candidate":
-        data = controllers.analysis_controller.Pickle_Saver.load_obj("Candidate")
+        data = load_obj("Candidate")
         filename = "Data/Downloads/candidate_tweets.xlsx"
 
     elif which_data == "download_topic_lda_results":
         from collections import OrderedDict
 
-        data = controllers.analysis_controller.Pickle_Saver.load_obj("Topics")
+        data = load_obj("Topics")
         word_list = OrderedDict()
         tweets = []
 
@@ -77,21 +79,20 @@ def download():
 
     elif which_data == "download_topic_words":
         key = request.form['key']
-        data = controllers.analysis_controller.Pickle_Saver.load_obj("Topics")[key]['words']
+        data = load_obj("Topics")[key]['words']
         filename = "Data/Downloads/topic_"+key+"_keywords.xlsx"
 
     elif which_data == "download_topic_tweets":
         key = request.form['key']
-        data_source = controllers.analysis_controller.Pickle_Saver.load_obj("Topics")[key]['topic_tweets']
+        data_source = load_obj("Topics")[key]['topic_tweets']
         data = [{'tweet': d['tweet'], '_id': str(d['_id'])} for d in data_source]
         filename = "Data/Downloads/topic_"+key+"_tweets.xlsx"
 
     elif which_data == "download_topic_ngrams":
-        data_source = controllers.analysis_controller.Pickle_Saver.load_obj("tf_idf")
+        data_source = load_obj("tf_idf")
         b,c = zip(*(list(data_source.items())))
         data = {'ngram':b, 'score':c}
         filename = "Data/Downloads/topic_ngrams.xlsx"
-
 
     elif which_data == "specific_username":
         username_id = request.form['username_id']
