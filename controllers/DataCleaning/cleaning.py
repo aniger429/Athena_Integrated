@@ -47,9 +47,12 @@ def get_usernames(tweet_list):
     return pattern.findall(tweet_list)
 
 
-def anonymized_tweet(tweet, nameTuple):
+def processed_orig_tweet(tweet, nameTuple):
     # data anonymization
-    return reduce(lambda a, kv: a.replace(*kv), nameTuple, tweet)
+    tweet = reduce(lambda a, kv: a.replace(*kv), nameTuple, tweet)
+    # replace links in the tweet with LINK
+    tweet = pat.replace_links(tweet)
+    return tweet
 
 
 def init_data_cleaning(tweet):
@@ -128,7 +131,7 @@ def process_chunk(name_tuple, usernames, chunk):
     # hashtag processing
     chunk['hashtags'] = process_hashtags(chunk['Hashtags'])
     # anonymized original tweet
-    chunk['Tweet'] = chunk.apply(lambda row: anonymized_tweet(row['Tweet'], name_tuple), axis=1)
+    chunk['Tweet'] = chunk.apply(lambda row: processed_orig_tweet(row['Tweet'], name_tuple), axis=1)
     # users mentioned
     chunk['users_mentioned'] = chunk.apply(lambda row: get_usernames(row['Tweet']), axis=1)
 

@@ -18,6 +18,10 @@ SMILEYS_PATTERN = re.compile(r"(?:X|:|;|=)(?:-)?(?:\)|\(|O|D|P|S){1,}", re.IGNOR
 NUMBERS_PATTERN = re.compile(r"(^|\s)(\-?\d+(?:\.\d)*|\d+)")
 
 
+def replace_links(tweet):
+    return URL_PATTERN.sub('LINK', tweet)
+
+
 def remove_from_tweet(tweet):
     tweet = URL_PATTERN.sub('', tweet)
     tweet = RESERVED_WORDS_PATTERN.sub('', tweet)

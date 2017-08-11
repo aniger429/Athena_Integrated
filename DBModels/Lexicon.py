@@ -25,6 +25,7 @@ def insert_lexicon_sentiments(language, positive, negative):
 
 def get_all_lexicon():
     data = pd.DataFrame(list(db.Lexicon.find({}, {"_id": 0, "_cls": 0})))
+    print(data)
     return data
 
 

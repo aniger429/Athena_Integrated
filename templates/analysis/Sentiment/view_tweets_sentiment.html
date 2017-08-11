@@ -76,11 +76,23 @@ Sentiment Analysis: {{ sentiment_analysis_for }}
                                  <tr>
                                     <td class="col-md-1">{{ loop.index }}</td>
                                     <td class="col-md-10">
-                                        {% for word in tweet['orig_tweets'] %}
-                                            {% if word[:1] != '@' %}
-                                                {{ word }}
-                                            {% else %}
-                                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>@USER</i></a>
+                                        {% for word in tweet['words_senti'] %}
+                                            {% if word['word'][:1] == '@' %}
+                                                <a class="username_link" href="{{ url_for('view_specific_user', user_id=word['word'][1:])}}"> <i>@USER</i></a>
+                                            {% elif word['sentiment'] == "positive" %}
+                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                               title="Language: {{ word['language'] }}, Word Matched: {{ word['matched'] }}">                                               <span style="font-size:14px; color:#238b2a; font-weight:bold; font-style:italic;">
+                                                {{ word['word'] }}
+                                            </span>
+                                            </a>
+                                            {% elif word['sentiment'] == "negative" %}
+                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                               title="Language: {{ word['language'] }}, Word Matched: {{ word['matched'] }}">                                               <span style="font-size:14px; color:#8b2e23; font-weight:bold; font-style:italic;">
+                                                {{ word['word'] }}
+                                            </span>
+                                            </a>
+                                            {% else  %}
+                                                {{ word['word'] }}
                                             {% endif %}
                                         {% endfor %}
                                     </td>
