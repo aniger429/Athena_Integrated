@@ -200,18 +200,11 @@ def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_
 
         topics_dict[str(topic_idx + 1)] = words_list
 
+    print(topics_dict)
     # insert JSON file processing
     json_string = {}  # This is the final json string to be written on a json file
     links = []  # The list that will contain all the links
     nodes = []  # The list that will contan all the nodes
-
-    topic_cnt = 0  # Index pertaining to the topic number of a certain node
-    topic_node = False  # Boolean that is responsible for telling if a certain index is a topic node
-    destination_num = 2  # Pertains to the destination index. Starts at 2 because node 0 = root node,
-    # 1 = topic node 1, node 2 is the start of word nodes
-    dict_count = 0  # Index to iterate the topic_dict
-    count = 0  # Counter for the number of words to initialize
-    node_cnt = 0  # Index to pertain to the current number of topic nodes initialized
 
     # First node initialization
     node = {"size": 100, "score": 0, "id": "Topics", "type": "triangle-up"}
@@ -219,8 +212,8 @@ def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_
     words_dict = {}
 
     # Initializes all topic nodes and connects all topic nodes to the root node
-    for r in range(0, num_topics):
-        nodes.append({'size': 50, 'score': 0.5, 'id': 'Topic ' + str(r + 1), 'type': 'square'})
+    for r in range(1, num_topics+1, 1):
+        nodes.append({'size': 50, 'score': 0.5, 'id': 'Topic ' + str(r), 'type': 'square'})
         links.append({'source': 0, 'target': r})
 
     for key, value in topics_dict.items():
@@ -230,6 +223,8 @@ def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_
                 target = len(words_dict) + num_topics + 1
                 words_dict[val['word']] = target
                 nodes.append({'size': 10, 'score': 1, 'id': val['word'], 'type': 'circle'})
+
+            links.append({'source': int(key), 'target': target})
 
     json_string["links"] = links
     json_string["nodes"] = nodes
