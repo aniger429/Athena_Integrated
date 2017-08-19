@@ -1,13 +1,13 @@
-from afinn import Afinn
-import nltk
 from controllers.Pickles.Pickle_Saver import *
-from collections import Counter
-from multiprocessing import Pool
-from functools import partial
-import numpy as np
 import pickle
-from DBModels.Lexicon import *
 import re
+from multiprocessing import Pool
+
+import numpy as np
+
+from DBModels.Lexicon import *
+from controllers.Pickles.Pickle_Saver import *
+
 num_partitions = 6  # number of partitions to split dataframe
 num_cores = 6  # number of cores on your machine
 
@@ -114,11 +114,6 @@ num_cores = 6  # number of cores on your machine
 #
 #     return tweet_list
 
-posEng = get_all_words("english", "positive")
-negEng = get_all_words("english", "negative")
-posFil = get_all_words("filipino", "positive")
-negFil = get_all_words("filipino", "negative")
-
 
 def lscv_sentiment(tweet_list):
     # path for classifiers
@@ -146,21 +141,7 @@ def check_word(lex_list, word):
     return next((s for s in lex_list if word == s), "None")
 
 
-def get_word_sentiment(tweet):
-    # word_list = []
-    # for word in tweet.split(' '):
-    #     processed_word = re.sub('[^A-Za-z0-9@ ]+', '', word.lower())
-    #     if (processed_word in negEng) or (processed_word in negFil):
-    #         print(processed_word, "negative")
-    #         word_list.append((word, 'negative'))
-    #     elif (processed_word in posEng) or (processed_word in posFil):
-    #         print(processed_word, "positive")
-    #         word_list.append((word, 'positive'))
-    #     else:
-    #         print(processed_word, "neutral")
-    #         word_list.append((word, 'neutral'))
-    #
-    # return word_list
+def get_word_sentiment(tweet, posEng, negEng, posFil, negFil):
     word_list = []
     for word in tweet.split(' '):
         processed_word = re.sub('[^A-Za-z0-9@ ]+', '', word.lower())
@@ -183,10 +164,16 @@ def get_word_sentiment(tweet):
 
 
 def compute_tweets_sentiment(tweet_list):
+    posEng = get_all_words("english", "positive")
+    negEng = get_all_words("english", "negative")
+    posFil = get_all_words("filipino", "positive")
+    negFil = get_all_words("filipino", "negative")
+
+
     # Lexicon Based
     # tweet_list = sa_parallelize_dataframe(tweet_list, lexicon_sentiment)
     # returns a list of all the words with their corresponding sentiment
-    tweet_list['words_senti'] = tweet_list.apply(lambda row: get_word_sentiment(row['orig_tweets']), axis=1)
+    tweet_list['words_senti'] = tweet_list.apply(lambda row: get_word_sentiment(row['orig_tweets'], posEng, negEng, posFil, negFil), axis=1)
     # Machine Learning - LSVC
     tweet_list['sentiment'] = lscv_sentiment(tweet_list['tweet'])
     posi_tweets = tweet_list[tweet_list['sentiment'] == "Positive"]

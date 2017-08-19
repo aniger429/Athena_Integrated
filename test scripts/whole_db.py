@@ -1,8 +1,10 @@
-from controllers.Sentiment_Analysis.Sentiment_Identification import *
-from DBModels.KB_Names import *
-import re
-from controllers.DataCleaning import Patterns as pat
 import os
+import re
+
+from DBModels.KB_Names import *
+from controllers.DataCleaning import Patterns as pat
+from controllers.Sentiment_Analysis.Sentiment_Identification import *
+
 num_partitions = 6  # number of partitions to split dataframe
 num_cores = 6  # number of cores on your machine
 columns = ['Tweet', 'binay', 'duterte', 'poe', 'roxas', 'santiago']
@@ -285,7 +287,7 @@ def process_sentiment():
 
             write_data("/home/dudegrim/Documents/whole/Sentiment/data_count_"+cand['candidate_name']+".csv", data_count)
 
-import time
+
 # start = time.time()
 # process_sentiment()
 # end = time.time()

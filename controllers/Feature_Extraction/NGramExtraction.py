@@ -1,15 +1,14 @@
-from afinn import Afinn
-import nltk
-from nltk.corpus import sentiwordnet as swn
-from nltk.tokenize import word_tokenize
-from nltk.util import ngrams
-import math
-import re
 import copy
-import pandas as pd
 import os
+import re
+
+import nltk
+import pandas as pd
+from afinn import Afinn
+from nltk.corpus import sentiwordnet as swn
+from nltk.util import ngrams
+
 from DBModels.Tweet import *
-import openpyxl
 
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "Lexicon_Files")

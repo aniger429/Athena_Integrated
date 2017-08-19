@@ -1,16 +1,17 @@
-import re
-from functools import reduce
-from DBModels.Username import *
-from DBModels.Tweet import *
 import os
-from controllers.DataCleaning import preprocessing
-from controllers.DataCleaning import Patterns as pat
-from controllers.Feature_Extraction import ngram_extractor
-import pandas as pd
-from multiprocessing import Pool
+import re
 from functools import partial
-import numpy as np
+from functools import reduce
+from multiprocessing import Pool
 
+import numpy as np
+import pandas as pd
+
+from DBModels.Tweet import *
+from DBModels.Username import *
+from controllers.DataCleaning import Patterns as pat
+from controllers.DataCleaning import preprocessing
+from controllers.Feature_Extraction import ngram_extractor
 
 num_partitions = 6  # number of partitions to split dataframe
 num_cores = 6  # number of cores on your machine

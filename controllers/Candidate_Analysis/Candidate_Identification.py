@@ -1,11 +1,11 @@
-from DBModels.KB_Names import *
-from DBModels.Tweet import *
-import pandas as pd
-from controllers.Sentiment_Analysis.Sentiment_Identification import *
-from multiprocessing import Pool
 from functools import partial
+from multiprocessing import Pool
+
 import numpy as np
 
+from DBModels.KB_Names import *
+from DBModels.Tweet import *
+from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
 num_partitions = 6  # number of partitions to split dataframe
 num_cores = 6  # number of cores on your machine

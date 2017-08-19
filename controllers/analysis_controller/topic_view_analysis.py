@@ -1,11 +1,11 @@
+import base64
+
 from flask import request, render_template
+
+from DBModels.Tweet import *
 from controllers.Topic_Analysis.Find_Topic_Tweets import *
 from controllers.Topic_Analysis.Topic_Analysis import *
-from controllers.visualization.scatterplot import *
-from DBModels.Tweet import *
 from controllers.visualization.wordcloud_viz import word_cloud
-from controllers.Pickles.Pickle_Saver import *
-import base64
 
 
 def topic_analysis():

@@ -1,7 +1,8 @@
 from flask import redirect, url_for
+
 from controllers.Candidate_Analysis.Candidate_Identification import *
-from controllers.analysis_controller.topic_view_analysis import *
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
+from controllers.analysis_controller.topic_view_analysis import *
 
 
 def new_analysis():

@@ -1,10 +1,12 @@
 import os
-from flask import request, redirect, url_for, session
+
+import pandas as pd
+from flask import request, redirect, url_for
 from werkzeug.utils import secure_filename
+
 from DBModels.Data import *
 from DBModels.KBFile import *
 from controllers.KnowledgeBaseCreation import *
-import pandas as pd
 
 
 def read_csv(filename):

@@ -1,7 +1,6 @@
-from controllers.Sentiment_Analysis.Sentiment_Identification import *
-from DBModels.Tweet import *
+from flask import request, render_template
+
 from controllers.Candidate_Analysis.Candidate_Identification import *
-from flask import Flask, request, render_template,redirect, url_for
 
 
 def get_sentiment_identified(tweets):

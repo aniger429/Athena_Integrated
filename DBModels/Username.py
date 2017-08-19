@@ -1,8 +1,8 @@
-from pymongo.write_concern import WriteConcern
-from pymodm import MongoModel, fields
-from pymongo import MongoClient
 import pymongo
 from bson.objectid import ObjectId
+from pymodm import MongoModel, fields
+from pymongo import MongoClient
+from pymongo.write_concern import WriteConcern
 
 db = MongoClient('mongodb://localhost:27017/Athena').Athena
 

@@ -1,13 +1,13 @@
-from controllers.Sentiment_Analysis.Sentiment_Identification import *
-from controllers.machine_learning.cleaning import *
-import pandas as pd
+import itertools
 import time
 
-
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 import matplotlib.pyplot as plt
-import itertools
 import numpy as np
+import pandas as pd
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+
+from controllers.Sentiment_Analysis.Sentiment_Identification import *
+from controllers.machine_learning.cleaning import *
 
 
 def read_file(file_name):

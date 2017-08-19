@@ -1,19 +1,19 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression, SGDClassifier, PassiveAggressiveClassifier
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.svm import LinearSVC
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.pipeline import Pipeline
-from sklearn.tree import DecisionTreeClassifier
-from sklearn import model_selection
-from sklearn.metrics import classification_report, confusion_matrix,accuracy_score
-from controllers.machine_learning.cleaning import *
-from controllers.Pickles.Pickle_Saver import *
-import time
+import itertools
 
 import matplotlib.pyplot as plt
-import itertools
 import numpy as np
+from sklearn import model_selection
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression, SGDClassifier, PassiveAggressiveClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.svm import LinearSVC
+from sklearn.tree import DecisionTreeClassifier
+
+from controllers.Pickles.Pickle_Saver import *
+from controllers.machine_learning.cleaning import *
 
 
 def read_file(file_name):

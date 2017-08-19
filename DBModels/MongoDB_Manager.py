@@ -1,8 +1,8 @@
-from pymongo.write_concern import WriteConcern
-from pymodm import MongoModel, fields
 import datetime
-from pymongo import MongoClient
 
+from pymodm import MongoModel, fields
+from pymongo import MongoClient
+from pymongo.write_concern import WriteConcern
 
 mainDB = "Athena"
 client = MongoClient('localhost', 27017)

@@ -1,5 +1,7 @@
 import os
+
 import pandas as pd
+
 from DBModels.Lexicon import insert_lexicon_sentiments
 
 

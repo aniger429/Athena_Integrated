@@ -22,8 +22,9 @@
 #
 # show(d)
 
-from bokeh.charts import Donut, show
 import pandas as pd
+from bokeh.charts import Donut, show
+
 data = pd.Series([100, 500, 200], index=['Positive', 'Negative', 'Neutral'])
 pie_chart = Donut(data)
 show(pie_chart)

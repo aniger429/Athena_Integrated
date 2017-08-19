@@ -1,16 +1,6 @@
-import nltk
 from nltk.util import ngrams
-from DBModels.Tweet import *
-import os
+
 from controllers.DataCleaning import Patterns as pat
-
-script_path = os.path.dirname(os.path.dirname(__file__))
-file_path = os.path.join(script_path, "Lexicon_Files")
-nltk.data.path.append(script_path+"/Lexicon_Files")
-
-
-def read_xlsx(filename):
-    return pd.read_excel(filename, encoding='utf-8', keep_default_na=False)
 
 
 def get_ngrams(tweet_list):

@@ -1,6 +1,8 @@
 import unicodedata as uni
-import pandas as pd
 from os import path
+
+import pandas as pd
+
 # as of unicodedata version 8.0.0
 
 script_path = path.dirname(path.dirname(__file__))

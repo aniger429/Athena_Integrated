@@ -1,20 +1,18 @@
+import matplotlib.pyplot as plt
+from sklearn import model_selection
+from sklearn.ensemble import BaggingClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.linear_model import SGDClassifier
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import BaggingClassifier
-import matplotlib.pyplot as plt
-from sklearn import model_selection
-from sklearn.metrics import classification_report, confusion_matrix
 
-import numpy as np
-from controllers.machine_learning.cleaning import *
-from controllers.Pickles.Pickle_Saver import *
 from controllers.DataCleaning import emojip as ep
-import itertools
+from controllers.Pickles.Pickle_Saver import *
+from controllers.machine_learning.cleaning import *
 
 # save path for classifiers
 script_path = os.path.dirname(os.path.dirname(__file__))

@@ -1,7 +1,7 @@
-from pymongo.write_concern import WriteConcern
+import pandas as pd
 from pymodm import MongoModel, fields
 from pymongo import MongoClient
-import pandas as pd
+from pymongo.write_concern import WriteConcern
 
 client = MongoClient('mongodb://localhost:27017/Athena')
 db = client.Athena

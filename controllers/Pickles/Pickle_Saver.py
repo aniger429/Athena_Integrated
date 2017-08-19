@@ -1,5 +1,6 @@
-import pickle
 import os
+import pickle
+
 import pandas as pd
 
 script_path = os.path.dirname(os.path.dirname(__file__))

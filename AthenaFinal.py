@@ -5,14 +5,12 @@ from DBModels.Data import *
 from DBModels.KBFile import *
 from DBModels.MongoDB_Manager import *
 from DBModels.Username import *
-from DBModels.Lexicon import *
 from controllers import uploadFile
 from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
-from controllers.download import *
-from controllers.analysis_controller.topic_view_analysis import *
 from controllers.analysis_controller.analysis_manager import new_analysis
-from controllers.visualization.donut_chart import *
+from controllers.analysis_controller.topic_view_analysis import *
+from controllers.download import *
 from controllers.init_athena import *
 
 # Initialize the Flask application

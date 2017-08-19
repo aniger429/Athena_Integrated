@@ -1,7 +1,8 @@
 import os
-import pandas as pd
 import re
 import timeit
+
+import pandas as pd
 
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "controllers", "stop_words")

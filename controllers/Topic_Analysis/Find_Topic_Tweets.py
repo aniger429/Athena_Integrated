@@ -1,4 +1,5 @@
-from fuzzywuzzy import fuzz, process
+from fuzzywuzzy import fuzz
+
 from controllers.Pickles.Pickle_Saver import *
 
 

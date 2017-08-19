@@ -1,13 +1,12 @@
+import numpy as np
+from bokeh.charts import show
+from bokeh.models import HoverTool
+from bokeh.plotting import ColumnDataSource, figure
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer
-
 from sklearn.manifold import TSNE
-from DBModels.Tweet import *
 
-import numpy as np
-from bokeh.plotting import ColumnDataSource, figure
-from bokeh.models import HoverTool
-from bokeh.charts import show
+from DBModels.Tweet import *
 
 
 def lda():

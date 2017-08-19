@@ -4,18 +4,14 @@ Masked wordcloud
 Using a mask you can generate wordclouds in arbitrary shapes.
 """
 
-from os import path, pardir
-from PIL import Image
-import numpy as np
-import prettyplotlib as ppl
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import random
+from os import path, pardir
 
-from wordcloud import WordCloud, STOPWORDS
-from palettable.colorbrewer.sequential import Reds_9, Greens_9, Blues_9, Greys_9
-
+import numpy as np
 import pandas as pd
+from PIL import Image
+from palettable.colorbrewer.sequential import Reds_9, Greens_9, Blues_9, Greys_9
+from wordcloud import WordCloud
 
 directory = path.dirname(__file__)
 SOURCE = ""

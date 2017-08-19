@@ -1,8 +1,7 @@
 import pyLDAvis
-from controllers.Topic_Analysis.Topic_Analysis import *
-from controllers.Topic_Analysis.pyldavis_to_sklearn import *
-from DBModels.Tweet import *
 
+from DBModels.Tweet import *
+from controllers.Topic_Analysis.pyldavis_to_sklearn import *
 
 tweets = [t['tweet'] for t in get_tweets_only()[:1000]]
 

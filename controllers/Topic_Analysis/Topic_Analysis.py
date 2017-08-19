@@ -1,15 +1,15 @@
+# from nltk.text import TextCollection
+import collections
 import csv
-from sklearn.feature_extraction.text import TfidfVectorizer
+import os
+from operator import itemgetter
+
+import numpy as np
+import simplejson as json
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer
-from collections import defaultdict
-import numpy as np
-from nltk.text import TextCollection
-import collections
-from operator import itemgetter
-from sklearn.manifold import TSNE
-import simplejson as json
-import os
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 tweetlist = []
 
 """
@@ -46,23 +46,23 @@ Outputs a dictionary that has all the ngrams as its key and their corresponding 
 """
 
 
-def tfidf_ngrams(self, ngrams, tweets):
-    tfidf_values = defaultdict(list)
-
-    tfidf = 0
-    num_docs = 0
-    tf = 0
-    tf_total = 0
-    for ngram in ngrams:
-        for tweet in tweets:
-            # Summation of the TF of each term in all tweets
-            tf = TextCollection.tf(self, ngram.lower(), tweet.lower())
-            tf_total += tf
-        # Computing for TFIDF
-        tfidf = tf_total * TextCollection.idf(self, ngram.lower())
-        tfidf_values[ngram].append(tfidf)
-
-    return tfidf_values
+# def tfidf_ngrams(self, ngrams, tweets):
+#     tfidf_values = defaultdict(list)
+#
+#     tfidf = 0
+#     num_docs = 0
+#     tf = 0
+#     tf_total = 0
+#     for ngram in ngrams:
+#         for tweet in tweets:
+#             # Summation of the TF of each term in all tweets
+#             tf = TextCollection.tf(self, ngram.lower(), tweet.lower())
+#             tf_total += tf
+#         # Computing for TFIDF
+#         tfidf = tf_total * TextCollection.idf(self, ngram.lower())
+#         tfidf_values[ngram].append(tfidf)
+#
+#     return tfidf_values
 
 
 """
