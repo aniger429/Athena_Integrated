@@ -16,23 +16,6 @@ import itertools
 import numpy as np
 
 
-def read_file(file_name):
-    # data = pd.read_excel(file_name, parse_cols='B,G')
-    data_reader = pd.read_csv(file_name, encoding="utf8", keep_default_na=False, sep=",",
-                              skipinitialspace=True, chunksize=25000, usecols=['Tweet', 'Sentiment'],
-                              nrows=250000)
-    dataset = pd.DataFrame(columns=['Tweet', 'Sentiment'])
-
-    for chunk in data_reader:
-        # this processes the tweets
-        dataset = dataset.append(clean_tweets_multiprocess(chunk), ignore_index=True)
-
-    dataset = dataset[dataset.Tweet != '']
-    dataset = dataset[dataset.Sentiment != ''].head(n=200000)
-
-    return dataset
-
-
 def train(dataX, dataY, classifier):
 
     tfidf_vect = TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))
@@ -171,9 +154,6 @@ def decideSentiment(tweet, text_clf):  # use this function for sentiment
 
 def main(classifier):
     print(classifier)
-
-    df1 = pd.read_csv('/home/dudegrim/Documents/Training/final_tweets.csv')
-
     # print(1)
     # df1 = read_file('/home/dudegrim/Documents/Training/positive_tweets.csv')
     # print(2)
@@ -182,22 +162,31 @@ def main(classifier):
     # df1 = df1.append(read_file('/home/dudegrim/Documents/Training/neutral_tweets.csv'), ignore_index=True)
     # print(4)
 
-    # shuffles the data
+    # df1 = pd.read_csv('/home/dudegrim/Documents/Testing/postdefense/dataset3.csv', engine="python", usecols=['Tweet', 'Sentiment'])
+
+    df1 = pd.read_csv('/home/dudegrim/Documents/Training/neutral_tweets.csv', engine="python",
+                      usecols=['Tweet', 'Sentiment'])
+    df1 = df1[df1['Sentiment'] == "Neutral"]
     df1 = df1.sample(frac=1).reset_index(drop=True)
 
-    # print(5)
-    # df1.to_csv('/home/dudegrim/Documents/Training/final_tweets.csv')
+    df_split = np.array_split(df1, 3)
+    for index, n in enumerate(df_split):
+        print(len(n))
+        # shuffles the data
+        n = n.sample(frac=1).reset_index(drop=True)
+        n = n.head(120000)
+        print(len(n))
+        # n.to_csv('/home/dudegrim/Documents/Testing/postdefense/dataset'+str(index+1)+'.csv')
+        n.to_csv('/home/dudegrim/Documents/Testing/postdefense/dataset' + str(index + 1) + '.csv', mode='a', header=False)
 
-    # print(df1['Sentiment'].unique())
-    # print(len(df1))
-
-    process(df1, classifier)
+    # train clasifier
+    # process(df1, classifier)
 
 
-# start = time.time()
-# main("ME")
-# end = time.time()
-# print(end - start)
+start = time.time()
+main("ME")
+end = time.time()
+print(end - start)
 
 
 

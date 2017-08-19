@@ -57,11 +57,11 @@ Configure Analysis
 {%endblock%}
 
 {% block content %}
-<h4 style="text-align: center">
-    {{ flevel | capitalize }}
-    {% if slevel != "none" %} - {{ slevel |capitalize }} {% endif %}
-    {% if tlevel != "none" %} - {{ tlevel |capitalize }} {% endif %}
-</h4>
+{#<h4 style="text-align: center">#}
+{#    {{ flevel | capitalize }}#}
+{#    {% if slevel != "none" %} - {{ slevel |capitalize }} {% endif %}#}
+{#    {% if tlevel != "none" %} - {{ tlevel |capitalize }} {% endif %}#}
+{#</h4>#}
 <div class="container"></div>,<div class="container">
 
 <div class="stepwizard col-md-offset-3">
@@ -78,7 +78,7 @@ Configure Analysis
   <form role="form" action="/new_analysis" method="post">
 
   {% if flevel == "candidate" %}
-        {{ candidate_config(1, candidate_names) }}
+        {{ candidate_config(1, candidate_names, analyzing_for) }}
   {% elif flevel == "topic" %}
         {{ topic_config(1) }}
   {% else %}
@@ -88,7 +88,7 @@ Configure Analysis
 
   {%  if count > 3  %}
       {% if slevel == "candidate" %}
-            {{ candidate_config(2, candidate_names) }}
+            {{ candidate_config(2, candidate_names, analyzing_for) }}
       {% elif slevel == "topic" %}
             {{ topic_config(2) }}
       {% elif slevel == "sentiment" %}
@@ -97,7 +97,7 @@ Configure Analysis
 
     {%  if count > 4  %}
       {% if tlevel == "candidate" %}
-            {{ candidate_config(3, candidate_names) }}
+            {{ candidate_config(3, candidate_names, analyzing_for) }}
       {% elif tlevel == "topic" %}
             {{ topic_config(3) }}
       {% elif tlevel == "sentiment" %}
@@ -118,12 +118,12 @@ Configure Analysis
                     <i></i>{{ viz | capitalize }}
                 </label>
             {% endfor %}
-                <div id="toshow">
-                    <label id="donut_chart" class="radio" hidden>
-                        <input type="radio" name="viz_selected" data-toggle="radio" value="stacked bar chart" checked>
-                        <i></i>Stacked Bar Chart
-                    </label>
-                </div>
+{#                <div id="toshow">#}
+{#                    <label id="donut_chart" class="radio" hidden>#}
+{#                        <input type="radio" name="viz_selected" data-toggle="radio" value="stacked bar chart" checked>#}
+{#                        <i></i>Stacked Bar Chart#}
+{#                    </label>#}
+{#                </div>#}
           <button class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
           <button class="btn btn-success subBtn btn-lg pull-right" type="submit">Submit</button>
         </div>

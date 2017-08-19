@@ -1,4 +1,4 @@
-from flask import redirect, url_for
+from flask import redirect, url_for, session
 from controllers.Candidate_Analysis.Candidate_Identification import *
 from controllers.analysis_controller.topic_view_analysis import *
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
@@ -6,6 +6,7 @@ from controllers.Sentiment_Analysis.Sentiment_Identification import *
 
 def new_analysis():
     flevel, slevel, tlevel = request.form['steps'].split("-")
+    analyzing_for = session.get('analysis_name', 'Candidate')
     print("here" + flevel)
     
     # first level
@@ -36,7 +37,7 @@ def new_analysis():
                 return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
                                        candidate_data=get_specific_candidate_names(candidate_name),
                                        candidate_tweets=final_tweets,
-                                       withsenti=True, senti_count=senti_count)
+                                       withsenti=True, senti_count=senti_count, analyzing_for=analyzing_for)
 
             if viz_selected == "stacked bar chart":
                 final_tweets = compute_tweets_sentiment(data)
@@ -47,7 +48,7 @@ def new_analysis():
                                        candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=final_tweets,
                                        withsenti=True, senti_count=senti_count)
 
-            return redirect(url_for('view_sentiment_analysis', datasource='Candidate', candidate_name=candidate_name))
+            return redirect(url_for('view_sentiment_analysis', datasource='Candidate', candidate_name=candidate_name, analyzing_for=analyzing_for))
         return render_template("View Data/view_candidate_data.html", candidate_name_count=candidate_name_count,
                                candidate_data=get_specific_candidate_names(candidate_name), candidate_tweets=data, withsenti=False)
     # first level

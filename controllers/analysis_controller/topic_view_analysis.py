@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import request, render_template, session
 from controllers.Topic_Analysis.Find_Topic_Tweets import *
 from controllers.Topic_Analysis.Topic_Analysis import *
 from controllers.visualization.scatterplot import *
@@ -56,12 +56,10 @@ def view_all():
 
 
 def view_candidate(candidate_name):
-
-    topic_for = candidate_name
     lda_parameters, tfidf_parameters = topic_analysis()
 
     tweets = load_pickled_dataframe("Candidate")
-    topic_for = candidate_name
+    topic_for = session.get('analysis_name', 'Candidate')
     tweets_only = list(tweets['tweet'])
     final_list = tfidf_vectorizer(tweets_only, tfidf_parameters['min-gram'], tfidf_parameters['max-gram'])
 

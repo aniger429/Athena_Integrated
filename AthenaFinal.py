@@ -5,8 +5,9 @@ from DBModels.Data import *
 from DBModels.KBFile import *
 from DBModels.MongoDB_Manager import *
 from DBModels.Username import *
-from DBModels.Lexicon import *
+from DBModels.Database_Manager import *
 from controllers import uploadFile
+from controllers.Lexicon_Files.populate_lexicon_base import *
 from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
 from controllers.download import *
@@ -34,10 +35,27 @@ app.secret_key = "super secret key"
 
 @app.route('/')
 def home():
-    session.clear()
-    return render_template("dashboard.html", counter_data=[count_total_usernames(),count_total_tweet(),
-                                                           count_total_candidate(),count_total_data()],
+    analyzing_for = session.get('analysis_name', 'Candidate')
+    return render_template("dashboard.html", analyzing_for=analyzing_for, counter_data=[count_total_usernames(), count_total_tweet(),
+                                                           count_total_candidate(), count_total_data()],
                            counter_names=["username", "tweet", "candidate", "file"])
+
+
+@app.route('/start_up', methods=['POST'])
+def start_up():
+    session.clear()
+    analysis_name = request.form['analysis_name']
+    session['analysis_name'] = analysis_name
+    print(analysis_name)
+    restart_database = request.form.getlist('restart_database[]')
+
+    if restart_database != []:
+        restart_database_mongo()
+        print('yea!')
+
+    populate_lexicon()
+
+    return redirect(redirect_url())
 
 
 @app.route('/view_workspaces')
@@ -154,7 +172,8 @@ def view_sentiment_analysis():
     elif datasource == "Candidate":
         candidate_name = request.args.get('candidate_name')
         tweets = load_pickled_dataframe("Candidate")
-        sentiment_for = "Candidate: " + candidate_name
+        analyzing_for = session.get('analysis_name', 'Candidate')
+        sentiment_for = analyzing_for + ": " + candidate_name
 
     positive_tweets, neutral_tweets, negative_tweets = compute_tweets_sentiment(tweets)
 
@@ -177,8 +196,9 @@ def view_sentiment_analysis():
 
 @app.route('/analysis')
 def analysis():
+    analyzing_for = session.get('analysis_name', 'Candidate')
     return render_template("analysis.html", candidate_names=get_all_candidate_names(),
-                           workspace_list=get_all_workspace())
+                           workspace_list=get_all_workspace(), analyzing_for=analyzing_for)
 
 
 @app.route('/data_cleaning')
@@ -199,7 +219,8 @@ def clean_file(filename):
 
 @app.route('/knowledgebase')
 def knowledge_base():
-    return render_template("knowledgebase.html", kb_name_list=get_all_kb_names(),
+    analyzing_for = session.get('analysis_name', 'Candidate')
+    return render_template("knowledgebase.html", analyzing_for=analyzing_for, kb_name_list=get_all_kb_names(),
                            kbFileList=get_all_kbfile(), duplicate=False)
 
 
@@ -301,9 +322,10 @@ def analysis_config():
         if flevel == "candidate" or slevel == "candidate":
             vizOptions.append("Concordancer with Sentiment")
 
+    analyzing_for = session.get('analysis_name', 'Candidate')
+
     return render_template("analysis/analysis_processing.html",
-                           candidate_names=get_all_candidate_names(), flevel=flevel, slevel=slevel, tlevel=tlevel,
-                           vizOptions=vizOptions, count=count)
+                           candidate_names=get_all_candidate_names(), flevel=flevel, slevel=slevel, tlevel=tlevel, vizOptions=vizOptions, count=count, analyzing_for=analyzing_for)
 
 
 @app.route('/new_analysis', methods=['POST'])

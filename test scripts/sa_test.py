@@ -2,8 +2,6 @@ from controllers.Sentiment_Analysis.Sentiment_Identification import *
 from controllers.machine_learning.cleaning import *
 import pandas as pd
 import time
-
-
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 import matplotlib.pyplot as plt
 import itertools
@@ -22,10 +20,9 @@ def read_file(file_name):
     # remove tweets that are empty after processing
     dataset = dataset[dataset.Tweet != '']
     # remove data with no sentiment identified
-    dataset = dataset[dataset.Sentiment != ''].head(n=80000)
+    dataset = dataset[dataset.Sentiment != '']
 
     return dataset
-
 
 def classifiers(classifier):
     s_path = os.path.dirname(os.path.dirname(__file__))
@@ -57,7 +54,7 @@ def classifiers(classifier):
     return clf
 
 
-def plot_confusion_matrix(cm, classes,
+def plot_confusion_matrix(dataset, cm, classes,
                           normalize=False,
                           title='Confusion matrix',
                           cmap=plt.cm.Blues):
@@ -90,10 +87,10 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
 
-    plt.savefig('/home/dudegrim/Documents/Testing/SA/Actual/'+title+'.png', bbox_inches='tight')
+    plt.savefig('/home/dudegrim/Documents/Testing/postdefense/dataset'+str(dataset)+'/'+title+'.png', bbox_inches='tight')
 
 
-def show_results(clf_pred, label_test, index):
+def show_results(dataset_num, clf_pred, label_test, index):
     accuracy = accuracy_score(label_test, clf_pred)
     print("accuracy")
     print(accuracy)
@@ -107,34 +104,50 @@ def show_results(clf_pred, label_test, index):
     print(cnf_matrix)
 
     plt.figure()
-    plot_confusion_matrix(cnf_matrix, classes=["Positive", "Neutral", "Negative"], normalize=True,
+    plot_confusion_matrix(dataset_num, cnf_matrix, classes=["Positive", "Neutral", "Negative"], normalize=True,
                           title=index + ' Normalized confusion matrix')
 
 
-def testing(index):
-    print(index)
-    df1 = pd.read_csv('/home/dudegrim/Documents/Testing/SA/test_tweets.csv', usecols=['Tweet', 'Sentiment'])
+def lexicon_based(tweet):
+    return sa_parallelize_dataframe(tweet, lexicon_sentiment)
+
+
+def testing(index, dataset_num):
+    print(index, dataset_num)
+    df1 = read_file('/home/dudegrim/Documents/Testing/postdefense/dataset'+str(dataset_num)+'.csv')
     # clf = classifiers(index)
 
-    # data_test = list(df1['Tweet'])
-    # label_test = list(df1['Sentiment'])
-    #
-    # # calculate accuracy
-    # # clf_pred = clf.predict(data_test)  # produce predictions
-    #
-    # # df1['Tweet'] = df1['Tweet'].apply(lambda x: x.split(' '))
-    #
-    # results = sa_parallelize_dataframe(df1, sa_testing)
-    #
-    # print(results)
-    #
-    # # show results
-    # show_results(list(results['Results']), label_test, index)
-    print(len(df1[df1['Sentiment'] == "Positive"]))
-    print(len(df1[df1['Sentiment'] == "Neutral"]))
-    print(len(df1[df1['Sentiment'] == "Negative"]))
+
+    positive = df1[df1['Sentiment'] == "Positive"].head(100000)
+    negative = df1[df1['Sentiment'] == "Negative"].head(100000)
+    neutral = df1[df1['Sentiment'] == "Neutral"].head(100000)
+
+    final = positive.append(negative)
+    final = final.append(neutral)
+
+    final = final.sample(frac=1).reset_index(drop=True)
+
+
+    # print(final)
+    # print(len(final[final['Sentiment'] == "Positive"]))
+    # print(len(final[final['Sentiment'] == "Neutral"]))
+    # print(len(final[final['Sentiment'] == "Negative"]))
+
+    data_test = list(final['Tweet'])
+    label_test = list(final['Sentiment'])
+
+    # predict sentiment
+    # clf_pred = clf.predict(data_test)  # produce predictions
+    clf_pred = lexicon_based(final)
+
+    # show results
+    # show_results(dataset_num, clf_pred, label_test, index)
+    show_results(dataset_num, clf_pred['Sentiment_LB'], label_test, index)
+
+
 
 start = time.time()
-testing('LB')
+# NB, SVM, DT, PAC, LSVC, ME, LB
+testing('LB', 3)
 end = time.time()
 print(end - start)
