@@ -29,7 +29,6 @@ class Tweet(MongoModel):
 
     cand_ana = fields.ListField()
 
-
     class Meta:
         write_concern = WriteConcern(j=True)
         connection_alias = 'athenaDB'
@@ -40,7 +39,6 @@ def insert_new_tweet(data_to_add):
 
 
 def get_all_orig_tweets(num_results=-1):
-
     if num_results == -1:
         df = DataFrame(list(db.Tweet.find({}, {'_id': 1, 'orig_tweets': 1, 'tweet': 1})))
     else:
@@ -88,7 +86,7 @@ def get_tweets_with_id():
 
 # returns all the tweets posted by the user_id
 def get_user_tweet_data(user_id):
-    df = DataFrame(list(db.Tweet.find({'idUsername': "@"+user_id}, {'_id': 1, 'orig_tweets': 1})))
+    df = DataFrame(list(db.Tweet.find({'idUsername': "@" + user_id}, {'_id': 1, 'orig_tweets': 1})))
     if not df.empty:
         df['orig_tweets'] = df.apply(lambda row: row['orig_tweets'].split(' '), axis=1)
 
@@ -97,7 +95,7 @@ def get_user_tweet_data(user_id):
 
 # returns all the tweets a user_id was mentioned
 def get_user_mentioned_tweets(user_id):
-    df = DataFrame(list(db.Tweet.find({"users_mentioned": {"$in": ["@"+user_id]}}, {'_id': 1, 'orig_tweets': 1})))
+    df = DataFrame(list(db.Tweet.find({"users_mentioned": {"$in": ["@" + user_id]}}, {'_id': 1, 'orig_tweets': 1})))
     if not df.empty:
         df['orig_tweets'] = df.apply(lambda row: row['orig_tweets'].split(' '), axis=1)
     return df
@@ -113,16 +111,17 @@ def populate_new_workspace(tweets_dict):
     db.cloneCollection('localhost:27017', 'Athena.Tweet',
                        {'active': 'true'})
 
+
 def into_new_db(candidate_presence):
     bulk = db.Tweet.initialize_ordered_bulk_op()
     [bulk.find({'_id': key}).upsert().update(
         {'$set': {'cand_ana': value}})
-     for key, value in candidate_presence.items()]
+        for key, value in candidate_presence.items()]
     bulk.execute()
 
 
 def get_candidate_tweets(candidate_name):
-    data = list(db.Tweet.find({"cand_ana."+candidate_name: {'$ne': -1}}, {'tweet': 1, 'cand_ana': 1}))
+    data = list(db.Tweet.find({"cand_ana." + candidate_name: {'$ne': -1}}, {'tweet': 1, 'cand_ana': 1}))
     return data
 
 
@@ -132,9 +131,3 @@ def get_candidate_tweets_topic(candidate_name):
     print("get_candidate_tweets_topic")
     print(data)
     return data
-
-
-
-
-
-

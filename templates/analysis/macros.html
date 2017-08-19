@@ -1,92 +1,95 @@
 {% macro candidate_config(step, candidate_names, analyzing_for) %}
     <div class="row setup-content" id="step-{{ step }}">
-      <div class="col-xs-6 col-md-offset-3">
-        <div class="col-md-12">
-          <h3> {{ analyzing_for | lower | capitalize }} Analysis</h3>
-          <div class="form-group">
-            <label class="control-label">Name</label>
-             <select name="candidate-name" class="form-control col-md-12" id="candidate_options">
-                    {% for cname in candidate_names %}
-                        <option value={{ cname }}>{{ cname | capitalize }}</option>
-                    {% endfor %}
-                    <option value='all'>All</option>
-              </select>
-          </div>
-          {% if step != 1 %}
-                {{ prev_next_btn() }}
-          {% else %}
-                {{ first() }}
-          {% endif %}
+        <div class="col-xs-6 col-md-offset-3">
+            <div class="col-md-12">
+                <h3> {{ analyzing_for | lower | capitalize }} Analysis</h3>
+                <div class="form-group">
+                    <label class="control-label">Name</label>
+                    <select name="candidate-name" class="form-control col-md-12" id="candidate_options">
+                        {% for cname in candidate_names %}
+                            <option value={{ cname }}>{{ cname | capitalize }}</option>
+                        {% endfor %}
+                        <option value='all'>All</option>
+                    </select>
+                </div>
+                {% if step != 1 %}
+                    {{ prev_next_btn() }}
+                {% else %}
+                    {{ first() }}
+                {% endif %}
 
+            </div>
         </div>
-      </div>
     </div>
 {% endmacro %}
 
 {% macro topic_config(step) %}
     <div class="row setup-content" id="step-{{ step }}">
-      <div class="col-xs-6 col-md-offset-3">
-        <div class="col-md-12">
-          <h3> Topic Analysis</h3>
+        <div class="col-xs-6 col-md-offset-3">
+            <div class="col-md-12">
+                <h3> Topic Analysis</h3>
 
-          <h5>Topic Modeling - LDA</h5>
-          <div class="form-group has-feedback">
-            <label class="control-label">Minimum N-Gram: </label>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-min-gram">
-          </div>
-          <div class="form-group has-feedback">
-            <label class="control-label">Maximum N-Gram</label>
-           <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-max-gram">
-          </div>
-          <div class="form-group has-feedback">
-            <label class="control-label">Number of Iterations</label>
-            <input type="number" class="form-control" id="email" min="1" max="10000" value="100" name="lda-iter">
-          </div>
-          <div class="form-group has-feedback">
-            <label class="control-label">Number of Topics</label>
-            <input type="number" class="form-control" id="email" min="10" max="100" value="10" name="lda-topic">
-          </div>
-          <div class="form-group has-feedback">
-            <label class="control-label">Words per Topic</label>
-            <input type="number" class="form-control" id="email" min="10" max="1000" value="15" name="lda-word">
-          </div>
+                <h5>Topic Modeling - LDA</h5>
+                <div class="form-group has-feedback">
+                    <label class="control-label">Minimum N-Gram: </label>
+                    <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-min-gram">
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label">Maximum N-Gram</label>
+                    <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-max-gram">
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label">Number of Iterations</label>
+                    <input type="number" class="form-control" id="email" min="1" max="10000" value="100"
+                           name="lda-iter">
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label">Number of Topics</label>
+                    <input type="number" class="form-control" id="email" min="10" max="100" value="10" name="lda-topic">
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label">Words per Topic</label>
+                    <input type="number" class="form-control" id="email" min="10" max="1000" value="15" name="lda-word">
+                </div>
 
-          <hr style="height:1px;border:none;color:#333;background-color:#333;" />
+                <hr style="height:1px;border:none;color:#333;background-color:#333;"/>
 
-          <h5>TF-IDF</h5>
-          <div class="form-group has-feedback">
-            <label class="control-label">Minimum N-Gram: </label>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="tfidf-min-gram">
-          </div>
-          <div class="form-group has-feedback">
-            <label class="control-label">Maximum N-Gram</label>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="3" name="tfidf-max-gram">
-          </div>
+                <h5>TF-IDF</h5>
+                <div class="form-group has-feedback">
+                    <label class="control-label">Minimum N-Gram: </label>
+                    <input type="number" class="form-control" id="email" min="1" max="3" value="1"
+                           name="tfidf-min-gram">
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label">Maximum N-Gram</label>
+                    <input type="number" class="form-control" id="email" min="1" max="3" value="3"
+                           name="tfidf-max-gram">
+                </div>
 
-          {% if step != 1 %}
-                {{ prev_next_btn() }}
-          {% else %}
-            {{ first() }}
-          {% endif %}
+                {% if step != 1 %}
+                    {{ prev_next_btn() }}
+                {% else %}
+                    {{ first() }}
+                {% endif %}
+            </div>
         </div>
-      </div>
     </div>
 {% endmacro %}
 
 
 {% macro sentiment_config(step) %}
-     <div class="row setup-content" id="step-{{ step }}">
-      <div class="col-xs-6 col-md-offset-3">
-        <div class="col-md-12">
-          <h3> Sentiment Analysis</h3>
+    <div class="row setup-content" id="step-{{ step }}">
+        <div class="col-xs-6 col-md-offset-3">
+            <div class="col-md-12">
+                <h3> Sentiment Analysis</h3>
 
-            {% if step != 1 %}
-                {{ prev_next_btn() }}
-            {% else %}
-                {{ first() }}
-            {% endif %}
+                {% if step != 1 %}
+                    {{ prev_next_btn() }}
+                {% else %}
+                    {{ first() }}
+                {% endif %}
+            </div>
         </div>
-      </div>
     </div>
 {% endmacro %}
 
@@ -104,57 +107,66 @@
 {% macro modal_topic_config(senti) %}
 
     <form role="form" action="/topic_analysis" method="post">
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Topic Analysis Configuration</h4>
-              </div>
-              <div class="modal-body">
-                      <h5>Topic Modeling - LDA</h5>
-                      <div class="form-group has-feedback">
-                        <label class="control-label">Minimum N-Gram: </label>
-                        <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-min-gram">
-                      </div>
-                      <div class="form-group has-feedback">
-                        <label class="control-label">Maximum N-Gram</label>
-                       <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-max-gram">
-                      </div>
-                      <div class="form-group has-feedback">
-                        <label class="control-label">Number of Iterations</label>
-                        <input type="number" class="form-control" id="email" min="1" max="10000" value="100" name="lda-iter">
-                      </div>
-                      <div class="form-group has-feedback">
-                        <label class="control-label">Number of Topics</label>
-                        <input type="number" class="form-control" id="email" min="10" max="100" value="10" name="lda-topic">
-                      </div>
-                      <div class="form-group has-feedback">
-                        <label class="control-label">Words per Topic</label>
-                        <input type="number" class="form-control" id="email" min="10" max="1000" value="15" name="lda-word">
-                      </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Topic Analysis Configuration</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Topic Modeling - LDA</h5>
+                        <div class="form-group has-feedback">
+                            <label class="control-label">Minimum N-Gram: </label>
+                            <input type="number" class="form-control" id="email" min="1" max="3" value="1"
+                                   name="lda-min-gram">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="control-label">Maximum N-Gram</label>
+                            <input type="number" class="form-control" id="email" min="1" max="3" value="1"
+                                   name="lda-max-gram">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="control-label">Number of Iterations</label>
+                            <input type="number" class="form-control" id="email" min="1" max="10000" value="100"
+                                   name="lda-iter">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="control-label">Number of Topics</label>
+                            <input type="number" class="form-control" id="email" min="10" max="100" value="10"
+                                   name="lda-topic">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="control-label">Words per Topic</label>
+                            <input type="number" class="form-control" id="email" min="10" max="1000" value="15"
+                                   name="lda-word">
+                        </div>
 
-                      <hr style="height:1px;border:none;color:#333;background-color:#333;" />
+                        <hr style="height:1px;border:none;color:#333;background-color:#333;"/>
 
-                      <h5>TF-IDF</h5>
-                      <div class="form-group has-feedback">
-                        <label class="control-label">Minimum N-Gram: </label>
-                        <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="tfidf-min-gram">
-                      </div>
-                      <div class="form-group has-feedback">
-                        <label class="control-label">Maximum N-Gram</label>
-                        <input type="number" class="form-control" id="email" min="1" max="3" value="3" name="tfidf-max-gram">
-                      </div>
-              </div>
-              <input type="text" name="sentiment" value="{{ senti }}" placeholder="{{ senti }}"/>
-{#              <input name="key" value="{{ key }}" hidden/>#}
+                        <h5>TF-IDF</h5>
+                        <div class="form-group has-feedback">
+                            <label class="control-label">Minimum N-Gram: </label>
+                            <input type="number" class="form-control" id="email" min="1" max="3" value="1"
+                                   name="tfidf-min-gram">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="control-label">Maximum N-Gram</label>
+                            <input type="number" class="form-control" id="email" min="1" max="3" value="3"
+                                   name="tfidf-max-gram">
+                        </div>
+                    </div>
+                    <input type="text" name="sentiment" value="{{ senti }}" placeholder="{{ senti }}"/>
+                    {#              <input name="key" value="{{ key }}" hidden/>#}
 
-              <div class="modal-footer">
-                    <button type="button" class="btn btn-lg btn-default pull-left" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-success subBtn btn-lg pull-right" type="submit">Submit</button>
-              </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg btn-default pull-left" data-dismiss="modal">Cancel
+                        </button>
+                        <button class="btn btn-success subBtn btn-lg pull-right" type="submit">Submit</button>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
     </form>
 
@@ -163,54 +175,54 @@
 
 {% macro collapsible_topic_config() %}
 
-      <div class="form-inline">
+    <div class="form-inline">
         <div class="col-md-9">
-          <h5>Topic Modeling - LDA</h5>
-          <div class="form-group has-feedback col-md-2">
-            <div>
-                <label class="control-label">Minimum N-Gram: </label>
+            <h5>Topic Modeling - LDA</h5>
+            <div class="form-group has-feedback col-md-2">
+                <div>
+                    <label class="control-label">Minimum N-Gram: </label>
+                </div>
+                <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-min-gram">
             </div>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-min-gram">
-          </div>
-          <div class="form-group has-feedback col-md-2">
-              <div>
-                <label class="control-label">Maximum N-Gram</label>
-              </div>
-              <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-max-gram">
-          </div>
-          <div class="form-group has-feedback col-md-2">
-              <div>
-                <label class="control-label">Number of Iterations</label>
-              </div>
-              <input type="number" class="form-control" id="email" min="1" max="10000" value="100" name="lda-iter">
-          </div>
-          <div class="form-group has-feedback col-md-2">
-            <div>
-                <label class="control-label">Number of Topics</label>
+            <div class="form-group has-feedback col-md-2">
+                <div>
+                    <label class="control-label">Maximum N-Gram</label>
+                </div>
+                <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="lda-max-gram">
             </div>
-            <input type="number" class="form-control" id="email" min="10" max="100" value="10" name="lda-topic">
-          </div>
-          <div class="form-group has-feedback col-md-2">
-            <div>
-                <label class="control-label">Words per Topic</label>
+            <div class="form-group has-feedback col-md-2">
+                <div>
+                    <label class="control-label">Number of Iterations</label>
+                </div>
+                <input type="number" class="form-control" id="email" min="1" max="10000" value="100" name="lda-iter">
             </div>
-            <input type="number" class="form-control" id="email" min="10" max="1000" value="15" name="lda-word">
-          </div>
-         </div>
+            <div class="form-group has-feedback col-md-2">
+                <div>
+                    <label class="control-label">Number of Topics</label>
+                </div>
+                <input type="number" class="form-control" id="email" min="10" max="100" value="10" name="lda-topic">
+            </div>
+            <div class="form-group has-feedback col-md-2">
+                <div>
+                    <label class="control-label">Words per Topic</label>
+                </div>
+                <input type="number" class="form-control" id="email" min="10" max="1000" value="15" name="lda-word">
+            </div>
+        </div>
         <div class="col-md-3">
-          <h5>TF-IDF</h5>
-          <div class="form-group has-feedback">
-            <div>
-                <label class="control-label">Minimum N-Gram: </label>
+            <h5>TF-IDF</h5>
+            <div class="form-group has-feedback">
+                <div>
+                    <label class="control-label">Minimum N-Gram: </label>
+                </div>
+                <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="tfidf-min-gram">
             </div>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="1" name="tfidf-min-gram">
-          </div>
-          <div class="form-group has-feedback">
-              <div>
-                 <label class="control-label">Maximum N-Gram</label>
-              </div>
-            <input type="number" class="form-control" id="email" min="1" max="3" value="3" name="tfidf-max-gram">
-          </div>
+            <div class="form-group has-feedback">
+                <div>
+                    <label class="control-label">Maximum N-Gram</label>
+                </div>
+                <input type="number" class="form-control" id="email" min="1" max="3" value="3" name="tfidf-max-gram">
+            </div>
         </div>
     </div>
 

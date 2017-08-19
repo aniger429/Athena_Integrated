@@ -1,7 +1,6 @@
 import itertools
 
 import matplotlib.pyplot as plt
-import numpy as np
 from sklearn import model_selection
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression, SGDClassifier, PassiveAggressiveClassifier
@@ -17,7 +16,6 @@ from controllers.machine_learning.cleaning import *
 
 
 def train(dataX, dataY, classifier):
-
     tfidf_vect = TfidfVectorizer(min_df=5, max_df=0.95, use_idf=True, ngram_range=(1, 3))
 
     if classifier == "NB":  # Naive Bayes
@@ -27,9 +25,9 @@ def train(dataX, dataY, classifier):
     elif classifier == "SVM":  # SVM
         print("SVM")
         text_clf = Pipeline([
-                             ('vect', tfidf_vect),
-                             ('clf', SGDClassifier(n_jobs=6, warm_start=True))
-                           ])
+            ('vect', tfidf_vect),
+            ('clf', SGDClassifier(n_jobs=6, warm_start=True))
+        ])
     elif classifier == "KNN":  # KNN
         print("KNN")
         text_clf = Pipeline([('vect', tfidf_vect),
@@ -54,7 +52,7 @@ def train(dataX, dataY, classifier):
                              ('clf', LogisticRegression(solver='sag', warm_start=True))])
 
     text_clf = text_clf.fit(dataX, dataY)
-    
+
     return text_clf
 
 
@@ -62,7 +60,7 @@ def save_tclf(tclf, index):
     # save path for classifiers
     s_path = os.path.dirname(os.path.dirname(__file__))
     path = os.path.join(s_path, "Pickles", "ML_Classifier")
-    pickle.dump(tclf, open(os.path.join(path, index+'.pkl'), 'wb'))
+    pickle.dump(tclf, open(os.path.join(path, index + '.pkl'), 'wb'))
 
 
 def plot_confusion_matrix(cm, classes,
@@ -98,7 +96,7 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
 
-    plt.savefig('/home/dudegrim/Documents/Testing/SA/'+title+'.png', bbox_inches='tight')
+    plt.savefig('/home/dudegrim/Documents/Testing/SA/' + title + '.png', bbox_inches='tight')
 
 
 def process(data, index):
@@ -124,7 +122,8 @@ def process(data, index):
     accuracy = accuracy_score(y_test, tclf_pred)
     print("accuracy")
     print(accuracy)
-    report = classification_report(y_test, tclf_pred)  # predictions versus actual ones. this will be printed out as a report.
+    report = classification_report(y_test,
+                                   tclf_pred)  # predictions versus actual ones. this will be printed out as a report.
 
     print(report)
     print("confusion matrix")
@@ -177,16 +176,14 @@ def main(classifier):
         n = n.head(120000)
         print(len(n))
         # n.to_csv('/home/dudegrim/Documents/Testing/postdefense/dataset'+str(index+1)+'.csv')
-        n.to_csv('/home/dudegrim/Documents/Testing/postdefense/dataset' + str(index + 1) + '.csv', mode='a', header=False)
+        n.to_csv('/home/dudegrim/Documents/Testing/postdefense/dataset' + str(index + 1) + '.csv', mode='a',
+                 header=False)
 
-    # train clasifier
-    # process(df1, classifier)
+        # train clasifier
+        # process(df1, classifier)
 
 
 start = time.time()
 main("ME")
 end = time.time()
 print(end - start)
-
-
-

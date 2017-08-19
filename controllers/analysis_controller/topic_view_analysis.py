@@ -1,8 +1,10 @@
 from flask import request, render_template, session
+
 from controllers.Topic_Analysis.Find_Topic_Tweets import *
 from controllers.Topic_Analysis.Topic_Analysis import *
 from controllers.visualization.wordcloud_viz import word_cloud
-
+from DBModels.Tweet import *
+import base64
 
 def topic_analysis():
     # get parameters from the form submitted

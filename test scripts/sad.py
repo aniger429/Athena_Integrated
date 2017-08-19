@@ -1,1 +1,0 @@
-rodrigo ,digong ,du30 ,duterte ,dutertenohyprocrite ,makadu30 ,dutertenohypocrite ,dutertepresidency ,dutertespeech ,rogerduterte ,dutertes ,rodrigoduterte ,weloveyoumayorduterte ,duterte2016

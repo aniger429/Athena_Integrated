@@ -3,58 +3,62 @@
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
 {% endblock %}
 
-{%block name%}
-Tweets
-{%endblock%}
-{%block vat_active%}
-active
-{%endblock%}
+{% block name %}
+    Tweets
+{% endblock %}
+{% block vat_active %}
+    active
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">View Tweets</h4>
-                <p class="category custom">Showing {{ tweetFileList | length}} out of {{ total_tweet }} tweets</p>
-                <form action="/download" method="post" enctype="multipart/form-data">
-                    <input type="text" name="download_data" value="all_tweets" hidden/>
-                    <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download All Tweets">
-                </form>
-            </div>
-            <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable">
-            <thead>
-                <th class="col-md-1">Number</th>
-                <th class="col-md-10">Tweet</th>
-                <th class="col-md-1">View Tweet</th>
-            </thead>
-            <tbody>
-            {% for key, tweet in tweetFileList.iterrows() %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">View Tweets</h4>
+                    <p class="category custom">Showing {{ tweetFileList | length }} out of {{ total_tweet }} tweets</p>
+                    <form action="/download" method="post" enctype="multipart/form-data">
+                        <input type="text" name="download_data" value="all_tweets" hidden/>
+                        <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right"
+                               Value="Download All Tweets">
+                    </form>
+                </div>
+                <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable">
+                    <thead>
+                    <th class="col-md-1">Number</th>
+                    <th class="col-md-10">Tweet</th>
+                    <th class="col-md-1">View Tweet</th>
+                    </thead>
+                    <tbody>
+                    {% for key, tweet in tweetFileList.iterrows() %}
 
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>
-                            {% for word in tweet['orig_tweets'].split(' ')%}
-                                {% if word[:1] != '@' %}
-                                    {{ word }}
-                                {% else %}
-                                   <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>@USER</i></a>
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td><a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a></td>
-                    </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                {% for word in tweet['orig_tweets'].split(' ') %}
+                                    {% if word[:1] != '@' %}
+                                        {{ word }}
+                                    {% else %}
+                                        <a class="username_link"
+                                           href="{{ url_for('view_specific_user', user_id=word[1:]) }}">
+                                            <i>@USER</i></a>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td><a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id']) }}"> View Tweet</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block customJS %}
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('#myTable').DataTable();
         });
     </script>

@@ -13,6 +13,7 @@ class Data(MongoModel):
     filename = fields.CharField(max_length=255)
     isClean = fields.BooleanField(default=False)
     dateUploaded = fields.DateTimeField()
+
     # tweetStartID = fields.IntegerField()
     # tweetEndID = fields.IntegerField()
 
@@ -22,7 +23,7 @@ class Data(MongoModel):
 
 
 def check_if_file_exists(filename):
-    fileCount = db.Data.find({"filename":filename}).count()
+    fileCount = db.Data.find({"filename": filename}).count()
     if fileCount == 0:
         return False
     else:
@@ -31,7 +32,7 @@ def check_if_file_exists(filename):
 
 def insert_new_data(file_name):
     time_uploaded = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-    NewFileData = {"filename":file_name, "isClean":"false", "dateUploaded":time_uploaded}
+    NewFileData = {"filename": file_name, "isClean": "false", "dateUploaded": time_uploaded}
     db.Data.insert_one(NewFileData)
 
 
@@ -44,6 +45,7 @@ def tweet_cleaned(filename):
             }
         }
     )
+
 
 def get_all_file():
     # for user in db.data.find():

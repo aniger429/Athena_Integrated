@@ -1,6 +1,3 @@
-import os
-import re
-
 from DBModels.KB_Names import *
 from controllers.DataCleaning import Patterns as pat
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
@@ -9,14 +6,13 @@ num_partitions = 6  # number of partitions to split dataframe
 num_cores = 6  # number of cores on your machine
 columns = ['Tweet', 'binay', 'duterte', 'poe', 'roxas', 'santiago']
 
-
 script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "controllers", "stop_words")
 
 # loads stop words list from file
-stopwords = pd.read_csv(file_path+"/final_stop_words_list.csv", header=None, squeeze=True).tolist()
+stopwords = pd.read_csv(file_path + "/final_stop_words_list.csv", header=None, squeeze=True).tolist()
 # loads contractions from file
-contractions = pd.read_csv(file_path+"/contractions.csv", header=None, delimiter=',')
+contractions = pd.read_csv(file_path + "/contractions.csv", header=None, delimiter=',')
 dictionary = dict(zip(contractions[0].tolist(), contractions[1].tolist()))
 
 c_re = re.compile('(%s)' % '|'.join(dictionary.keys()))
@@ -47,7 +43,8 @@ def get_mention_index(tweet, candidate_names):
 def process_df(candidate_data, tweet_df):
     for candidate in candidate_data:
         tweet_df[candidate['candidate_name']] = tweet_df.apply(lambda row: get_mention_index(row['tweet_cleaned'],
-                                                               candidate['kb_names']), axis=1)
+                                                                                             candidate['kb_names']),
+                                                               axis=1)
     return tweet_df
 
 
@@ -120,6 +117,7 @@ def write_data(filename, data):
 def expand_contractions(text, c_re=c_re):
     def replace(match):
         return dictionary[match.group(0)]
+
     return c_re.sub(replace, text)
 
 
@@ -202,7 +200,7 @@ def start_process(file_name):
 
             cand_count[candidate['candidate_name']] = len(cand_df)
             # save the stuff
-            write_csv("/home/dudegrim/Documents/whole/"+candidate['candidate_name']+".csv", cand_df)
+            write_csv("/home/dudegrim/Documents/whole/" + candidate['candidate_name'] + ".csv", cand_df)
 
         data_count = pd.DataFrame(cand_count, index=[0])
 
@@ -236,7 +234,7 @@ def bitch_file():
 
             cand_count[candidate['candidate_name']] = len(cand_df)
             # save the stuff
-            write_csv("/home/dudegrim/Documents/whole/"+candidate['candidate_name']+".csv", cand_df)
+            write_csv("/home/dudegrim/Documents/whole/" + candidate['candidate_name'] + ".csv", cand_df)
 
         data_count = pd.DataFrame(cand_count, index=[0])
 
@@ -275,17 +273,18 @@ def process_sentiment():
             neutral_tweets = chunk1.loc[chunk1['sentiment'] == "Neutral"]
             negative_tweets = chunk1.loc[chunk1['sentiment'] == "Negative"]
 
-            write_csv("/home/dudegrim/Documents/whole/Sentiment/positive_tweets_"+cand['candidate_name']+".csv",
+            write_csv("/home/dudegrim/Documents/whole/Sentiment/positive_tweets_" + cand['candidate_name'] + ".csv",
                       positive_tweets)
-            write_csv("/home/dudegrim/Documents/whole/Sentiment/neutral_tweets_"+cand['candidate_name']+".csv",
+            write_csv("/home/dudegrim/Documents/whole/Sentiment/neutral_tweets_" + cand['candidate_name'] + ".csv",
                       neutral_tweets)
-            write_csv("/home/dudegrim/Documents/whole/Sentiment/negative_tweets_"+cand['candidate_name']+".csv",
+            write_csv("/home/dudegrim/Documents/whole/Sentiment/negative_tweets_" + cand['candidate_name'] + ".csv",
                       negative_tweets)
 
             data_count = pd.DataFrame({'Positive': len(positive_tweets), 'Neutral': len(neutral_tweets),
                                        'Negative': len(negative_tweets)}, index=[0])
 
-            write_data("/home/dudegrim/Documents/whole/Sentiment/data_count_"+cand['candidate_name']+".csv", data_count)
+            write_data("/home/dudegrim/Documents/whole/Sentiment/data_count_" + cand['candidate_name'] + ".csv",
+                       data_count)
 
 
 # start = time.time()

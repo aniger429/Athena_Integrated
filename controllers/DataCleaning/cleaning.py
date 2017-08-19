@@ -20,9 +20,9 @@ script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "stop_words")
 
 # loads stop words list from file
-stopwords = pd.read_csv(file_path+"/final_stop_words_list.csv", header=None, squeeze=True).tolist()
+stopwords = pd.read_csv(file_path + "/final_stop_words_list.csv", header=None, squeeze=True).tolist()
 # loads contractions from file
-contractions = pd.read_csv(file_path+"/contractions.csv", header=None, delimiter=',')
+contractions = pd.read_csv(file_path + "/contractions.csv", header=None, delimiter=',')
 dictionary = dict(zip(contractions[0].tolist(), contractions[1].tolist()))
 
 c_re = re.compile('(%s)' % '|'.join(dictionary.keys()))
@@ -38,6 +38,7 @@ def read_csv(filename):
 def expand_contractions(text, c_re=c_re):
     def replace(match):
         return dictionary[match.group(0)]
+
     return c_re.sub(replace, text)
 
 
@@ -101,7 +102,7 @@ def init_data_cleaning(tweet):
 
 
 def anonymize_poster_username(username_list, username_dict):
-    return [username_dict['@'+u] for u in username_list]
+    return [username_dict['@' + u] for u in username_list]
 
 
 def process_hashtags(hashtag_list):
@@ -157,8 +158,8 @@ def cleaning_file(file_name):
 
         # rename some column names
         results.rename(index=str, columns={"Location": "location", "Retweets": "retweet", "Favorites": "favorite",
-                                         "Date Created": "date_created", "Id": 'idTweet',
-                                         "Tweet": "orig_tweets", "Username": 'idUsername'}, inplace=True)
+                                           "Date Created": "date_created", "Id": 'idTweet',
+                                           "Tweet": "orig_tweets", "Username": 'idUsername'}, inplace=True)
 
         insert_new_tweet(results.to_dict(orient='records'))
 

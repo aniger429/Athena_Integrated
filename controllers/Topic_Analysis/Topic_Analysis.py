@@ -45,7 +45,6 @@ enumerated below all functions. The variable ngrams should be a list containing 
 Outputs a dictionary that has all the ngrams as its key and their corresponding tfidf value as their value.
 """
 
-
 # def tfidf_ngrams(self, ngrams, tweets):
 #     tfidf_values = defaultdict(list)
 #
@@ -212,7 +211,7 @@ def topic_analysis_lda(tweets, start_range, end_range, num_topics, num_iter, no_
     words_dict = {}
 
     # Initializes all topic nodes and connects all topic nodes to the root node
-    for r in range(1, num_topics+1, 1):
+    for r in range(1, num_topics + 1, 1):
         nodes.append({'size': 50, 'score': 0.5, 'id': 'Topic ' + str(r), 'type': 'square'})
         links.append({'source': 0, 'target': r})
 

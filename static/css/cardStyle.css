@@ -1,4 +1,4 @@
-.title, .category, .view_data{
+.title, .category, .view_data {
     text-align: center;
 }
 
@@ -12,20 +12,23 @@
     text-transform: uppercase;
 }
 
-.table th, .table td, .title.custom, .category.custom{
-   text-align: center;
+.table th, .table td, .title.custom, .category.custom {
+    text-align: center;
 }
-.username_link{
+
+.username_link {
     color: palevioletred;
 }
 
-.username_id{
+.username_id {
     font-size: 12px;
 }
-.username{
+
+.username {
     color: #7A9E9F;
     font-size: 15px;
 }
+
 .close.moveRight {
     right: -10px;
 }

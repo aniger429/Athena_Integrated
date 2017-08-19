@@ -27,8 +27,8 @@ def kb_names_update(kb_names_dict):
     bulk = db.KB_Names.initialize_ordered_bulk_op()
 
     [bulk.find({'candidate_name': key}).update_one(
-        {'$addToSet': { 'kb_names': {'$each': value }}})
-     for key, value in kb_names_dict.items()]
+        {'$addToSet': {'kb_names': {'$each': value}}})
+        for key, value in kb_names_dict.items()]
 
     result = bulk.execute()
 
@@ -62,5 +62,4 @@ def delete_kb_names(names, candidate):
     db.KB_Names.update({"candidate_name": candidate}, {"$pushAll": {'blacklist_names': names}})
 
     return db.KB_Names.update({'candidate_name': candidate},
-                                               {'$pullAll': {'kb_names': names}})
-
+                              {'$pullAll': {'kb_names': names}})

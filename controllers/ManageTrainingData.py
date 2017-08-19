@@ -55,8 +55,9 @@ def test(filename):
 
     print("done")
 
+
 # 0-3 done
 for r in range(0, 15, 1):
     print(r)
-    directory = "/home/dudegrim/Documents/CSV8/Election-"+str(r)+".csv"
+    directory = "/home/dudegrim/Documents/CSV8/Election-" + str(r) + ".csv"
     test(directory)

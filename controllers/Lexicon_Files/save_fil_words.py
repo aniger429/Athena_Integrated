@@ -26,25 +26,25 @@ def get_word_list():
     filsw = dict()
     filscorelist = []
     for i in range(0, filStopCount):
-        filsw.update({filStopFile.readline() : 'blank'})
+        filsw.update({filStopFile.readline(): 'blank'})
 
     for i in range(0, filDictCount):
         line = filDict[i]
         if "<positivity>" in line:
-            line = line[(line.index(">") + 1) : len(line)]
-            filscorelist.append(float(line[0 : line.index("<")]))
+            line = line[(line.index(">") + 1): len(line)]
+            filscorelist.append(float(line[0: line.index("<")]))
         if "<negativity>" in line:
-            line = line[(line.index(">") + 1) : len(line)]
-            filscorelist.append(float(line[0 : line.index("<")]))
+            line = line[(line.index(">") + 1): len(line)]
+            filscorelist.append(float(line[0: line.index("<")]))
         if "<translation>" in line:
-            line = line[(line.index(">") + 1) : len(line)]
-            filword = line[0 : line.index("<")]
+            line = line[(line.index(">") + 1): len(line)]
+            filword = line[0: line.index("<")]
             if not filword in filsw:
                 if len(filscorelist) > 0:
-                    wordList.update({filword : filscorelist})
+                    wordList.update({filword: filscorelist})
             filword = ""
             filscorelist = []
-            line = filDict[i+1]
+            line = filDict[i + 1]
             while "<translation>" in line:
                 i = i + 1
                 line = filDict[i]
@@ -70,7 +70,7 @@ def get_word_list():
                             wordList.update({filword: filscorelist})
                 else:
                     break
-            line = filDict[i+1]
+            line = filDict[i + 1]
             while "<translation>" in line:
                 i = i + 1
                 line = filDict[i]
@@ -96,9 +96,9 @@ def save_list(wordList):
 fil_words = pd.read_excel(file_path + "/fil_words_senti.xlsx", index_col='word')
 fil_dict = fil_words[:10].to_dict(orient='index')
 start = time.time()
-val = fil_dict.get('banana', {}).get('negativity',0)
+val = fil_dict.get('banana', {}).get('negativity', 0)
 end = time.time()
-print(end-start)
+print(end - start)
 
 
 # 'tagapamagitan': {'negativity': 0.25, 'positivity': 0.0}

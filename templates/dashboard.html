@@ -4,72 +4,77 @@
     <link href="{{ url_for('static', filename="css/customized.css") }}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename="css/bootstrap-tagsinput.css") }}" rel="stylesheet"/>
-{%  endblock %}
+{% endblock %}
 
-{%block name%}
-Dashboard
-{%endblock%}
-{%block dashboard_active%}
-active
-{%endblock%}
+{% block name %}
+    Dashboard
+{% endblock %}
+{% block dashboard_active %}
+    active
+{% endblock %}
 
 {% block content %}
-<div class="row">
-     <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
             <div class="col-md-12">
                 <div class="card">
                     <div class="header">
                         <h4 class="title custom"> Athena</h4>
-                        <p class="category custom">Analyzing for:  {{ analyzing_for }}</p>
+                        <p class="category custom">Analyzing for: {{ analyzing_for }}</p>
                     </div>
                     </br>
                 </div>
             </div>
-     </div>
-    <div class="col-md-12">
-        <div class="collapse" id="change_name">
-            <form class="form-horizontal" action="/start_up" method="POST">
-              <div class="form-group">
-                <label for="inputEmail3" class="col-sm-2 control-label">Change Analysis Name</label>
-                <div class="col-sm-10">
-                   <input type="text" class="form-control col-md-12" name="analysis_name" placeholder="Candidate, Airline, Restaurant, Toothpaste" required>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                 <p class="text-danger"> ! Checking this will drop all contents of the database !</p>
-                  <div class="checkbox">
-                    <label>
-                     <input type="checkbox" value="restart_database" name="restart_database[]" data-toggle="checkbox"> Restart Database
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-10">
-                  <button type="submit" class="btn btn-success">Submit</button>
-                </div>
-              </div>
-            </form>
-    </div>
-    <div class="col-md-12">
-        <button href="#change_name" class="btn btn-info btn-md col-md-3 pull-right" data-toggle="collapse" style="margin: 10px">Change Name</button>
-    </div>
+        </div>
+        <div class="col-md-12">
+            <div class="collapse" id="change_name">
+                <form class="form-horizontal" action="/start_up" method="POST">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">Change Analysis Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control col-md-12" name="analysis_name"
+                                   placeholder="Candidate, Airline, Restaurant, Toothpaste" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <p class="text-danger"> ! Checking this will drop all contents of the database !</p>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="restart_database" name="restart_database[]"
+                                           data-toggle="checkbox"> Restart Database
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-10">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12">
+                <button href="#change_name" class="btn btn-info btn-md col-md-3 pull-right" data-toggle="collapse"
+                        style="margin: 10px">Change Name
+                </button>
+            </div>
 
-    <div class="col-md-12">
-         {% for c in range(0, counter_names | length) %}
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom"> {{ counter_data[c] }}</h4>
-                    <p class="category custom">{{ counter_names[c] + 's' | capitalize }}</p>
-                </div>
-                </br>
+            <div class="col-md-12">
+                {% for c in range(0, counter_names | length) %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title custom"> {{ counter_data[c] }}</h4>
+                                <p class="category custom">{{ counter_names[c] + 's' | capitalize }}</p>
+                            </div>
+                            </br>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
-</div>
 {% endblock %}
 
 {% block customJS %}

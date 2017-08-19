@@ -4,57 +4,57 @@
 {% block customCSS %}
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
-        .title.custom{
+        .title.custom {
             font-size: 25px;
         }
     </style>
 {% endblock %}
 
-{%block name%}
-User
-{%endblock%}
+{% block name %}
+    User
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <form action="/download" method="post" enctype="multipart/form-data">
-            <input type="text" name="download_data" value="specific_username" hidden/>
-            <input type="text" name="username_id" value="{{ userData['_id'] }}" hidden/>
-            <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download User Data">
-        </form>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/download" method="post" enctype="multipart/form-data">
+                <input type="text" name="download_data" value="specific_username" hidden/>
+                <input type="text" name="username_id" value="{{ userData['_id'] }}" hidden/>
+                <input id="submit" type="submit" class="btn btn-info col-md-2 pull-right" Value="Download User Data">
+            </form>
+        </div>
     </div>
-</div>
 
 
-<div class="row">
-    <div class="col-md-4">
-        {{ card_header(userData['numMentions'], "Mentions") }}
+    <div class="row">
+        <div class="col-md-4">
+            {{ card_header(userData['numMentions'], "Mentions") }}
+        </div>
+        <div class="col-md-4">
+            {{ card_header(userData['username'], userData['_id']) }}
+        </div>
+        <div class="col-md-4">
+            {{ card_header(userData['numTweets'], "Tweets") }}
+        </div>
     </div>
-    <div class="col-md-4">
-        {{ card_header(userData['username'], userData['_id']) }}
-    </div>
-    <div class="col-md-4">
-        {{ card_header(userData['numTweets'], "Tweets") }}
-    </div>
-</div>
-<ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#posted">User Posted</a></li>
-    <li><a data-toggle="tab" href="#mentioned">User Mentioned</a></li>
-</ul>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#posted">User Posted</a></li>
+        <li><a data-toggle="tab" href="#mentioned">User Mentioned</a></li>
+    </ul>
 
-<div class="tab-content">
-    <div id="posted" class="tab-pane fade in active">
-      {{ view_user_tweets("Posted",tweetDataList,"myTable2" ) }}
+    <div class="tab-content">
+        <div id="posted" class="tab-pane fade in active">
+            {{ view_user_tweets("Posted",tweetDataList,"myTable2" ) }}
+        </div>
+        <div id="mentioned" class="tab-pane fade">
+            {{ view_user_tweets("Mentioned",user_mentioned_tweet_list, "myTable1" ) }}
+        </div>
     </div>
-    <div id="mentioned" class="tab-pane fade">
-      {{ view_user_tweets("Mentioned",user_mentioned_tweet_list, "myTable1" ) }}
-    </div>
-</div>
 {% endblock %}
 
 {% block customJS %}
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('#myTable1').DataTable();
             $('#myTable2').DataTable();
         });

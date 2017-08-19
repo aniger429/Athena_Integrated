@@ -2,130 +2,132 @@
 {% block customCSS %}
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
-        .title.custom{
+        .title.custom {
             font-size: 30px;
         }
     </style>
 {% endblock %}
 
-{%block name%}
-Analyze Data
-{%endblock%}
+{% block name %}
+    Analyze Data
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <form action="/analysis_config" method="post" enctype="multipart/form-data">
-        <div class="card" >
-{#            <div class="panel-heading title custom">Initial Analysis Settings</div>#}
-            <div class="header">
-                <h4 class="title custom">Analysis Type</h4>
-{#                <p class="category custom">Tweet</p>#}
-            </div>
-            <hr/>
-              <div class="panel-body">
-              <div class="form-group col-md-4">
-                  <label for="sel1" class="col-md-12">First Level</label>
-                  <select name="first-level" class="form-control col-md-12" id="sel1">
-                  　<option value="none" selected>None</option>
-                    <option value="candidate">{{ analyzing_for |lower|capitalize }}</option>
-                    <option value="topic">Topic</option>
-                    <option value="sentiment">Sentiment</option>
-                  </select>
-              </div>
-              <div class="form-group col-md-4">
-                  <label for="sel1" class="col-md-12">Second Level</label>
-                  <select name="second-level" class="form-control col-md-12" id="sel2" disabled>
-                    <option value="none" selected>None</option>
-                    <option value="candidate">{{ analyzing_for |lower|capitalize }}</option>
-                    <option value="topic">Topic</option>
-                    <option value="sentiment">Sentiment</option>
-                  </select>
-              </div>
-              <div class="form-group col-md-4">
-                  <label for="sel1" class="col-md-12">Third Level</label>
-                  <select name="third-level" class="form-control col-md-12" id="sel3" disabled>
-                    <option value="none" selected>None</option>
-                    <option value="candidate">{{ analyzing_for |lower|capitalize }}</option>
-                    <option value="topic">Topic</option>
-                    <option value="sentiment">Sentiment</option>
-                  </select>
-                  <select name="third-level" hidden>
-                    <option value="none" selected>None</option>
-                  </select>
-              </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/analysis_config" method="post" enctype="multipart/form-data">
+                <div class="card">
+                    {#            <div class="panel-heading title custom">Initial Analysis Settings</div>#}
+                    <div class="header">
+                        <h4 class="title custom">Analysis Type</h4>
+                        {#                <p class="category custom">Tweet</p>#}
+                    </div>
+                    <hr/>
+                    <div class="panel-body">
+                        <div class="form-group col-md-4">
+                            <label for="sel1" class="col-md-12">First Level</label>
+                            <select name="first-level" class="form-control col-md-12" id="sel1">
+                                　
+                                <option value="none" selected>None</option>
+                                <option value="candidate">{{ analyzing_for |lower|capitalize }}</option>
+                                <option value="topic">Topic</option>
+                                <option value="sentiment">Sentiment</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="sel1" class="col-md-12">Second Level</label>
+                            <select name="second-level" class="form-control col-md-12" id="sel2" disabled>
+                                <option value="none" selected>None</option>
+                                <option value="candidate">{{ analyzing_for |lower|capitalize }}</option>
+                                <option value="topic">Topic</option>
+                                <option value="sentiment">Sentiment</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="sel1" class="col-md-12">Third Level</label>
+                            <select name="third-level" class="form-control col-md-12" id="sel3" disabled>
+                                <option value="none" selected>None</option>
+                                <option value="candidate">{{ analyzing_for |lower|capitalize }}</option>
+                                <option value="topic">Topic</option>
+                                <option value="sentiment">Sentiment</option>
+                            </select>
+                            <select name="third-level" hidden>
+                                <option value="none" selected>None</option>
+                            </select>
+                        </div>
 
-{#              <div class="form-group col-md-6">#}
-{#                  <label for="sel1" class="col-md-6">Workspace</label>#}
-{#                  <select name="use-workspace-name" class="form-control col-md-12" id="sel1">#}
-{#                    <option value="create">Create New</option>#}
-{#                    {% for workspace in workspace_list %}#}
-{#                        <option value={{ workspace['name'] }}>{{ workspace['name'] | capitalize }}</option>#}
-{#                    {% endfor %}#}
-{#                  </select>#}
-{#              </div>#}
-{#              <div class="form-group col-md-6">#}
-{#                  <label for="sel1" class="col-md-6">New Workspace Name</label>#}
-{#                  <input type="text" name="new-workspace-name" class="form-control col-md-12" value="Default"/>#}
-{#              </div>#}
+                        {#              <div class="form-group col-md-6">#}
+                        {#                  <label for="sel1" class="col-md-6">Workspace</label>#}
+                        {#                  <select name="use-workspace-name" class="form-control col-md-12" id="sel1">#}
+                        {#                    <option value="create">Create New</option>#}
+                        {#                    {% for workspace in workspace_list %}#}
+                        {#                        <option value={{ workspace['name'] }}>{{ workspace['name'] | capitalize }}</option>#}
+                        {#                    {% endfor %}#}
+                        {#                  </select>#}
+                        {#              </div>#}
+                        {#              <div class="form-group col-md-6">#}
+                        {#                  <label for="sel1" class="col-md-6">New Workspace Name</label>#}
+                        {#                  <input type="text" name="new-workspace-name" class="form-control col-md-12" value="Default"/>#}
+                        {#              </div>#}
 
-              <div class="row">
-                  <div class="col-md-4 pull-right" style="margin: 15px;">
-                      <button id="reset-selection" type="button" class="btn btn-info col-md-6">Reset</button>
-{#                      <button id="submit-selection" type="button" class="btn btn-success col-md-6" disabled>Submit</button>#}
-                      <input id="submit-selection" type="submit" class="btn btn-success col-md-6" Value="Analyze" disabled>
-                  </div>
-              </div>
+                        <div class="row">
+                            <div class="col-md-4 pull-right" style="margin: 15px;">
+                                <button id="reset-selection" type="button" class="btn btn-info col-md-6">Reset</button>
+                                {#                      <button id="submit-selection" type="button" class="btn btn-success col-md-6" disabled>Submit</button>#}
+                                <input id="submit-selection" type="submit" class="btn btn-success col-md-6"
+                                       Value="Analyze" disabled>
+                            </div>
+                        </div>
 
-              </div>
-            </div>
-         </form>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}
 
 {% block customJS %}
     <script>
         // Executed when DOM is loaded
-        $(document).ready(function() {
-           // Executed when select is changed
-            $("#sel1").on('change',function() {
+        $(document).ready(function () {
+            // Executed when select is changed
+            $("#sel1").on('change', function () {
                 var x = this.selectedIndex;
                 var sel1Val = this.options[this.selectedIndex].value;
 
                 if (x == "") {
                     $("#submit-selection").prop('disabled', true);
-{#                   $("#submit-button").hide();#}
+                    {#                   $("#submit-button").hide();#}
                 } else {
-                   $("#sel2").prop('disabled', false);
-                   $("#sel2 option[value=" + sel1Val + "]").prop('disabled','true');
+                    $("#sel2").prop('disabled', false);
+                    $("#sel2 option[value=" + sel1Val + "]").prop('disabled', 'true');
 
-                   $("#submit-selection").prop('disabled', false);
-{#                   $("#submit-button").show();#}
+                    $("#submit-selection").prop('disabled', false);
+                    {#                   $("#submit-button").show();#}
                 }
 
-                $("#sel2").on('change',function() {
+                $("#sel2").on('change', function () {
                     var sel2Val = this.options[this.selectedIndex].value;
 
                     $("#sel3").prop('disabled', false);
-                    $("#sel3 option[value=" + sel1Val + "]").prop('disabled','true');
-                    $("#sel3 option[value=" + sel2Val + "]").prop('disabled','true');
+                    $("#sel3 option[value=" + sel1Val + "]").prop('disabled', 'true');
+                    $("#sel3 option[value=" + sel2Val + "]").prop('disabled', 'true');
                 });
             });
-            $("#reset-selection").on('click',function() {
-                   $("#sel1").val($("#sel1 option:first").val());
-                   $("#sel2").prop('disabled','false').val($("#sel2 option:first").val());
-                   $("#sel3").prop('disabled','false').val($("#sel3 option:first").val());
-                   // TODO renable disabled options
+            $("#reset-selection").on('click', function () {
+                $("#sel1").val($("#sel1 option:first").val());
+                $("#sel2").prop('disabled', 'false').val($("#sel2 option:first").val());
+                $("#sel3").prop('disabled', 'false').val($("#sel3 option:first").val());
+                // TODO renable disabled options
 
-                  $("#sel2 option").prop("disabled", false);
-                  $("#sel3 option").prop("disabled", false);
+                $("#sel2 option").prop("disabled", false);
+                $("#sel3 option").prop("disabled", false);
 
-                  $("#submit-selection").prop('disabled', true);
-{#                   $("#submit-button").hide();#}
+                $("#submit-selection").prop('disabled', true);
+                {#                   $("#submit-button").hide();#}
             });
             // It must not be visible at first time
-{#            $("#submit-button").css("display","none");#}
+            {#            $("#submit-button").css("display","none");#}
         });
     </script>
 {% endblock %}

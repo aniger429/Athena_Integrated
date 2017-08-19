@@ -10,13 +10,13 @@ txt_path = path.join(script_path, 'DataCleaning')
 
 
 def pos_file_to_list():
-    posiFile = pd.read_csv(txt_path+"/positive.txt", header=None)
+    posiFile = pd.read_csv(txt_path + "/positive.txt", header=None)
     posi_list = posiFile[0].tolist()
     return posi_list
 
 
 def neg_file_to_list():
-    nega_file = pd.read_csv(txt_path+"/negative.txt", header=None)
+    nega_file = pd.read_csv(txt_path + "/negative.txt", header=None)
     nega_list = nega_file[0].tolist()
     return nega_list
 
@@ -49,4 +49,3 @@ def noNeg(string):
         string = string.replace('negativeemoticon', '', 1)
         no += 1
     return no
-

@@ -1,4 +1,3 @@
-
 import datetime
 
 from pymodm import MongoModel, fields
@@ -25,6 +24,7 @@ def check_if_kbfile_exists(filename):
         return False
     else:
         return True
+
 
 def insert_new_kbfile(file_name):
     time_uploaded = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")

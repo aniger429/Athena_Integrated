@@ -5,125 +5,136 @@
 
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
-        .title.custom{
+        .title.custom {
             font-size: 30px;
         }
     </style>
 
     <link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css"
-    rel="stylesheet" type="text/css">
+            href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css"
+            rel="stylesheet" type="text/css">
     <link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.css"
-    rel="stylesheet" type="text/css">
+            href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.css"
+            rel="stylesheet" type="text/css">
 {% endblock %}
 
-{%block name%}
-Sentiment Analysis: {{ sentiment_analysis_for }}
-{%endblock%}
+{% block name %}
+    Sentiment Analysis: {{ sentiment_analysis_for }}
+{% endblock %}
 
 {% block content %}
-{% for c in range(0, sentiment_labels | length) %}
-    <div class="col-md-12">
-        <div class="collapse" id="{{ sentiment_labels[c] }}_collapse_topic">
-            <h3>{{ sentiment_labels[c] | capitalize}}</h3>
-            <form action="/topic_analysis_manager" method="POST">
-              <input name="datasource" value="sentiment" hidden>
-              <input name="sentiment" value="{{ sentiment_labels[c] }}" hidden>
-                 {{ collapsible_topic_config() }}
-              <button type="submit" class="btn btn-success btn-md pull-right btn-lg">Submit Configuration</button>
-            </form>
-            <br/>
+    {% for c in range(0, sentiment_labels | length) %}
+        <div class="col-md-12">
+            <div class="collapse" id="{{ sentiment_labels[c] }}_collapse_topic">
+                <h3>{{ sentiment_labels[c] | capitalize }}</h3>
+                <form action="/topic_analysis_manager" method="POST">
+                    <input name="datasource" value="sentiment" hidden>
+                    <input name="sentiment" value="{{ sentiment_labels[c] }}" hidden>
+                    {{ collapsible_topic_config() }}
+                    <button type="submit" class="btn btn-success btn-md pull-right btn-lg">Submit Configuration</button>
+                </form>
+                <br/>
+            </div>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
 
-<div class="row">
-    <ul class="nav nav-tabs">
-        <li><a data-toggle="tab" href="#positive">Positive</a></li>
-        <li><a data-toggle="tab" href="#neutral">Neutral</a></li>
-        <li><a data-toggle="tab" href="#negative">Negative</a></li>
-        <li class="active"><a data-toggle="tab" href="#summary">Summary</a></li>
-    </ul>
+    <div class="row">
+        <ul class="nav nav-tabs">
+            <li><a data-toggle="tab" href="#positive">Positive</a></li>
+            <li><a data-toggle="tab" href="#neutral">Neutral</a></li>
+            <li><a data-toggle="tab" href="#negative">Negative</a></li>
+            <li class="active"><a data-toggle="tab" href="#summary">Summary</a></li>
+        </ul>
 
-    <div class="tab-content">
-        {% for c in range(0, sentiment_labels | length) %}
-            <div id="{{ sentiment_labels[c] }}" class="tab-pane fade">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title custom">{{ sentiment_labels[c] | capitalize }} Tweets</h4>
-                        <p class="category custom">{{ tweet_list[c]['tweets']['orig_tweets'].count() }} Tweets</p>
+        <div class="tab-content">
+            {% for c in range(0, sentiment_labels | length) %}
+                <div id="{{ sentiment_labels[c] }}" class="tab-pane fade">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title custom">{{ sentiment_labels[c] | capitalize }} Tweets</h4>
+                            <p class="category custom">{{ tweet_list[c]['tweets']['orig_tweets'].count() }} Tweets</p>
 
-                        <div class="row">
-                            <div class="col-md-9">
-                                Candidates Mentioned:
-                                {% for cand in tweet_list[c]['candidate_mentioned'] %}
-                                    <a class="username" href="{{ url_for('view_candidate_data', candidate_name=cand, datasource=sentiment_labels[c]) }}">{{ cand | capitalize }}</a>
-                                {% endfor %}
+                            <div class="row">
+                                <div class="col-md-9">
+                                    Candidates Mentioned:
+                                    {% for cand in tweet_list[c]['candidate_mentioned'] %}
+                                        <a class="username"
+                                           href="{{ url_for('view_candidate_data', candidate_name=cand, datasource=sentiment_labels[c]) }}">{{ cand | capitalize }}</a>
+                                    {% endfor %}
+                                </div>
+                                <button href="#{{ sentiment_labels[c] }}_collapse_topic"
+                                        class="btn btn-info btn-md col-md-3 pull-right" data-toggle="collapse"
+                                        style="margin: 10px">Determine Topics
+                                </button>
                             </div>
-                            <button href="#{{ sentiment_labels[c] }}_collapse_topic" class="btn btn-info btn-md col-md-3 pull-right" data-toggle="collapse" style="margin: 10px">Determine Topics</button>
                         </div>
-                    </div>
-                    <div class="content table-responsive table-full-width">
-                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="{{ sentiment_labels[c] }}_table">
-                            <thead>
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-striped table-bordered" cellspacing="0" width="100%"
+                                   id="{{ sentiment_labels[c] }}_table">
+                                <thead>
                                 <th class=col-md-1">Number</th>
                                 <th class="col-md-10">Tweet</th>
                                 <th class="col-md-1">View Tweet</th>
-                            </thead>
-                            <tbody>
-                            {% for key, tweet in tweet_list[c]['tweets'].iterrows() %}
-                                 <tr>
-                                    <td class="col-md-1">{{ loop.index }}</td>
-                                    <td class="col-md-10">
-                                        {% for word in tweet['words_senti'] %}
-                                            {% if word['word'][:1] == '@' %}
-                                                <a class="username_link" href="{{ url_for('view_specific_user', user_id=word['word'][1:])}}"> <i>@USER</i></a>
-                                            {% elif word['sentiment'] == "positive" %}
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                               title="Language: {{ word['language'] }}, Word Matched: {{ word['matched'] }}">                                               <span style="font-size:14px; color:#238b2a; font-weight:bold; font-style:italic;">
+                                </thead>
+                                <tbody>
+                                {% for key, tweet in tweet_list[c]['tweets'].iterrows() %}
+                                    <tr>
+                                        <td class="col-md-1">{{ loop.index }}</td>
+                                        <td class="col-md-10">
+                                            {% for word in tweet['words_senti'] %}
+                                                {% if word['word'][:1] == '@' %}
+                                                    <a class="username_link"
+                                                       href="{{ url_for('view_specific_user', user_id=word['word'][1:]) }}">
+                                                        <i>@USER</i></a>
+                                                {% elif word['sentiment'] == "positive" %}
+                                                    <a href="#" data-toggle="tooltip" data-placement="top"
+                                                       title="Language: {{ word['language'] }}, Word Matched: {{ word['matched'] }}">                                               <span
+                                                            style="font-size:14px; color:#238b2a; font-weight:bold; font-style:italic;">
                                                 {{ word['word'] }}
                                             </span>
-                                            </a>
-                                            {% elif word['sentiment'] == "negative" %}
-                                            <a href="#" data-toggle="tooltip" data-placement="top"
-                                               title="Language: {{ word['language'] }}, Word Matched: {{ word['matched'] }}">                                               <span style="font-size:14px; color:#8b2e23; font-weight:bold; font-style:italic;">
+                                                    </a>
+                                                {% elif word['sentiment'] == "negative" %}
+                                                    <a href="#" data-toggle="tooltip" data-placement="top"
+                                                       title="Language: {{ word['language'] }}, Word Matched: {{ word['matched'] }}">                                               <span
+                                                            style="font-size:14px; color:#8b2e23; font-weight:bold; font-style:italic;">
                                                 {{ word['word'] }}
                                             </span>
-                                            </a>
-                                            {% else  %}
-                                                {{ word['word'] }}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </td>
-                                    <td class="col-md-1"><a href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id'])}}"> View Tweet</a></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                                    </a>
+                                                {% else %}
+                                                    {{ word['word'] }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td class="col-md-1"><a
+                                                href="{{ url_for('view_specific_tweet', tweet_id=tweet['_id']) }}"> View
+                                            Tweet</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-        <div id="summary" class="tab-pane fade in active">
-            <div class="col-md-offset-2">
-               {{ script|safe }}
-               {{ div|safe }}
-            </div>
+            {% endfor %}
+            <div id="summary" class="tab-pane fade in active">
+                <div class="col-md-offset-2">
+                    {{ script|safe }}
+                    {{ div|safe }}
+                </div>
 
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
-{%block before_body_end %}
-{%endblock%}
+{% block before_body_end %}
+{% endblock %}
 
 {% block customJS %}
     <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.js"></script>
     <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.5.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('#positive_table').DataTable();
             $('#negative_table').DataTable();
             $('#neutral_table').DataTable();

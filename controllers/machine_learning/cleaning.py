@@ -15,9 +15,9 @@ script_path = os.path.dirname(os.path.dirname(__file__))
 file_path = os.path.join(script_path, "stop_words")
 
 # loads stop words list from file
-stopwords = pd.read_csv(file_path+"/final_stop_words_list.csv", header=None, squeeze=True).tolist()
+stopwords = pd.read_csv(file_path + "/final_stop_words_list.csv", header=None, squeeze=True).tolist()
 # loads contractions from file
-contractions = pd.read_csv(file_path+"/contractions.csv", header=None, delimiter=',')
+contractions = pd.read_csv(file_path + "/contractions.csv", header=None, delimiter=',')
 dictionary = dict(zip(contractions[0].tolist(), contractions[1].tolist()))
 
 c_re = re.compile('(%s)' % '|'.join(dictionary.keys()))
@@ -34,6 +34,7 @@ def read_xlsx(filename):
 def expand_contractions(text, c_re=c_re):
     def replace(match):
         return dictionary[match.group(0)]
+
     return c_re.sub(replace, text)
 
 

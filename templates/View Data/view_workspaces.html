@@ -3,48 +3,48 @@
 
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
-        .title.custom{
+        .title.custom {
             font-size: 30px;
         }
     </style>
 {% endblock %}
 
-{%block name%}
-Tweet
-{%endblock%}
+{% block name %}
+    Tweet
+{% endblock %}
 
-{%block vaw_active%}
-active
-{%endblock%}
+{% block vaw_active %}
+    active
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">Workspaces</h4>
-{#                <p class="category custom">Tweet</p>#}
-            </div>
-            <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
-                    <thead>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">Workspaces</h4>
+                    {#                <p class="category custom">Tweet</p>#}
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
                         <th class="col-md-6">Name</th>
                         <th class="col-md-6">Date Created</th>
-                    </thead>
-                    <tbody>
-                    {% for workspace in workspaceList %}
-                        <tr>
-                           <td>{{ workspace['name'] }}</td>
-                           <td>{{ workspace['date_created'] }}</td>
-                       </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for workspace in workspaceList %}
+                            <tr>
+                                <td>{{ workspace['name'] }}</td>
+                                <td>{{ workspace['date_created'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
 

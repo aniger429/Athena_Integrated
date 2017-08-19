@@ -1,83 +1,86 @@
 {% extends "base.html" %}
-{% from 'analysis/macros.html' import collapsible_topic_config%}
+{% from 'analysis/macros.html' import collapsible_topic_config %}
 {% block customCSS %}
 
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename="css/bootstrap-tagsinput.css") }}" rel="stylesheet"/>
     <style>
-        .title.custom{
+        .title.custom {
             font-size: 30px;
         }
+
         .form-group {
-            padding:10px;
+            padding: 10px;
         }
     </style>
 {% endblock %}
 {% block lexicon_active %}
     active
 {% endblock %}
-{%block name%}
-{{ language | capitalize}}
-{%endblock%}
+{% block name %}
+    {{ language | capitalize }}
+{% endblock %}
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">{{ sentiment | capitalize }}</h4>
-                <p class="category custom">{{ sentiment_words | length }} words</p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ sentiment | capitalize }}</h4>
+                    <p class="category custom">{{ sentiment_words | length }} words</p>
                     <form class="col-md-9" action="/add_lexicon_words" method="POST" enctype="multipart/form-data">
-                            <input  name="language" value="{{ language }}" hidden/>
-                            <input  name="sentiment" value="{{ sentiment }}" hidden/>
-                            <input id="tags" type="text" name="add_names" class="col-md-10" placeholder="name"
-                                   tooltip="Tab for next name" data-role="tagsinput" />
-                            <button type="submit" class="btn btn-success btn-md  col-md-2">Add Words</button>
+                        <input name="language" value="{{ language }}" hidden/>
+                        <input name="sentiment" value="{{ sentiment }}" hidden/>
+                        <input id="tags" type="text" name="add_names" class="col-md-10" placeholder="name"
+                               tooltip="Tab for next name" data-role="tagsinput"/>
+                        <button type="submit" class="btn btn-success btn-md  col-md-2">Add Words</button>
                     </form>
-            </div>
-            <div class="content table-responsive table-full-width">
-             <form action="/delete_lexicon_word" method="POST" enctype="multipart/form-data">
-                <input  name="language" value="{{ language }}" hidden/>
-                <input  name="sentiment" value="{{ sentiment }}" hidden/>
-                <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable">
-                    <thead>
-                        <th class="col-md-1">Number</th>
-                        <th class="col-md-2">Check</th>
-                        <th class="col-md-3">Word</th>
-                    </thead>
-                    <tbody>
-                            {% for word in sentiment_words%}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>
-                                    <label class="checkbox checkbox-red" for="checkbox5">
-                                       <input type="checkbox" value="{{ word }}" name="names[]" data-toggle="checkbox">
-                                    </label>
-                                </td>
-                                <td>{{ word }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-danger btn-md col-md-offset-10 col-md-2">Delete</button>
                 </div>
-             <br/><br/><br/>
-             </form>
+                <div class="content table-responsive table-full-width">
+                    <form action="/delete_lexicon_word" method="POST" enctype="multipart/form-data">
+                        <input name="language" value="{{ language }}" hidden/>
+                        <input name="sentiment" value="{{ sentiment }}" hidden/>
+                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="myTable">
+                            <thead>
+                            <th class="col-md-1">Number</th>
+                            <th class="col-md-2">Check</th>
+                            <th class="col-md-3">Word</th>
+                            </thead>
+                            <tbody>
+                            {% for word in sentiment_words %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <label class="checkbox checkbox-red" for="checkbox5">
+                                            <input type="checkbox" value="{{ word }}" name="names[]"
+                                                   data-toggle="checkbox">
+                                        </label>
+                                    </td>
+                                    <td>{{ word }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-danger btn-md col-md-offset-10 col-md-2">Delete
+                            </button>
+                        </div>
+                        <br/><br/><br/>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block customJS %}
     <script src="{{ url_for('static', filename="js/bootstrap-tagsinput.min.js") }}"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('#myTable').DataTable();
         });
         $('#tags').tagsinput({
-          confirmKeys: [13, 188, 9],
-          allowDuplicates: false
+            confirmKeys: [13, 188, 9],
+            allowDuplicates: false
         });
     </script>
 {% endblock %}

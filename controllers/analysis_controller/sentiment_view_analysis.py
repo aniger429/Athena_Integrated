@@ -20,12 +20,12 @@ def view_sentiment_analysis():
     if datasource == "Topic":
         key = request.args.get('key')
         tweets = load_obj("Topics")[key]['topic_tweets']
-        sentiment_for = "Topic # "+key
+        sentiment_for = "Topic # " + key
 
     elif datasource == "Candidate":
         candidate_name = request.args.get('candidate_name')
         tweets = load_obj("Tweets")
-        sentiment_for="Candidate: "+candidate_name
+        sentiment_for = "Candidate: " + candidate_name
 
     positive_tweets, neutral_tweets, negative_tweets = compute_tweets_sentiment(tweets)
 
@@ -33,4 +33,6 @@ def view_sentiment_analysis():
     neutral_tweets = {'tweets': neutral_tweets, 'candidate_mentioned': identify_candidate_mentioned(neutral_tweets)}
     negative_tweets = {'tweets': negative_tweets, 'candidate_mentioned': identify_candidate_mentioned(negative_tweets)}
 
-    return render_template("analysis/Sentiment/view_tweets_sentiment.html", tweet_list=[negative_tweets, positive_tweets, neutral_tweets], sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=sentiment_for)
+    return render_template("analysis/Sentiment/view_tweets_sentiment.html",
+                           tweet_list=[negative_tweets, positive_tweets, neutral_tweets],
+                           sentiment_labels=['negative', 'neutral', 'positive'], sentiment_analysis_for=sentiment_for)

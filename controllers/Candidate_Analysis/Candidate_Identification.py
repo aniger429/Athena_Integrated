@@ -1,11 +1,9 @@
 from functools import partial
-from multiprocessing import Pool
-
-import numpy as np
 
 from DBModels.KB_Names import *
 from DBModels.Tweet import *
 from controllers.Sentiment_Analysis.Sentiment_Identification import *
+from collections import Counter
 
 num_partitions = 6  # number of partitions to split dataframe
 num_cores = 6  # number of cores on your machine
@@ -22,8 +20,8 @@ def get_mention_index(tweet, candidate_names):
 
 def process_df(candidate_data, tweet_df):
     for candidate in candidate_data:
-        tweet_df[candidate['candidate_name']] = tweet_df.apply(lambda row: get_mention_index(row['orig_tweets'],
-                                                               candidate['kb_names']), axis=1)
+        tweet_df[candidate['candidate_name']] = tweet_df.apply(lambda row: get_mention_index(lower_split_tweet(row['orig_tweets']),
+                                                                                             candidate['kb_names']), axis=1)
     return tweet_df
 
 
@@ -45,11 +43,12 @@ def identify_candidate(tweet_df, cname="none"):
     # gets all the known candidate names in the database
     candidate_data = get_all_kb_names()
 
+
     # convert all tweets to list of words
-    if isinstance(tweet_df['orig_tweets'].iloc[0], list):
-        tweet_df['orig_tweets'] = tweet_df.apply(lambda row: row['orig_tweets'], axis=1)
-    else:
-        tweet_df['orig_tweets'] = tweet_df.apply(lambda row: lower_split_tweet(row['orig_tweets']), axis=1)
+    # if isinstance(tweet_df['orig_tweets'].iloc[0], list):
+    #     tweet_df['orig_tweets'] = tweet_df.apply(lambda row: row['orig_tweets'], axis=1)
+    # else:
+    #     tweet_df['orig_tweets'] = tweet_df.apply(lambda row: lower_split_tweet(row['orig_tweets']), axis=1)
 
     # creates a new column per candidate and stores the index of word mentioned for the candidate
     tweet_df = parallelize_dataframe(tweet_df, process_df, candidate_data)
@@ -71,12 +70,14 @@ def filter_tweet_on_candidate(cname, tweet_list):
 
 def identify_candidate_mentioned(tweet):
     candidate_names = get_all_kb_names()
+
     if not any(candidate['candidate_name'] in tweet.columns for candidate in candidate_names):
         tweet = identify_candidate(tweet)
 
-    return [candidate['candidate_name'] for candidate in candidate_names
+    final = [candidate['candidate_name'] for candidate in candidate_names
             if (len(tweet[(tweet[candidate['candidate_name']] != -1)]) > 0)]
 
+    return final
 
 def candidate_analysis_testing(num_tweets):
     # retrieve all data in the database
@@ -87,7 +88,7 @@ def candidate_analysis_testing(num_tweets):
     for c in cand:
         results = identify_candidate(tweets, c)
         # create data list to hold the processed data
-        print(results)
+        # print(results)
         data_list = []
 
         [data_list.append({'Tweet': ' '.join(r['tweets']),
@@ -100,7 +101,7 @@ def candidate_analysis_testing(num_tweets):
         data = pd.DataFrame(data_list, columns=['Tweet', 'Binay', 'Duterte', 'Poe', 'Roxas', 'Santiago'])
         print("saving")
         # save to excel
-        data.to_csv("/home/dudegrim/Documents/Testing/"+c+"_candidate_analysis_output.csv", sep=',',
+        data.to_csv("/home/dudegrim/Documents/Testing/" + c + "_candidate_analysis_output.csv", sep=',',
                     columns=['Tweet', 'Binay', 'Duterte', 'Poe', 'Roxas', 'Santiago'], index=None)
 
 
@@ -109,7 +110,7 @@ def original_tweets():
     df = pd.DataFrame(tweets)
     df['orig_tweets'] = df.apply(lambda row: ' '.join(row['orig_tweets']), axis=1)
     df.to_csv("/home/dudegrim/Documents/Testing/original_tweets.csv", sep=',',
-                columns=['orig_tweets', 'tweet'], index=None)
+              columns=['orig_tweets', 'tweet'], index=None)
 
 
 def candidate_analysis(tweets, candidate_name):
@@ -118,8 +119,10 @@ def candidate_analysis(tweets, candidate_name):
 
     # load data from pickles
     data = load_pickled_dataframe("Candidate")
+    data['orig_tweets'] = data.apply(lambda row: (lower_split_tweet(row['orig_tweets'])), axis=1)
     # get all the names used to mention the candidate
     data['name'] = data.apply(lambda row: (row['orig_tweets'][row[candidate_name]]), axis=1)
+
     # get a frequency count
     candidate_name_count = Counter(list(data['name']))
 

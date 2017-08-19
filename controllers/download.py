@@ -1,12 +1,9 @@
 from flask import request, redirect, url_for
-import DBModels
-from controllers.Pickles.Pickle_Saver import *
-from flask import request, redirect, url_for
 
 import DBModels
 from controllers.Pickles.Pickle_Saver import *
-
-
+from shutil import copyfile
+import os
 # import openpyxl
 
 
@@ -30,7 +27,6 @@ def multi_sheets(filename, data_list):
 
 
 def download():
-
     which_data = request.form['download_data']
     print("which data:" + which_data)
     filename = ""
@@ -38,11 +34,20 @@ def download():
     if which_data == "all_usernames":
         data = DBModels.Username.get_dict_list_usernames()
         filename = "Data/Downloads/all_usernames.xlsx"
+        writeToFile(data, filename)
+        return redirect(redirect_url())
+
+    elif which_data == "word_cloud":
+        script_path = os.path.dirname(__file__)
+        source = os.path.join(script_path, 'word_cloud.png')
+        dest = os.path.join(script_path, os.pardir, 'Data', 'Downloads', 'word_cloud.png')
+        copyfile(source, dest)
+        return redirect(url_for('analysis'))
 
     elif which_data == "specific_candidate_names":
         candidate = request.form['cand_name']
         data = DBModels.KB_Names.get_specific_candidate_names(candidate)
-        filename = "Data/Downloads/candidate_names_"+candidate+".xlsx"
+        filename = "Data/Downloads/candidate_names_" + candidate + ".xlsx"
 
     elif which_data == "all_kb_names":
         kb_names = DBModels.KB_Names.get_all_kb_names()
@@ -68,10 +73,10 @@ def download():
         tweets = []
 
         for key, value in data.items():
-            tweets.append({"sheet_name": "Tweets "+key,
+            tweets.append({"sheet_name": "Tweets " + key,
                            "data": pd.DataFrame({'Tweets': [' '.join(v['tweet']) for v in value['topic_tweets']]})})
-            word_list["word: "+str(key)] = ([w['word'] for w in value['words']])
-            word_list["score: "+str(key)] = ([w['score'] for w in value['words']])
+            word_list["word: " + str(key)] = ([w['word'] for w in value['words']])
+            word_list["score: " + str(key)] = ([w['score'] for w in value['words']])
 
         filename1 = "Data/Downloads/topic_lda_words.xlsx"
         filename2 = "Data/Downloads/topic_lda_tweets.xlsx"
@@ -84,18 +89,18 @@ def download():
     elif which_data == "download_topic_words":
         key = request.form['key']
         data = load_obj("Topics")[key]['words']
-        filename = "Data/Downloads/topic_"+key+"_keywords.xlsx"
+        filename = "Data/Downloads/topic_" + key + "_keywords.xlsx"
 
     elif which_data == "download_topic_tweets":
         key = request.form['key']
         data_source = load_obj("Topics")[key]['topic_tweets']
         data = [{'tweet': d['tweet'], '_id': str(d['_id'])} for d in data_source]
-        filename = "Data/Downloads/topic_"+key+"_tweets.xlsx"
+        filename = "Data/Downloads/topic_" + key + "_tweets.xlsx"
 
     elif which_data == "download_topic_ngrams":
         data_source = load_obj("tf_idf")
-        b,c = zip(*(list(data_source.items())))
-        data = {'ngram':b, 'score':c}
+        b, c = zip(*(list(data_source.items())))
+        data = {'ngram': b, 'score': c}
         filename = "Data/Downloads/topic_ngrams.xlsx"
 
     elif which_data == "specific_username":
@@ -104,12 +109,14 @@ def download():
         user_mentioned_tweet_list = DBModels.Tweet.get_user_mentioned_tweets(username_id)
         tweetDataList = DBModels.Tweet.get_user_tweet_data(username_id)
 
-        posted_tweets = pd.DataFrame({'tweet': ' '.join(d['tweet']), '_id': str(d['_id'])} for d in tweetDataList)
-        mentioned_tweets = pd.DataFrame({'tweet': ' '.join(d['tweet']), '_id': str(d['_id'])} for d in user_mentioned_tweet_list)
+        posted_tweets = pd.DataFrame({'tweet': ' '.join(value['orig_tweets']), '_id': str(value['_id'])} for key, value in tweetDataList.iterrows())
+        mentioned_tweets = pd.DataFrame(
+            {'tweet': ' '.join(value['orig_tweets']), '_id': str(value['_id'])} for key, value in
+            tweetDataList.iterrows())
 
-        filename= "Data/Downloads/user_data"+userData['username']+".xlsx"
-        data_list=[]
-        data_list.append({"sheet_name": "Mentioned", "data":mentioned_tweets})
+        filename = "Data/Downloads/user_data" + userData['username'] + ".xlsx"
+        data_list = []
+        data_list.append({"sheet_name": "Mentioned", "data": mentioned_tweets})
         data_list.append({"sheet_name": "Posted", "data": posted_tweets})
 
         multi_sheets(filename, data_list)
@@ -120,6 +127,8 @@ def download():
         data_source = [d['tweet'] for d in DBModels.Tweet.get_tweets_only()]
         filename = "Data/Downloads/all_tweets.xlsx"
         data = {'Tweets': data_source}
+        writeToFile(data, filename)
+        return redirect(redirect_url())
 
     # save data to file
     writeToFile(data, filename)
@@ -130,5 +139,3 @@ def download():
         return redirect(url_for('analysis'))
 
     return redirect(redirect_url())
-
-

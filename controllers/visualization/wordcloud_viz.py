@@ -10,6 +10,7 @@ from os import path, pardir
 import numpy as np
 import pandas as pd
 from PIL import Image
+import matplotlib
 from palettable.colorbrewer.sequential import Reds_9, Greens_9, Blues_9, Greys_9
 from wordcloud import WordCloud
 
@@ -27,11 +28,11 @@ def transparent_to_white():
     dest = "/home/dudegrim/Documents/scratch/1080/"
     for v in viz_list:
         print(v)
-        im = Image.open(source+v+".png")
+        im = Image.open(source + v + ".png")
 
         bg = Image.new("RGB", im.size, (255, 255, 255))
         bg.paste(im, im)
-        bg.save(dest+v+".png")
+        bg.save(dest + v + ".png")
 
 
 def which_masks():
@@ -77,11 +78,8 @@ def word_cloud(source, text):
     wc.generate_from_frequencies(frequencies=ngram_freq)
     wc.recolor(color_func=which_color, random_state=3)
 
-
     # store to file
     static_folder = path.join(directory, pardir)
     wc.to_file(path.join(static_folder, "word_cloud.png"), )
 
     return path.join(static_folder, "word_cloud.png")
-
-

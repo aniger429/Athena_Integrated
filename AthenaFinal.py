@@ -1,19 +1,20 @@
 from flask import Flask, send_from_directory
-from flask import session
 
 from DBModels.Data import *
+from DBModels.Database_Manager import *
 from DBModels.KBFile import *
 from DBModels.MongoDB_Manager import *
 from DBModels.Username import *
-from DBModels.Database_Manager import *
 from controllers import uploadFile
-from controllers.Lexicon_Files.populate_lexicon_base import *
+from controllers.Candidate_Analysis.Candidate_Identification import *
 from controllers.DataCleaning import cleaning
 from controllers.KnowledgeBaseCreation import *
+from controllers.Lexicon_Files.populate_lexicon_base import *
 from controllers.analysis_controller.analysis_manager import new_analysis
 from controllers.analysis_controller.topic_view_analysis import *
 from controllers.download import *
 from controllers.init_athena import *
+from controllers.visualization.donut_chart import *
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -35,8 +36,9 @@ app.secret_key = "super secret key"
 @app.route('/')
 def home():
     analyzing_for = session.get('analysis_name', 'Candidate')
-    return render_template("dashboard.html", analyzing_for=analyzing_for, counter_data=[count_total_usernames(), count_total_tweet(),
-                                                           count_total_candidate(), count_total_data()],
+    return render_template("dashboard.html", analyzing_for=analyzing_for,
+                           counter_data=[count_total_usernames(), count_total_tweet(),
+                                         count_total_candidate(), count_total_data()],
                            counter_names=["username", "tweet", "candidate", "file"])
 
 
@@ -76,7 +78,7 @@ def view_specific_user():
                            tweetDataList=get_user_tweet_data(user_id))
 
 
-@app.route('/view_tweets')
+@app.route('/view_tweets', methods=['GET'])
 def view_all_tweets():
     return render_template("View Data/view_tweets.html", tweetFileList=get_all_orig_tweets(1000),
                            total_tweet=count_total_tweet())
@@ -166,7 +168,7 @@ def view_sentiment_analysis():
     if datasource == "Topic":
         key = request.args.get('key')
         tweets = load_obj("Topics")[key]['topic_tweets']
-        sentiment_for = "Topic # "+key
+        sentiment_for = "Topic # " + key
 
     elif datasource == "Candidate":
         candidate_name = request.args.get('candidate_name')
@@ -189,8 +191,7 @@ def view_sentiment_analysis():
     return render_template("analysis/Sentiment/view_tweets_sentiment.html",
                            tweet_list=[negative_tweets, positive_tweets, neutral_tweets],
                            sentiment_labels=['negative', 'neutral', 'positive'],
-                           sentiment_analysis_for=sentiment_for,
-                           script=script, div=div)
+                           sentiment_analysis_for=sentiment_for, script=script, div=div)
 
 
 @app.route('/analysis')
@@ -202,7 +203,7 @@ def analysis():
 
 @app.route('/data_cleaning')
 def data_cleaning():
-    return render_template("datacleaning.html", dataFileList=get_all_file(), duplicate = False)
+    return render_template("datacleaning.html", dataFileList=get_all_file(), duplicate=False)
 
 
 @app.route('/data_cleaning/<filename>')
@@ -234,11 +235,13 @@ def populate_lexicons():
 def view_lexicon():
     return render_template("lexicon/view_all_lexicons.html", all_lexicon=get_all_lexicon())
 
+
 @app.route('/view_lexicon_words', methods=['GET'])
 def view_lexicon_words():
     language = request.args.get('language')
     sentiment = request.args.get('sentiment')
-    return render_template("lexicon/lexicon_base.html", sentiment_words=get_all_words(language, sentiment), sentiment=sentiment, language=language)
+    return render_template("lexicon/lexicon_base.html", sentiment_words=get_all_words(language, sentiment),
+                           sentiment=sentiment, language=language)
 
 
 @app.route('/delete_lexicon_word', methods=['POST'])
@@ -301,7 +304,7 @@ def analysis_config():
     tlevel = request.form['third-level']
     last = ""
     vizOptions = []
-    count= 5
+    count = 5
     if tlevel == "none":
         if slevel == "none":
             last = flevel;
@@ -324,7 +327,8 @@ def analysis_config():
     analyzing_for = session.get('analysis_name', 'Candidate')
 
     return render_template("analysis/analysis_processing.html",
-                           candidate_names=get_all_candidate_names(), flevel=flevel, slevel=slevel, tlevel=tlevel, vizOptions=vizOptions, count=count, analyzing_for=analyzing_for)
+                           candidate_names=get_all_candidate_names(), flevel=flevel, slevel=slevel, tlevel=tlevel,
+                           vizOptions=vizOptions, count=count, analyzing_for=analyzing_for)
 
 
 @app.route('/new_analysis', methods=['POST'])
@@ -342,33 +346,13 @@ def visualizations():
     viz_type = request.form['viz_type']
 
 
-@app.route('/get_word_cloud')
-def get_word_cloud():
-    filename = "word_cloud.png"
-    return send_from_directory(app.config['MEDIA_FOLDER'], filename, as_attachment=True)
-
-
-# Bokeh Visualizations
-@app.route('/test')
-def test_bokeh():
-    # data = [{'name': "C1", 'population': [1,2,3]},
-    #         {'name': "C2", 'population': [4, 5, 9]}]
-    data = [
-               ('State','Under 5 Years','5 to 13 Years','14 to 17 Years','18 to 24 Years','25 to 44 Years',
-         '45 to 64 Years','65 Years and Over'),
-           ('AL',310504,552339,259034,450818,1231572,1215966,641667),
-    ('AK',52083,85640,42153,74257,198724,183159,50277)
-    ]
-    return render_template('test.html', data=data)
-
-
 @app.route('/view_graph', methods=['GET'])
 def view_graph():
     import json
     script_path = os.path.dirname(__file__)
     json_url = os.path.join(script_path, "controllers", "graphs.json")
     jsondata = json.load(open(json_url))
-    return render_template('analysis/Topic/view_scatterplot.html', jsondata=jsondata)
+    return render_template('analysis/Topic/view_directedgraph.html', jsondata=jsondata)
 
 
 if __name__ == '__main__':

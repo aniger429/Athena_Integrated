@@ -2,7 +2,7 @@
 {% block customCSS %}
     <!--  Paper Dashboard core CSS    -->
     <link href="{{ url_for('static', filename="css/customized.css") }}" rel="stylesheet"/>
-    <link href="{{ url_for('static', filename="css/fileinput.min.css") }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename="css/fileinput.min.css") }}" rel="stylesheet" type="text/css"/>
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename="css/bootstrap_custom.css") }}" rel="stylesheet"/>
     <style>
@@ -12,107 +12,108 @@
         }
 
     </style>
-{%  endblock %}
+{% endblock %}
 
-{%block name%}
-Knowledge Base
-{%endblock%}
-{%block upload_active%}
-active
-{%endblock%}
+{% block name %}
+    Knowledge Base
+{% endblock %}
+{% block upload_active %}
+    active
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    {% if duplicate == True%}
-        <div class="alert alert-danger alert-dismissible show" role="alert">
-          <button type="button" class="close moveRight" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <strong>Oops!</strong> You uploaded a duplicate file: {{ filename }}
-        </div>
-    {% endif %}
-    <div class="panel panel-default" >
-      <div class="panel-heading title custom">Upload Data</div>
-      <div class="panel-body">
-          <form action="kbupload" method="post" enctype="multipart/form-data">
-            <input id="file-0" type="file" class="file" name="file"
-                   data-min-file-count="1" data-overwrite-initial="true"><br /><br />
-            <input type="submit" class="btn btn-info" Value="Upload">
-            <button type="reset" class="btn btn-default">Reset</button>
-          </form>
-      </div>
-    </div>
-    <div class="card">
-        <div class="header">
-            <h4 class="title custom">Knowledge Base Files</h4>
-            <p class="category">Currently loaded files</p>
-
-            <button class="btn btn-info pull-right">
-                <a href="{{ url_for("find_more_kb_names") }}"> Find More Names
-                </a>
-            </button>
-
-        </div>
-        <div class="content table-responsive table-full-width">
-            <table class="table table-striped">
-                <thead>
-                    <th class="col-md-5">Filename</th>
-                    <th class="col-md-5">Date Uploaded</th>
-{#                    <th class="col-md-1">Download</th>#}
-{#                    <th class="col-md-1">Delete</th>#}
-                </thead>
-                <tbody>
-                    {% for kbFile in kbFileList %}
-                    <tr>
-                        <td>{{ kbFile.filename }}</td>
-                        <td>{{ kbFile.dateUploaded }}</td>
-{#                        <td>#}
-{#                            <a class="btn btn-info" href="#" disabled="true">#}
-{#                              <i class="ti-file"></i>#}
-{#                            </a>#}
-{#                        </td>#}
-{#                        <td>#}
-{#                            <a class="btn btn-danger" href="#" disabled="true">#}
-{#                              <i class="ti-trash"></i> Delete#}
-{#                            </a>#}
-{#                        </td>#}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="header">
-            <h4 class="title custom">{{ analyzing_for }}</h4>
-            <p class="category">Total Number of Names in the Knowledge Base</p>
-            <form action="/download" method="post" enctype="multipart/form-data">
-                <input type="text" name="download_data" value="all_kb_names" hidden/>
-                <input id="submit" type="submit" class="btn btn-info pull-right" Value="Download All Names">
-            </form>
-            <br/>
-            <br/>
-        </div>
-
-    </div>
-     {% for cname in kb_name_list %}
-        <div class="col-md-15">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title custom"> {{ cname['kb_names'] | length }}</h4>
-                    <p class="category custom">{{ cname['candidate_name'] | capitalize }}</p>
-                    <hr/>
-                    <a class="username_link" href="{{ url_for('view_candidate_names', candidate_name=cname['candidate_name'])}}">
-                        <p style="text-align: center"><i>View Names</i></p>
-                    </a>
-                </div>
-                </br>
+    <div class="row">
+        {% if duplicate == True %}
+            <div class="alert alert-danger alert-dismissible show" role="alert">
+                <button type="button" class="close moveRight" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Oops!</strong> You uploaded a duplicate file: {{ filename }}
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading title custom">Upload Data</div>
+            <div class="panel-body">
+                <form action="kbupload" method="post" enctype="multipart/form-data">
+                    <input id="file-0" type="file" class="file" name="file"
+                           data-min-file-count="1" data-overwrite-initial="true"><br/><br/>
+                    <input type="submit" class="btn btn-info" Value="Upload">
+                    <button type="reset" class="btn btn-default">Reset</button>
+                </form>
             </div>
         </div>
-    {% endfor %}
-</div>
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">Knowledge Base Files</h4>
+                <p class="category">Currently loaded files</p>
+
+                <button class="btn btn-info pull-right">
+                    <a href="{{ url_for("find_more_kb_names") }}"> Find More Names
+                    </a>
+                </button>
+
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                    <th class="col-md-5">Filename</th>
+                    <th class="col-md-5">Date Uploaded</th>
+                    {#                    <th class="col-md-1">Download</th>#}
+                    {#                    <th class="col-md-1">Delete</th>#}
+                    </thead>
+                    <tbody>
+                    {% for kbFile in kbFileList %}
+                        <tr>
+                            <td>{{ kbFile.filename }}</td>
+                            <td>{{ kbFile.dateUploaded }}</td>
+                            {#                        <td>#}
+                            {#                            <a class="btn btn-info" href="#" disabled="true">#}
+                            {#                              <i class="ti-file"></i>#}
+                            {#                            </a>#}
+                            {#                        </td>#}
+                            {#                        <td>#}
+                            {#                            <a class="btn btn-danger" href="#" disabled="true">#}
+                            {#                              <i class="ti-trash"></i> Delete#}
+                            {#                            </a>#}
+                            {#                        </td>#}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="header">
+                <h4 class="title custom">{{ analyzing_for }}</h4>
+                <p class="category">Total Number of Names in the Knowledge Base</p>
+                <form action="/download" method="post" enctype="multipart/form-data">
+                    <input type="text" name="download_data" value="all_kb_names" hidden/>
+                    <input id="submit" type="submit" class="btn btn-info pull-right" Value="Download All Names">
+                </form>
+                <br/>
+                <br/>
+            </div>
+
+        </div>
+        {% for cname in kb_name_list %}
+            <div class="col-md-15">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title custom"> {{ cname['kb_names'] | length }}</h4>
+                        <p class="category custom">{{ cname['candidate_name'] | capitalize }}</p>
+                        <hr/>
+                        <a class="username_link"
+                           href="{{ url_for('view_candidate_names', candidate_name=cname['candidate_name']) }}">
+                            <p style="text-align: center"><i>View Names</i></p>
+                        </a>
+                    </div>
+                    </br>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block customJS %}
@@ -121,7 +122,7 @@ active
     <script>
         $("#file-0").fileinput({
             'allowedFileExtensions': ['csv'],
-            'showPreview':false
+            'showPreview': false
         });
     </script>
 {% endblock %}

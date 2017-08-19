@@ -1,5 +1,3 @@
-from controllers.Pickles.Pickle_Saver import *
-import pickle
 import re
 from multiprocessing import Pool
 
@@ -12,18 +10,19 @@ num_partitions = 6  # number of partitions to split dataframe
 num_cores = 6  # number of cores on your machine
 
 
-script_path = os.path.dirname(os.path.dirname(__file__))
-file_path = os.path.join(script_path, "Lexicon_Files")
-nltk.data.path.append(script_path+"/Lexicon_Files")
+#
+# script_path = os.path.dirname(os.path.dirname(__file__))
+# file_path = os.path.join(script_path, "Lexicon_Files")
+# # nltk.data.path.append(script_path+"/Lexicon_Files")
 
-afinn = Afinn(emoticons=True)
-posiFile = pd.read_csv(file_path + "/positive.txt", header=None)
-posi_list = posiFile[0].tolist()
-
-nega_file = pd.read_csv(file_path + "/negative.txt", header=None)
-nega_list = nega_file[0].tolist()
-
-
+# afinn = Afinn(emoticons=True)
+# posiFile = pd.read_csv(file_path + "/positive.txt", header=None)
+# posi_list = posiFile[0].tolist()
+#
+# nega_file = pd.read_csv(file_path + "/negative.txt", header=None)
+# nega_list = nega_file[0].tolist()
+#
+#
 def lscv_sentiment(tweet_list):
     # path for classifiers
     s_path = os.path.dirname(os.path.dirname(__file__))
@@ -78,11 +77,10 @@ def compute_tweets_sentiment(tweet_list):
     posFil = get_all_words("filipino", "positive")
     negFil = get_all_words("filipino", "negative")
 
-
     # Lexicon Based
-    # tweet_list = sa_parallelize_dataframe(tweet_list, lexicon_sentiment)
-    # returns a list of all the words with their corresponding sentiment
-    tweet_list['words_senti'] = tweet_list.apply(lambda row: get_word_sentiment(row['orig_tweets'], posEng, negEng, posFil, negFil), axis=1)
+    #  returns a list of all the words with their corresponding sentiment
+    tweet_list['words_senti'] = tweet_list.apply(
+        lambda row: get_word_sentiment(row['orig_tweets'], posEng, negEng, posFil, negFil), axis=1)
     # Machine Learning - LSVC
     tweet_list['sentiment'] = lscv_sentiment(tweet_list['tweet'])
     posi_tweets = tweet_list[tweet_list['sentiment'] == "Positive"]
@@ -96,5 +94,3 @@ def compute_tweets_sentiment(tweet_list):
     save_dataframe(neg_tweets.loc[:, columns], 'negative')
 
     return posi_tweets, neut_tweets, neg_tweets
-
-

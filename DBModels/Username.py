@@ -25,14 +25,14 @@ def insert_new_username(username_dict):
 
 def bulk_update(username_dict):
     bulk = db.Username.initialize_unordered_bulk_op()
-    [bulk.find({'username': '@'+value['Username']}).upsert().update(
+    [bulk.find({'username': '@' + value['Username']}).upsert().update(
         {
             '$inc': {
                 'numTweets': value['numTweets'], 'numMentions': value['numMentions']
             },
-            '$set': {'username_lower': '@'+value['Username'].lower()}
+            '$set': {'username_lower': '@' + value['Username'].lower()}
         }
-    )for key, value in username_dict.iterrows()]
+    ) for key, value in username_dict.iterrows()]
     bulk.execute()
 
 
@@ -51,7 +51,7 @@ def get_dict_list_usernames():
         uNames.append(uname['username'])
         numMentions.append(uname['numMentions'])
         numTweets.append(uname['numTweets'])
-        idUsername.append('@'+str(uname['_id']))
+        idUsername.append('@' + str(uname['_id']))
 
     unameDict = {'uNames': uNames, 'numMentions': numMentions, 'numTweets': numTweets, 'idUsername': idUsername}
 
@@ -61,7 +61,7 @@ def get_dict_list_usernames():
 def get_all_username_tup():
     usernameTup = []
     for user in db.Username.find({}, {'username': 1}):
-        usernameTup.append((user['username'], '@'+str(user['_id'])))
+        usernameTup.append((user['username'], '@' + str(user['_id'])))
     return usernameTup
 
 

@@ -8,11 +8,11 @@ mainDB = "Athena"
 client = MongoClient('localhost', 27017)
 db = client[mainDB]
 
+
 class Workspace(MongoModel):
     idWorkspace = fields.IntegerField(primary_key=True)
     name = fields.CharField(max_length=255)
     date_created = fields.DateTimeField()
-
 
     class Meta:
         write_concern = WriteConcern(j=True)
@@ -20,7 +20,7 @@ class Workspace(MongoModel):
 
 
 def check_if_workspace_exists(name):
-    fileCount = db.Workspace.find({"name":name}).count()
+    fileCount = db.Workspace.find({"name": name}).count()
     if fileCount == 0:
         return False
     else:
@@ -28,7 +28,7 @@ def check_if_workspace_exists(name):
 
 
 def create_new_workspace(name):
-    if(check_if_workspace_exists(name) == False):
+    if (check_if_workspace_exists(name) == False):
         time_uploaded = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
         NewFileData = {"name": name, "date_created": time_uploaded}
         db.Workspace.insert_one(NewFileData)

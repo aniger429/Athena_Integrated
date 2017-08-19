@@ -49,15 +49,13 @@ def populate_lexicon():
 
     # save word list per sentiment in a file
     df = pd.DataFrame(posi_list_final, columns=["word"])
-    df.to_csv(file_path+'/positive_sentiment_words_english.csv', index=False)
+    df.to_csv(file_path + '/positive_sentiment_words_english.csv', index=False)
 
     df = pd.DataFrame(nega_list_final, columns=["word"])
-    df.to_csv(file_path+'/negative_sentiment_words_english.csv', index=False)
+    df.to_csv(file_path + '/negative_sentiment_words_english.csv', index=False)
 
     df = pd.DataFrame(fil_positive_list_final, columns=["word"])
-    df.to_csv(file_path+'/positive_sentiment_words_filipino.csv', index=False)
+    df.to_csv(file_path + '/positive_sentiment_words_filipino.csv', index=False)
 
     df = pd.DataFrame(fil_negative_list_final, columns=["word"])
-    df.to_csv(file_path+'/negative_sentiment_words_filipino.csv', index=False)
-
-
+    df.to_csv(file_path + '/negative_sentiment_words_filipino.csv', index=False)

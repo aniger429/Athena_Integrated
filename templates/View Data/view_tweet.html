@@ -3,120 +3,122 @@
 
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
-        .title.custom{
+        .title.custom {
             font-size: 30px;
         }
     </style>
 {% endblock %}
 
-{%block name%}
-Tweet
-{%endblock%}
+{% block name %}
+    Tweet
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">{{ tweetData['favorite'] }}</h4>
-                <p class="category custom">Favorite</p>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ tweetData['favorite'] }}</h4>
+                    <p class="category custom">Favorite</p>
+                </div>
+                </br>
             </div>
-            </br>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ tweetData['location'] }}</h4>
+                    <p class="category custom">Location</p>
+                </div>
+                </br>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">{{ tweetData['retweet'] }}</h4>
+                    <p class="category custom">Retweet</p>
+                </div>
+                </br>
+            </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">{{ tweetData['location'] }}</h4>
-                <p class="category custom">Location</p>
-            </div>
-            </br>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">{{ tweetData['retweet'] }}</h4>
-                <p class="category custom">Retweet</p>
-            </div>
-        </br>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title custom">"
-                    {% for word in tweetData['orig_tweets'].split(' ') %}
-                        {% if word[:1] != '@' %}
-                            {{ word }}
-                        {% else %}
-                           <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:])}}"> <i>@USER</i></a>
-                        {% endif %}
-                    {% endfor %}
-"
-                </h4>
-                <p class="category custom">Original Tweet</p>
-            </div>
-            <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
-                    <thead>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title custom">"
+                        {% for word in tweetData['orig_tweets'].split(' ') %}
+                            {% if word[:1] != '@' %}
+                                {{ word }}
+                            {% else %}
+                                <a class="username_link" href="{{ url_for('view_specific_user', user_id=word[1:]) }}">
+                                    <i>@USER</i></a>
+                            {% endif %}
+                        {% endfor %}
+                        "
+                    </h4>
+                    <p class="category custom">Original Tweet</p>
+                </div>
+                <div class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
                         <th class="col-md-3"></th>
                         <th class="col-md-9"></th>
-                    </thead>
-                    <tbody>
-                       <tr>
-                           <td>Cleaned Tweet</td>
-                           <td>{{ tweetData['tweet'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>Tweet ID</td>
-                           <td>{{ tweetData['_id'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>Poster Username ID</td>
-                           <td>
-                               <a class="username_link" href="{{ url_for('view_specific_user', user_id=tweetData['idUsername'][1:])}}">
-                                   <i>{{ tweetData['idUsername'] }}</i>
-                               </a>
-                           </td>
-                       </tr>
-                       <tr>
-                           <td>Date Posted</td>
-                           <td>{{ tweetData['date_created'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>Positive Emoticons</td>
-                           <td>{{ tweetData['posemote'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>Negative Emoticons</td>
-                           <td>{{ tweetData['negemote'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>hashtags</td>
-                           <td>{{ tweetData['hashtags'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>unigram</td>
-                           <td>{{ tweetData['unigram'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>bigram</td>
-                           <td>{{ tweetData['bigram'] }}</td>
-                       </tr>
-                       <tr>
-                           <td>trigram</td>
-                           <td>{{ tweetData['trigram'] }}</td>
-                       </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Cleaned Tweet</td>
+                            <td>{{ tweetData['tweet'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tweet ID</td>
+                            <td>{{ tweetData['_id'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Poster Username ID</td>
+                            <td>
+                                <a class="username_link"
+                                   href="{{ url_for('view_specific_user', user_id=tweetData['idUsername'][1:]) }}">
+                                    <i>{{ tweetData['idUsername'] }}</i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date Posted</td>
+                            <td>{{ tweetData['date_created'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Positive Emoticons</td>
+                            <td>{{ tweetData['posemote'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Negative Emoticons</td>
+                            <td>{{ tweetData['negemote'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>hashtags</td>
+                            <td>{{ tweetData['hashtags'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>unigram</td>
+                            <td>{{ tweetData['unigram'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>bigram</td>
+                            <td>{{ tweetData['bigram'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>trigram</td>
+                            <td>{{ tweetData['trigram'] }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
 

@@ -52,6 +52,3 @@ def process_usernames(data_source):
     bulk_update(username_df)
 
     print("Done processing the username")
-
-
-

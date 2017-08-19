@@ -31,7 +31,8 @@ def get_all_lexicon():
 
 # returns all the words of the lexicons for a language and sentiment
 def get_all_words(language, sentiment):
-    data = db.Lexicon.find_one({'language': language, 'sentiment': sentiment}, {"sentiment": 0, "language": 0, "_id": 0, "_cls": 0})
+    data = db.Lexicon.find_one({'language': language, 'sentiment': sentiment},
+                               {"sentiment": 0, "language": 0, "_id": 0, "_cls": 0})
     return data['words']
 
 
@@ -43,7 +44,3 @@ def new_lexicon_words(names, language, sentiment):
 # # deletes all candidate names in the list
 def delete_lexicon_words(names, language, sentiment):
     return db.Lexicon.update({'language': language, 'sentiment': sentiment}, {'$pullAll': {'words': names}})
-
-
-
-

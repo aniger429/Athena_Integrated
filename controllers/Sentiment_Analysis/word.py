@@ -23,7 +23,7 @@ def tweet_words_negative(tweet):
         if (word in negEng) or (word in negFil):
             print(word + ': Negative')
             array.append(word)
-    return array   
+    return array
 
 
 def get_sentiment(tweet):
@@ -33,12 +33,13 @@ def get_sentiment(tweet):
             print(word + ': negative')
             word_list.append((word, 'negative'))
         elif (word in posEng) or (word in posFil):
-                print(word + ': positive')
-                word_list.append((word, 'positive'))
+            print(word + ': positive')
+            word_list.append((word, 'positive'))
         else:
             word_list.append((word, 'neutral'))
 
     return word_list
+
+
 a = get_sentiment('i am not happy')
 print(a)
-

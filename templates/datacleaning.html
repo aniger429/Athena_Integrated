@@ -2,94 +2,95 @@
 {% block customCSS %}
     <!--  Paper Dashboard core CSS    -->
     <link href="{{ url_for('static', filename="css/customized.css") }}" rel="stylesheet"/>
-    <link href="{{ url_for('static', filename="css/fileinput.min.css") }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename="css/fileinput.min.css") }}" rel="stylesheet" type="text/css"/>
     <link href="{{ url_for('static', filename="css/cardStyle.css") }}" rel="stylesheet"/>
     <style>
         .title.custom {
             font-size: 25px;
         }
     </style>
-{%  endblock %}
+{% endblock %}
 
-{%block name%}
-Data
-{%endblock%}
-{%block twitter_data_active%}
-active
-{%endblock%}
+{% block name %}
+    Data
+{% endblock %}
+{% block twitter_data_active %}
+    active
+{% endblock %}
 
 
 {% block content %}
-<div class="row">
+    <div class="row">
 
-    {% if duplicate == True%}
-        <div class="alert alert-danger alert-dismissible show" role="alert">
-          <button type="button" class="close moveRight" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <strong>Oops!</strong> You uploaded a duplicate file: {{ filename }}
+        {% if duplicate == True %}
+            <div class="alert alert-danger alert-dismissible show" role="alert">
+                <button type="button" class="close moveRight" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Oops!</strong> You uploaded a duplicate file: {{ filename }}
+            </div>
+        {% endif %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading title custom">Upload Data</div>
+            <div class="panel-body">
+                <form action="upload" method="post" enctype="multipart/form-data">
+                    <input id="file-0" type="file" class="file" name="file"
+                           data-min-file-count="1" data-overwrite-initial="true"><br/><br/>
+                    <input type="submit" class="btn btn-info" Value="Upload">
+                    <button type="reset" class="btn btn-default">Reset</button>
+                </form>
+            </div>
         </div>
-    {% endif %}
-
-    <div class="panel panel-default" >
-      <div class="panel-heading title custom">Upload Data</div>
-      <div class="panel-body">
-          <form action="upload" method="post" enctype="multipart/form-data">
-            <input id="file-0" type="file" class="file" name="file"
-                   data-min-file-count="1" data-overwrite-initial="true"><br /><br />
-            <input type="submit" class="btn btn-info" Value="Upload">
-            <button type="reset" class="btn btn-default">Reset</button>
-          </form>
-      </div>
-    </div>
 
 
-    <div class="card col-md-12">
-        <div class="header">
-            <h4 class="title custom">Tweet Data Uploaded</h4>
-{#            <p class="category">Here are all the election data uploaded</p>#}
-        </div>
-        <div class="content table-responsive table-full-width">
-            <table class="table table-striped">
-                <thead>
+        <div class="card col-md-12">
+            <div class="header">
+                <h4 class="title custom">Tweet Data Uploaded</h4>
+                {#            <p class="category">Here are all the election data uploaded</p>#}
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
                     <th class="col-md-6">Filename</th>
                     <th class="col-md-3">Date Uploaded</th>
                     <th class="col-md-1">Action</th>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     {% for dataFile in dataFileList %}
-                    <tr>
-                        <td>{{ dataFile.filename }}</td>
-                        <td>{{ dataFile.dateUploaded }}</td>
-                        <td>
-                            {% if dataFile.isClean == "false" %}
-                                <a class="btn btn-info" href="{{ url_for('clean_file', filename= dataFile.filename) }}">
+                        <tr>
+                            <td>{{ dataFile.filename }}</td>
+                            <td>{{ dataFile.dateUploaded }}</td>
+                            <td>
+                                {% if dataFile.isClean == "false" %}
+                                    <a class="btn btn-info"
+                                       href="{{ url_for('clean_file', filename= dataFile.filename) }}">
                                         Clean Now!
-                                </a>
-                                {% else%}
-                                <a class="btn btn-info" href="#" disabled="false">
+                                    </a>
+                                {% else %}
+                                    <a class="btn btn-info" href="#" disabled="false">
                                         Cleaned
-                                </a>
-                            {% endif %}
-                        </td>
-{#                        <td>#}
-{#                            <a class="btn btn-info" href="#" disabled="true">#}
-{#                              <i class="ti-file"></i>#}
-{#                            </a>#}
-{#                        </td>#}
-{#                        <td>#}
-{#                            <a class="btn btn-danger" href="#" disabled="true">#}
-{#                              <i class="ti-trash"></i> Delete#}
-{#                            </a>#}
-{#                        </td>#}
-                    </tr>
+                                    </a>
+                                {% endif %}
+                            </td>
+                            {#                        <td>#}
+                            {#                            <a class="btn btn-info" href="#" disabled="true">#}
+                            {#                              <i class="ti-file"></i>#}
+                            {#                            </a>#}
+                            {#                        </td>#}
+                            {#                        <td>#}
+                            {#                            <a class="btn btn-danger" href="#" disabled="true">#}
+                            {#                              <i class="ti-trash"></i> Delete#}
+                            {#                            </a>#}
+                            {#                        </td>#}
+                        </tr>
                     {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block customJS %}
@@ -98,7 +99,7 @@ active
     <script>
         $("#file-0").fileinput({
             'allowedFileExtensions': ['csv'],
-            'showPreview':false
+            'showPreview': false
         });
     </script>
 {% endblock %}

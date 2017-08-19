@@ -11,7 +11,7 @@ from controllers.KnowledgeBaseCreation import *
 
 def read_csv(filename):
     return pd.read_csv(filename, encoding="utf8", keep_default_na=False, index_col=None,
-                       sep=",", skipinitialspace=True,)
+                       sep=",", skipinitialspace=True, )
 
 
 # For a given file, return whether it's an allowed type or not
@@ -58,4 +58,3 @@ def kbupload(directoryPath, ALLOWED_EXTENSIONS):
 
         insert_new_kb_names(data)
         return redirect(url_for('knowledge_base'))
-
