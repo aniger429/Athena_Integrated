@@ -86,11 +86,11 @@ active
 
     <div class="card">
         <div class="header">
-            <h4 class="title custom">Candidates</h4>
+            <h4 class="title custom">{{ analyzing_for }}</h4>
             <p class="category">Total Number of Names in the Knowledge Base</p>
             <form action="/download" method="post" enctype="multipart/form-data">
                 <input type="text" name="download_data" value="all_kb_names" hidden/>
-                <input id="submit" type="submit" class="btn btn-info pull-right" Value="Download All Candidate Names">
+                <input id="submit" type="submit" class="btn btn-info pull-right" Value="Download All Names">
             </form>
             <br/>
             <br/>

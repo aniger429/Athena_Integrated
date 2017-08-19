@@ -68,7 +68,7 @@ active
                 <h4 class="title">Topic # {{ key }}</h4>
                 <p class="category">Number of Tweets: {{ topic['topic_tweets']|length }}</p>
                 <div class="row justify-content-center">
-                    Candidates Mentioned:
+                    Mentioned:
                     {% for cand in candidates_mentioned %}
                         <a class="username" href="{{ url_for('view_candidate_data',candidate_name=cand, datasource="topic", key=key) }}">{{ cand | capitalize }}</a>
                     {% endfor %}
